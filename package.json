@@ -11,7 +11,9 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "deploy": "npm run build && wrangler deploy",
-    "check:live": "tsx scripts/check-live.ts"
+    "check:live": "tsx scripts/check-live.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@hono/node-server": "^1.19.0",
@@ -28,6 +30,7 @@
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^4.7.0",
     "concurrently": "^9.2.0",
+    "prettier": "^3.9.6",
     "tsx": "^4.20.0",
     "typescript": "~5.9.2",
     "vite": "^6.4.0",
