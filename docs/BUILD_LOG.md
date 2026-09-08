@@ -15,6 +15,7 @@ Approved scope: first working version of a swap preflight tool. Read-only Ethere
 7. Two real-chain browser smoke tests passed at block 25930804: WETH → USDC (2 pools, 247.158808 USDC for 0.1 WETH) and USDC → WETH (0.101048216310103637 WETH for 250 USDC, plus 3 public-address balance/allowance reads). Address `0x0000000000000000000000000000000000000001` was a neutral public probe, not the participant's wallet.
 8. TypeScript/frontend build and Worker deployment dry-run passed. Production dependency audit reported no known vulnerabilities at the time of the check; this is not a security audit.
 9. Prepared README, sponsor feedback, source references, validation record, AI disclosure, submission draft and human demo outline.
+10. A later browser rerun exposed an intermittent page-load timeout caused by external font loading. Replaced the external stylesheet with locally bundled Fontsource fonts, retained their original license notices, and added an assertion that font requests stay on the app origin. Final combined browser regression passed **9 / 9** in 7.7s, including both real-chain tests at block 25930861. The final build and formatting checks passed.
 
 ## Not complete at first handoff
 

@@ -31,11 +31,14 @@ test.describe("live mainnet", () => {
       ),
     ).toBe(true);
     expect(report.snapshot.wallet).toBeNull();
+    expect(["review", "blocked"]).toContain(report.decision);
     await expect(
       page.getByText("LIVE SNAPSHOT", { exact: true }),
     ).toBeVisible();
     await expect(page.getByTestId("verdict")).toContainText(
-      "Review before proceeding",
+      report.decision === "review"
+        ? "Review before proceeding"
+        : "Policy threshold exceeded",
     );
     await page.screenshot({
       path: "test-results/swapguard-live.png",

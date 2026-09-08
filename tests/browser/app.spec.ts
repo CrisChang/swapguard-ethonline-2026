@@ -4,7 +4,11 @@ test("sample report is clearly labeled and layout fits desktop and mobile", asyn
   page,
 }) => {
   const errors: string[] = [];
+  const fontRequests: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
+  page.on("request", (r) => {
+    if (r.resourceType() === "font") fontRequests.push(r.url());
+  });
   await page.goto("/");
   await expect(page.getByTestId("verdict")).toContainText("No policy flags");
   await expect(page.getByText("SAMPLE DATA", { exact: true })).toBeVisible();
@@ -31,6 +35,12 @@ test("sample report is clearly labeled and layout fits desktop and mobile", asyn
     fullPage: true,
   });
   expect(errors).toEqual([]);
+  expect(fontRequests.length).toBeGreaterThan(0);
+  expect(
+    fontRequests.every(
+      (url) => new URL(url).origin === "http://127.0.0.1:5177",
+    ),
+  ).toBe(true);
 });
 
 test("sample scenarios expose the reason for blocked and review decisions", async ({

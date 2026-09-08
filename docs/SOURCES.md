@@ -27,4 +27,4 @@ References reviewed during the 2026-09-08 build. Deployment addresses must be re
 
 Oracle max ages of 1 hour / 24 hours are SwapGuard policy choices, not claims about official heartbeat or deviation settings. Onchain decimals and round values are read from contracts rather than hardcoded. The 2026-09-08 smoke test returned 8 decimals for both feeds.
 
-Third-party package versions and integrity hashes are in `package-lock.json`. UI icons are from `lucide-react`; DM Sans / Manrope fonts are requested from Google Fonts with system fallbacks. The shield SVG is a new code-authored asset. No old project code, API secrets, screenshots or deployments were copied into this project.
+Third-party package versions and integrity hashes are in `package-lock.json`. UI icons are from `lucide-react`; DM Sans / Manrope Latin fonts are bundled from `@fontsource/dm-sans` and `@fontsource/manrope` with system fallbacks. Their original license notices are distributed in `public/FONT_LICENSES.txt`. The shield SVG is a new code-authored asset. No old project code, API secrets, screenshots or deployments were copied into this project.

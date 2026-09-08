@@ -36,6 +36,10 @@ Separate `LIVE_SMOKE=1` browser checks: **2 / 2 passed**, using real API calls a
 
 `npm audit --omit=dev` reported zero known production dependency vulnerabilities at the time of this check. This says nothing about unidentified vulnerabilities or the correctness of the application.
 
+## Final local-font regression
+
+An external font stylesheet caused a subsequent browser navigation timeout. Fonts were then bundled locally with their original license notices. The final **combined 9 / 9 browser suite passed in 7.7s**, including a same-origin font-request assertion and both real-chain smoke tests at block **25930861**. Final WETH → USDC output was 246.543463 USDC for 0.1 WETH; reverse output was 0.101300420104016538 WETH for 250 USDC. These are historical observations only. Final build and formatting checks also passed.
+
 ## Remaining release checks
 
 - Public GitHub repository and deploy URL, with anonymous-access checks.

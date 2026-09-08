@@ -110,7 +110,7 @@ For a public deployment, authenticate the intended Cloudflare account, verify th
 
 **Current handoff: local first version. No public deployment or public GitHub URL has been confirmed.** The available Cloudflare CLI session required reauthentication during this build. Never paste localhost into the public competition demo field.
 
-The API has a 4KB body limit, server-side input checks, no-store responses, generic upstream errors and an in-process live concurrency cap. The cap is per process/isolate, not global rate limiting. Before public traffic, add edge rate limiting/abuse controls, a dependable RPC budget, monitoring and privacy review. The app does not intentionally persist addresses or add analytics; an optional address is sent to the application server and upstream RPC, and infrastructure providers may log request metadata. Google Fonts is loaded with system fallbacks.
+The API has a 4KB body limit, server-side input checks, no-store responses, generic upstream errors and an in-process live concurrency cap. The cap is per process/isolate, not global rate limiting. Before public traffic, add edge rate limiting/abuse controls, a dependable RPC budget, monitoring and privacy review. The app does not intentionally persist addresses or add analytics; an optional address is sent to the application server and upstream RPC, and infrastructure providers may log request metadata. Fonts are bundled locally through Fontsource with system fallbacks; no Google Fonts request is made by the page.
 
 ## Competition readiness
 
