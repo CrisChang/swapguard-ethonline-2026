@@ -4,4 +4,20 @@
 
 Approved scope: first working version of a swap preflight tool. Read-only Ethereum mainnet data; no signing, approval, transfers or swaps. Plan: Uniswap v3 single-pool WETH/USDC quotes, Chainlink reference prices, deterministic risk policy and explicitly labelled demonstration scenarios. Use public libraries with provenance recorded in package-lock.json.
 
-Milestones and validation results will be recorded as they happen. This document is not evidence of features that have not been implemented.
+## Completed milestones — 2026-09-08
+
+1. Initialized an independent repository and committed scope before implementation (`ea18ff3`). No old project copy or rewritten commit dates.
+2. Implemented integer policy, input validation, read-only API, explicit samples and fixed-block Uniswap/Chainlink reads. Added 66 passing unit/API cases (`f5fa4c0`).
+3. Built React preflight and report UI, with sample/live labels, unknown/failure states, input invalidation, expiry and JSON export.
+4. Ran 7 deterministic browser tests successfully; inspected desktop and mobile screenshots.
+5. Investigated intermittent concurrent public RPC failures. Batching requests reduced connections; the following real-chain smoke calls passed. Public RPC reliability remains a deployment consideration, not a guarantee.
+6. Read-only CLI smoke at block 25930766 succeeded; no owner supplied, so the report correctly requested review.
+7. Two real-chain browser smoke tests passed at block 25930804: WETH → USDC (2 pools, 247.158808 USDC for 0.1 WETH) and USDC → WETH (0.101048216310103637 WETH for 250 USDC, plus 3 public-address balance/allowance reads). Address `0x0000000000000000000000000000000000000001` was a neutral public probe, not the participant's wallet.
+8. TypeScript/frontend build and Worker deployment dry-run passed. Production dependency audit reported no known vulnerabilities at the time of the check; this is not a security audit.
+9. Prepared README, sponsor feedback, source references, validation record, AI disclosure, submission draft and human demo outline.
+
+## Not complete at first handoff
+
+No public GitHub repository has been created or pushed. No public deployment was performed: the existing Cloudflare CLI authentication required reauthentication. Sponsor feedback form, human code review, demo recording, check-in confirmation and final ETHGlobal submission remain pending.
+
+No wallet was connected, no signature requested, no token approval made and no transaction sent. Existing projects were not modified. Local screenshots are validation artifacts, not proof of a published deployment.
