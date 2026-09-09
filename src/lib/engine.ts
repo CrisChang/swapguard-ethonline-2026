@@ -1,6 +1,7 @@
 import { formatUnits, parseUnits } from "viem";
 import { TOKENS } from "./contracts";
 import type { AnalyzeRequest, Check, Feed, Report, Snapshot } from "./types";
+import { minimumFromQuote } from "./protection-math";
 
 export const POLICY = {
   quoteTtlSeconds: 60,
@@ -59,7 +60,7 @@ export function analyze(
     BigInt(a.amountOutRaw) >= BigInt(b.amountOutRaw) ? a : b,
   );
   const quoted = BigInt(best.amountOutRaw);
-  const minimum = (quoted * BigInt(10000 - req.slippageBps)) / 10000n;
+  const minimum = minimumFromQuote(quoted, req.slippageBps);
   const checks: Check[] = [];
   const push = (
     id: string,
