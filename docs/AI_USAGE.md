@@ -23,6 +23,10 @@ Third-party dependencies were installed from npm. The assistant did not copy the
 
 Build an independent read-only Ethereum WETH/USDC preflight tool. Compare two actual Uniswap v3 single-pool quotes, read Chainlink references at the same block, calculate exact minimum output and transparent risk thresholds, optionally inspect public balance/allowances, and distinguish missing or stale data from a successful check. Samples must be explicitly synthetic and never replace failed live data. Changes to inputs must invalidate old reports. Add tests and inspect desktop/mobile screenshots. Do not modify previous projects or perform wallet actions.
 
-## Before submission
+## Additional human direction — 2026-09-09
+
+The participant approved focusing on a concrete minimum-output scenario, publishing constructed test data on the website, and improving automatic minimum-output/slippage UX. The assistant implemented the floor calculation, independent confirmation, narrow legacy decoder, public synthetic lab, tests and revised documentation. This includes `src/lib/protection*.ts`, `src/ProtectionLab.tsx`, `src/protection.css`, `scripts/check-protection.ts` and corresponding tests. Most code, fixtures and prose in this extension were AI-generated. Human code review and final narration are not claimed complete.
+
+## Before final submission
 
 The participant should review the implementation and its limits, validate the user experience, decide which sponsor criteria are actually met, retain this assistance disclosure and the genuine commit history, and record their own compliant narration. This document does not assert that AI-generated work alone satisfies the event's meaningful-human-input requirement or that any organizer has approved this entry.

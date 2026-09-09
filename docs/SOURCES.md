@@ -15,6 +15,14 @@ References reviewed during the 2026-09-08 build. Deployment addresses must be re
 
 ## Mainnet registry used by this app
 
+Parameter-verifier references reviewed on 2026-09-09:
+
+- [SwapRouter02 IV3SwapRouter](https://github.com/Uniswap/swap-router-contracts/blob/main/contracts/interfaces/IV3SwapRouter.sol): inner tuple without deadline; amountIn=0 has router-balance semantics. Upstream is archived; this is legacy coverage.
+- [MulticallExtended](https://github.com/Uniswap/swap-router-contracts/blob/main/contracts/base/MulticallExtended.sol): deadline-bound overload. This verifier permits one inner operation, not all supported compositions.
+- [Universal Router commands](https://developers.uniswap.org/docs/protocols/universal-router/concepts/commands): a different format, unsupported here.
+
+Our output-relative minimum formula is a local convention, not a claim of exact SDK formula parity. See [PROTECTION.md](PROTECTION.md).
+
 | Contract              | Address                                      |
 | --------------------- | -------------------------------------------- |
 | WETH                  | `0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2` |

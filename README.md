@@ -2,7 +2,7 @@
 
 **Know the trade. Before you sign.** A read-only swap preflight tool built from scratch for ETHOnline 2026.
 
-SwapGuard gives a user an inspectable second opinion before a WETH/USDC swap: Uniswap v3 quotes, a Chainlink reference, minimum output, and narrowly scoped balance/allowance checks. It does not connect a wallet, ask for a signature, request approval or submit transactions.
+SwapGuard checks a specific problem: **does a swap transaction preserve the minimum output the user independently confirmed?** A quote can look unchanged while encoded transaction parameters differ. Users choose a slippage tolerance; SwapGuard calculates the floor, locks conditions locally and compares them with an unsigned draft. It also provides Uniswap v3 quotes, Chainlink references and narrowly scoped balance/allowance context. It does not connect a wallet, request a signature or approval, or submit transactions.
 
 **[Try the public demo](https://swapguard-ethonline-2026.swapguard.workers.dev)** · **[Source repository](https://github.com/CrisChang/swapguard-ethonline-2026)**
 
@@ -29,7 +29,19 @@ npm start
 
 The built site is served at http://127.0.0.1:8787 by `npm start`.
 
-## What v0.1 actually does
+## Minimum-output verification lab
+
+Open **Reproducible test lab** on the website. The baseline is constructed: 1,000 USDC → 0.400 WETH, 0.5% tolerance, 0.398 WETH floor. A mutation lowers only the encoded floor to 0.360 WETH while the displayed quote remains unchanged. The 0.038 WETH gap is weaker protection, **not an observed loss or money saved**.
+
+- **25 downloadable synthetic cases**: valid controls, zero/lower floors, recipient/input/token/fee/envelope changes, deadlines, unsupported extra/nested calls and expired confirmation.
+- Run individual cases or the full suite in the browser; export inputs, declared expectations, observations and content fingerprints. A fixed replay clock makes cases reproducible.
+- **Check a transaction draft** uses separately confirmed conditions, never conditions imported alongside the draft. The floor is automatic. Edits or expiry invalidate confirmation/results.
+- Supported: Ethereum **legacy SwapRouter02**, WETH ↔ USDC, fees 500/3000, deadline-bound multicall with exactly one canonical exactInputSingle and no price limit. **Not Universal Router coverage.** Unsupported formats fail closed.
+- MATCH means only supported parameters preserve the conditions, not safety or execution readiness. Fingerprints are content hashes, not signatures; a downstream signer must still submit the exact checked draft.
+
+See [methodology and reusable verifier](docs/PROTECTION.md). The suite is a regression demonstration, not independent validation or measured real-world attack accuracy.
+
+## Read-only quote component
 
 - Ethereum mainnet only, **WETH ↔ USDC**. Native ETH wrapping is not supported.
 - Compares Uniswap v3 **0.05% and 0.30% single-pool quotes** via QuoterV2. Finds pools via the v3 factory. Does not claim full-market or multihop best routing.
@@ -69,6 +81,8 @@ Key files:
 | Frontend and report invalidation     | `src/App.tsx`           |
 | Cloudflare entry point               | `worker/index.ts`       |
 
+The pure browser-local verifier is `src/lib/protection.ts`, exact floor math is in `src/lib/protection-math.ts`, published cases are in `src/lib/protection-fixtures.ts`, and the interactive lab is `src/ProtectionLab.tsx`. Pasted drafts are not sent to the API. Live quotes still use the read-only server path above.
+
 ## Transparent policy — not a safety guarantee
 
 | Check                              | Review / unavailable                       | Block                                                  |
@@ -90,6 +104,8 @@ Not implemented: swap execution, full transaction simulation, token audit, MEV/s
 
 ```sh
 npm test                         # deterministic unit/API tests; no chain calls
+npm run check:protection          # replay 25 published synthetic cases
+npm run check:protection -- --json # also print dataset and observations
 npm run build                    # TypeScript + frontend bundle
 npm run test:e2e                 # isolated headless Chrome; deterministic UI tests
 npm run check:live               # real WETH → USDC read-only smoke test

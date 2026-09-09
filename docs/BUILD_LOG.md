@@ -44,3 +44,11 @@ The participant confirmed Cloudflare login and explicitly asked the assistant to
 - Anonymous GitHub access returned HTTP 200. The first hosted CI run succeeded: https://github.com/CrisChang/swapguard-ethonline-2026/actions/runs/34320212712.
 - Direct access to the new workers.dev hostname failed on this machine's DNS/network path. Using the user's existing system proxy, with no OS configuration change and normal TLS verification, the public page, headers, sample/live API and all nine browser cases passed. This was not reported as successful until those checks completed.
 - Submission draft now contains verified public links. Sponsor feedback submission, human code review, narration and final competition submission remain pending.
+
+## Minimum-output consistency lab — 2026-09-09
+
+- User approved publishing constructed scenarios and improving minimum-output UX. Added automatic floor calculation, independent confirmation and a pure verifier for one deadline-bound legacy SwapRouter02 shape. Other projects were not changed.
+- Added 25 fixed-clock synthetic cases with downloadable inputs, expectations and observations. These are regression cases, not real incidents or independent validation.
+- Deterministic tests expanded from 74 to 146, including hand-encoded ABI reference, mutations, rounding and expiry. All passed; all 25 public cases matched their declared expectations.
+- Default browser suite passed 12/12 with two opt-in live cases skipped. Browser launch required an approved isolated process outside the sandbox; failed launches were not test passes.
+- Desktop/390px mobile lab screenshots inspected. Scope notes, methodology, submission/demo drafts, feedback and AI disclosure updated. Public deployment verification will be recorded after actual checks.

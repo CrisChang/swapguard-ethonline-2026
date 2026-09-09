@@ -1,4 +1,4 @@
-# Uniswap Developer Feedback — SwapGuard v0.1
+# Uniswap Developer Feedback — SwapGuard
 
 Date: 2026-09-08. Status: integration notes prepared; **external Uniswap Developer Feedback Form has not been submitted**.
 
@@ -28,6 +28,14 @@ SwapGuard is a preflight UI, not a swap router. We also read the input token's E
 2. A current-vs-legacy router / ERC-20 / Permit2 permission diagram linked from quoting and swapping docs.
 3. A checklist for advisory tools: quote age, partial route coverage, fee-inclusive output, excluded gas, and incomplete-wallet-data labels.
 
-## Boundaries
+## Parameter-consistency extension — 2026-09-09
+
+Added a browser-local legacy SwapRouter02 decoder for a deadline-bound multicall with one exactInputSingle. It compares encoded minimum and related fields to independently confirmed conditions using 25 public synthetic cases. See `src/lib/protection.ts` and `docs/PROTECTION.md`. No transaction was executed. The external feedback form remains unsubmitted.
+
+Additional friction: original v3 SwapRouter examples and SwapRouter02 have different inner tuples. The latter has no inner deadline; our check requires the deadline overload on multicall. Middleware examples should distinguish these shapes, amount/recipient sentinels and unsupported operations. Tolerance conventions also matter: output-relative subtraction and price-relative division can produce different minima at the same displayed percentage.
+
+Suggested reference: independently captured user intent mapped to decoded router fields, with normal, mutated and unsupported cases. This checker does not yet cover Universal Router or replace wallet simulation.
+
+## Coverage boundary
 
 This first version compares only two single pools. It does not offer Uniswap smart routing, Universal Router execution, Permit2 signing, hooks or MEV protection. Future work should improve actual coverage before adding broader marketing claims.

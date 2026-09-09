@@ -28,6 +28,7 @@ import type {
   CheckStatus,
 } from "./lib/types";
 import { validateRequest } from "./lib/validation";
+import ProtectionLab from "./ProtectionLab";
 
 const number = (s: string | number, digits = 5) =>
   Number(s).toLocaleString("en-US", { maximumFractionDigits: digits });
@@ -188,10 +189,10 @@ export default function App() {
           </span>
         </div>
         <nav aria-label="Main navigation">
-          <a className="active" href="#workspace">
-            Preflight
+          <a className="active" href="#protection">
+            Protection lab
           </a>
-          <a href="#method">How it works</a>
+          <a href="#workspace">Quote & tolerance</a>
           <a href="#scope">Scope & limits</a>
         </nav>
         <span className="readonly-pill">
@@ -210,8 +211,8 @@ export default function App() {
               <span>Before you sign.</span>
             </h1>
             <p className="hero-description">
-              A second look at your swap. Inspect the quote, understand the
-              exposure, and make your next move informed.
+              A good quote is not enough. Check whether your transaction
+              preserves the minimum you agreed to receive — before you sign.
             </p>
           </div>
           <div className="hero-note">
@@ -229,6 +230,7 @@ export default function App() {
             </p>
           </div>
         </section>
+        <ProtectionLab report={report} now={now} />
         <section
           id="workspace"
           className="workspace"
@@ -386,6 +388,21 @@ export default function App() {
                     </div>
                   </div>
                 </div>
+                <p className="slippage-hint">
+                  Choose a percentage; minimum received is calculated
+                  automatically.
+                  {report && (
+                    <>
+                      {" "}
+                      At this quote:{" "}
+                      <strong>
+                        {report.quote.minimumOut} {report.tokenOut}
+                      </strong>
+                      .
+                    </>
+                  )}{" "}
+                  This is a tolerance setting, not observed trading slippage.
+                </p>
                 {mode === "live" && (
                   <div className="wallet-field">
                     <label htmlFor="owner">
@@ -432,6 +449,11 @@ export default function App() {
                   <LockKeyhole size={11} /> This button never submits a
                   transaction.
                 </p>
+                {report && !expired && (
+                  <a className="back-to-protection" href="#protection">
+                    Quote ready — check a transaction draft above ↑
+                  </a>
+                )}
               </form>
             </section>
             <section className="scenario-card">
@@ -707,12 +729,14 @@ export default function App() {
           <div>
             <h3>Useful checks. Honest limits.</h3>
             <p>
-              SwapGuard v0.1 is an advisory, read-only prototype. It does not
-              execute swaps, audit tokens, predict MEV, or guarantee safety.
-              WETH/USDC on Ethereum only. Allowance checks cover ERC-20
-              approvals to SwapRouter02 and Permit2, not Permit2 per-spender
-              permissions or signatures. Network gas is not checked or included
-              in quoted amounts. Prices can change after a check.
+              SwapGuard is an advisory, read-only prototype. Its parameter
+              verifier covers one legacy SwapRouter02 call shape, not Universal
+              Router. A parameter match is not a safety or execution-readiness
+              verdict. It does not execute swaps, audit tokens, predict MEV, or
+              guarantee safety. WETH/USDC on Ethereum only. Allowance checks
+              cover ERC-20 approvals to SwapRouter02 and Permit2, not Permit2
+              per-spender permissions or signatures. Network gas is not checked
+              or included in quoted amounts. Prices can change after a check.
             </p>
             <p>
               Policy: review price deviation ≥0.50% or slippage ≥1%; flag

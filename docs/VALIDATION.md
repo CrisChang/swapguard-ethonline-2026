@@ -73,3 +73,13 @@ Cloudflare authentication still requires user reauthentication. No public reposi
 Dependency audit on this date: `npm audit --omit=dev` reported **0 known production dependency vulnerabilities**. The full development tree reported five findings: two moderate entries in Vitest/@vitest/mocker and three high entries in the Wrangler/Miniflare/sharp chain. Development servers remain loopback-only; the image processing path is not used by this app. These entries were not silently ignored or force-upgraded across major versions. Review/update development tooling before broader/untrusted development use. Neither audit is an independent security review.
 
 Publication is complete. Sponsor feedback form, participant review, human narration, check-in confirmation and final ETHGlobal submission are still not established by this record.
+
+## Minimum-output lab local verification — 2026-09-09
+
+- `npm test`: **146/146 passed**, including 72 new protection tests: hand-encoded reference, integer bounds, strict schema/envelope, mutations, extra/nested/trailing calls, changed conditions and expiry.
+- `npm run check:protection`: **25/25 synthetic cases matched declared expectations**, including three valid controls and 22 non-MATCH cases. Not independent validation or real-world attack accuracy.
+- TypeScript/Vite build passed. Default browser suite: **12 passed, two opt-in live cases skipped**, in 9.9 seconds. New cases cover replay/downloads, confirmation, automatic floor, edits, expiry and mobile layout.
+- Desktop/mobile screenshots inspected: no clipped controls or horizontal overflow; provenance and scope remain visible.
+- Initial IPC/browser sandbox restrictions were resolved with network permission and approved isolated browser execution. No failed launch was counted as an application result.
+
+No wallet action or transaction execution simulation was performed. Public extension deployment is recorded separately after verification.

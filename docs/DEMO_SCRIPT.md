@@ -2,40 +2,40 @@
 
 Draft only. Record your own clear voice at normal speed, with at least 720p video. Keep the final video between 2 and 4 minutes. Do not substitute text-to-speech, AI voiceover, music-only audio or accelerated footage. Check the final event rules before upload.
 
-## 0:00–0:25 — problem and boundary
+## 0:00–0:25 — one problem
 
-“Before a swap, a quote alone does not tell me what was checked. SwapGuard gives me a second look at the quote, my slippage exposure and selected token approvals. It never asks me to connect a wallet or sign a transaction.”
+“A good quote is not the same as a protected transaction. What if I confirmed one minimum received, but the transaction encodes a lower amount? SwapGuard checks that specific mismatch.”
 
-Show the landing page. Keep the read-only label visible.
+Show the protection lab with its synthetic-data label visible.
 
-## 0:25–1:15 — actual live integration
+## 0:25–1:15 — controlled example
 
-Select Live onchain, enter 0.1 WETH, choose 0.5% slippage, and click Analyze live swap. Wait for a real response; do not relabel a sample if the RPC is down.
+“This is constructed test data. The quote is 0.400 WETH for 1,000 USDC. I choose 0.5% tolerance, so the minimum is automatically calculated as 0.398 WETH. I do not have to work it out by hand.”
 
-“This is a real Ethereum mainnet snapshot. We compare two Uniswap v3 pools and select the higher output among these two, not among every possible market route. Chainlink ETH/USD and USDC/USD provide the independent reference. All reads use this same block number.”
+Run Unchanged transaction, then Minimum quietly reduced.
 
-Expand source details and show the selected pool fee, minimum output and contracts.
+“Only the encoded floor changed, to 0.360. The displayed quote did not change. This no longer preserves my independently confirmed conditions. The 0.038 gap means weaker protection, not actual money lost or saved.”
 
-“I have not provided an address, so wallet checks are unknown. The application deliberately asks for review instead of saying everything is safe.”
+Show the expected/encoded minimum comparison, then the zero-floor case if time permits.
 
-## 1:15–2:10 — demonstrate the guardrails honestly
+## 1:15–1:50 — inspectable evidence
 
-Click Risky quote. Point at SAMPLE DATA.
+Run all 25 cases and download the results.
 
-“These next scenarios are synthetic fixtures, not live transactions. This one has a large quote deviation and excessive token allowances. Each flag explains its scope.”
+“We publish inputs and expectations, including valid controls, recipient and amount errors, extra calls and stale confirmations. These are reproducible regression cases, not a real-world security-accuracy benchmark.”
 
-Open allowance and deviation rows. Click Stale oracle.
+Point to the legacy SwapRouter02-only scope, not Universal Router.
 
-“With an outdated oracle, the reference comparison is unavailable. We do not invent a fresh price or hide the missing check.”
+## 1:50–2:35 — practical workflow
 
-## 2:10–2:45 — evidence and state correctness
+Open Quote & tolerance. Select Live onchain, analyze a small WETH/USDC quote and show the block and sources. If RPC fails, keep the error visible or explicitly use the synthetic mode instead.
 
-Return to the normal sample, edit the amount, and show the previous report disappears. Analyze again, then export JSON.
+“This panel reads actual Uniswap quotes and Chainlink references. The user chooses a percentage, not a manual output floor. The protection panel asks them to confirm sender and recipient independently before checking a pasted draft. A constructed draft stays labelled as constructed, even when using a live quote.”
 
-“Changing an input invalidates the old result. Reports also expire after sixty seconds. The export contains exact base-unit amounts and source values, so a reviewer can inspect what this result was based on.”
+Open Check a transaction draft. Use a clearly labelled example address/draft, never a secret or signature. Show that editing an input clears confirmation.
 
-## 2:45–3:10 — limits and engineering
+## 2:35–3:05 — distinction and limits
 
-“This first version is read-only WETH/USDC tooling. It does not detect MEV, audit tokens or execute swaps. We test integer arithmetic, stale and missing data, API failures and browser state transitions. The code is AI-assisted and the repository includes a disclosure, build log and integration feedback.”
+“Slippage tolerance is the percentage setting; minimum received is the corresponding token amount. SwapGuard does not replace the router's minimum-output check: it checks whether the transaction carries the protection the user chose. A match does not prove execution readiness or safety. No transaction is signed or sent.”
 
-Show the real repository only after publication. Do not claim it is public or deployed until verified.
+Show the public repository and AI disclosure. Explain only what you have actually reviewed. Do not claim an audit, measured losses prevented or final submission.
