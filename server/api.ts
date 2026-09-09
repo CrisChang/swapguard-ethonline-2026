@@ -9,6 +9,10 @@ import type { AnalyzeRequest, Snapshot } from "../src/lib/types";
 export type Env = {
   ETHEREUM_RPC_URL?: string;
   ASSETS?: { fetch: (request: Request) => Promise<Response> };
+  LIVE_RATE_LIMIT?: {
+    limit: (options: { key: string }) => Promise<{ success: boolean }>;
+  };
+  REQUIRE_LIVE_RATE_LIMIT?: boolean;
 };
 type Provider = (req: AnalyzeRequest, url?: string) => Promise<Snapshot>;
 
@@ -50,11 +54,45 @@ export function createApi(provider: Provider = liveSnapshot) {
         400,
       );
     }
-    if (req.mode === "live" && inFlight >= 4)
+    if (req.mode === "live") {
+      // One anonymous route budget, not a claimed global quota or per-user limit.
+      // Local Node development is loopback-only; the public Worker requires this binding.
+      try {
+        if (!c.env?.LIVE_RATE_LIMIT && c.env?.REQUIRE_LIVE_RATE_LIMIT)
+          throw new Error("Missing live rate limiter");
+        if (c.env?.LIVE_RATE_LIMIT) {
+          const { success } = await c.env.LIVE_RATE_LIMIT.limit({
+            key: "swapguard-ethonline-2026:live:v1",
+          });
+          if (!success) {
+            c.header("Retry-After", "60");
+            return c.json(
+              {
+                error:
+                  "The shared live demo request limit was reached. Try again in one minute or select Sample mode.",
+              },
+              429,
+            );
+          }
+        }
+      } catch {
+        // Fail closed if protection cannot be checked; never leak binding details.
+        return c.json(
+          {
+            error:
+              "Live analysis protection is unavailable. Please try again later or select Sample mode.",
+          },
+          503,
+        );
+      }
+    }
+    if (req.mode === "live" && inFlight >= 4) {
+      c.header("Retry-After", "5");
       return c.json(
         { error: "Live analysis is busy. Please try again shortly." },
         429,
       );
+    }
     try {
       if (req.mode === "live") inFlight++;
       const snapshot =

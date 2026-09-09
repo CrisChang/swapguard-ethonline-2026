@@ -22,3 +22,13 @@ Approved scope: first working version of a swap preflight tool. Read-only Ethere
 No public GitHub repository has been created or pushed. No public deployment was performed: the existing Cloudflare CLI authentication required reauthentication. Sponsor feedback form, human code review, demo recording, check-in confirmation and final ETHGlobal submission remain pending.
 
 No wallet was connected, no signature requested, no token approval made and no transaction sent. Existing projects were not modified. Local screenshots are validation artifacts, not proof of a published deployment.
+
+## Release preparation — 2026-09-09
+
+- Added a mandatory edge limiter for the public Worker, with generic fail-closed errors, retry hints and independent sample availability. No IP/wallet identifier is sent as a quota key.
+- Added static security headers and a deployment smoke script. Browser tests can target a built Worker instead of just Vite.
+- Added eight release-protection cases: the total deterministic suite now passes 74/74.
+- Verified the actual built bundle with local Wrangler/Miniflare: static headers, health, sample and live analysis, and absence of a swap endpoint. Local Worker startup needed sandbox permission for loopback binding and Wrangler's development registry; those failures were not counted as successful checks.
+- All nine browser tests passed against the built Worker in 8.1s, including mainnet blocks 25937948/25937949. Desktop screenshot inspected. No transaction was sent.
+- Wrangler dry-run passed with both ASSETS and LIVE_RATE_LIMIT bindings. This did not publish anything.
+- The Cloudflare session remains expired, including after network access was available. GitHub connector profile confirms CrisChang but its available tools cannot create an empty repository. Native browser interaction is unavailable because Computer Use permission is not granted. Account-side login / repository creation remain pending; no unrelated project or credential was repurposed.

@@ -11,6 +11,7 @@ References reviewed during the 2026-09-08 build. Deployment addresses must be re
 - [viem readContract](https://viem.sh/docs/contract/readContract) and [simulateContract](https://viem.sh/docs/contract/simulateContract): server-side read-only calls.
 - [ETHOnline 2026 prize criteria](https://ethglobal.com/events/ethonline2026/prizes): partner-specific integration and feedback requirements.
 - [ETHOnline 2026 event information](https://ethglobal.com/events/ethonline2026/info/details): project, video and submission guidelines. Recheck before final submission.
+- [Cloudflare Worker rate-limit binding](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/): checked 2026-09-09. Native binding configuration, local-to-location counters and eventual consistency; this implementation uses a shared anonymous route quota, not a strict global budget.
 
 ## Mainnet registry used by this app
 

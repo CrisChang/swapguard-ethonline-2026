@@ -38,7 +38,7 @@ test("sample report is clearly labeled and layout fits desktop and mobile", asyn
   expect(fontRequests.length).toBeGreaterThan(0);
   expect(
     fontRequests.every(
-      (url) => new URL(url).origin === "http://127.0.0.1:5177",
+      (url) => new URL(url).origin === new URL(page.url()).origin,
     ),
   ).toBe(true);
 });

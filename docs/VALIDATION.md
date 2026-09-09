@@ -48,3 +48,14 @@ An external font stylesheet caused a subsequent browser navigation timeout. Font
 - Sponsor feedback form and final ETHGlobal submission.
 
 No statement here implies those remaining checks are complete.
+
+## Built Worker release regression — 2026-09-09
+
+- `npm test`: **74/74 passed**, including eight new release-protection cases.
+- TypeScript/frontend build and Wrangler dry-run passed. The bundle contains the static assets and rate-limit bindings.
+- `npm run check:deployment -- http://127.0.0.1:8798 --live`: passed page/content headers, health, explicit sample/live reports, no-store and unknown swap endpoint checks against a local Cloudflare Worker runtime.
+- `TEST_BASE_URL=http://127.0.0.1:8798 LIVE_SMOKE=1 npm run test:e2e`: **9/9 passed in 8.1s**. The production-built page loads with CSP and local fonts; desktop screenshot visually inspected.
+- Historical read-only evidence: block 25937948, 0.1 WETH → 249.796299 USDC, minimum 248.547317 USDC; block 25937949, 250 USDC → 0.099981298770517986 WETH, with three successful public-address reads for the same neutral probe address used above. These are not current quotes.
+- Edge deny/error/missing-binding behavior is covered by injected unit tests. The actual binding and asset headers were exercised in local Miniflare. Multi-location/global enforcement and public Cloudflare deployment have **not** been verified.
+
+Cloudflare authentication still requires user reauthentication. No public repository, deployment, feedback form, video or final competition submission is claimed complete by these tests.

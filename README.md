@@ -80,7 +80,7 @@ Oracle max ages are **product policies**, not representations of published heart
 
 `clear` is shown as **No policy flags**, not “safe to trade.” `blocked` is an advisory policy result, not a smart-contract enforcement mechanism. Zero allowance passing an exposure check does not mean the wallet is execution-ready.
 
-Not implemented: swap execution, full transaction simulation, token audit, MEV/sandwich detection, multichain routing, native gas balance checks, all-spender approval discovery, Permit2 per-spender allowances/signatures, a cryptographically signed attestation, production rate limiting or an independent security audit. Quoter gas estimates are not full transaction fee estimates. Pool fees are included in the quote; gas is not.
+Not implemented: swap execution, full transaction simulation, token audit, MEV/sandwich detection, multichain routing, native gas balance checks, all-spender approval discovery, Permit2 per-spender allowances/signatures, a cryptographically signed attestation, a strict global usage budget or an independent security audit. Quoter gas estimates are not full transaction fee estimates. Pool fees are included in the quote; gas is not.
 
 ## Verification
 
@@ -91,6 +91,7 @@ npm run test:e2e                 # isolated headless Chrome; deterministic UI te
 npm run check:live               # real WETH → USDC read-only smoke test
 npm run check:live -- USDC 250    # real USDC → WETH read-only smoke test
 LIVE_SMOKE=1 npm run test:e2e -- --grep 'live mainnet'
+npm run check:deployment -- https://YOUR-WORKER.workers.dev --live
 ```
 
 Browser tests use installed Google Chrome by default, with a fresh temporary profile. On a machine without Chrome, install Chromium with `npx playwright install chromium` and run `PLAYWRIGHT_CHROMIUM=1 npm run test:e2e`. Live tests depend on RPC availability and current oracle rounds; a legitimate stale-data flag is not a reason to weaken the policy.
@@ -110,7 +111,11 @@ For a public deployment, authenticate the intended Cloudflare account, verify th
 
 **Current handoff: local first version. No public deployment or public GitHub URL has been confirmed.** The available Cloudflare CLI session required reauthentication during this build. Never paste localhost into the public competition demo field.
 
-The API has a 4KB body limit, server-side input checks, no-store responses, generic upstream errors and an in-process live concurrency cap. The cap is per process/isolate, not global rate limiting. Before public traffic, add edge rate limiting/abuse controls, a dependable RPC budget, monitoring and privacy review. The app does not intentionally persist addresses or add analytics; an optional address is sent to the application server and upstream RPC, and infrastructure providers may log request metadata. Fonts are bundled locally through Fontsource with system fallbacks; no Google Fonts request is made by the page.
+The API has a 4KB body limit, server-side input checks, no-store responses, generic upstream errors and a four-request live concurrency cap per process/isolate. The public Worker additionally requires a Cloudflare rate-limit binding: **60 live analyses per 60 seconds for the shared demo route, per Cloudflare location**. Its counters are eventually consistent, not a strict global budget. All visitors share this anonymous route quota; we do not use caller-provided wallet addresses, API keys or IP addresses as rate-limit keys. A denied request returns 429 and Retry-After. Missing or failing protection returns 503 without calling RPC. Samples and health remain available. Loopback Node development does not use the edge binding. The namespace/key are scoped to SwapGuard; verify namespace `2609087101` is not already assigned to a different policy before deploying into an existing Cloudflare account.
+
+Static Worker assets include CSP, frame protection, no-referrer and restricted browser permissions. Build-time security headers and the read-only live path are checked by `check:deployment`; browser tests can target the built Worker with `TEST_BASE_URL=http://127.0.0.1:8798 LIVE_SMOKE=1 npm run test:e2e` after starting a local Worker on that port. These controls were verified locally, not on a public deployment yet. Before broader traffic, add a dependable RPC budget, monitoring and an operational privacy review. The app does not intentionally persist addresses or add analytics; an optional address is sent to the application server and upstream RPC, and infrastructure providers may log request metadata. Fonts are bundled locally through Fontsource with system fallbacks; no Google Fonts request is made by the page.
+
+See [release handoff](docs/RELEASE_HANDOFF.md) for the remaining account-side steps. Do not upload the local development directory wholesale: it contains ignored dependencies, logs and runtime state.
 
 ## Competition readiness
 

@@ -12,6 +12,7 @@
     "test:e2e": "playwright test",
     "deploy": "npm run build && wrangler deploy",
     "check:live": "tsx scripts/check-live.ts",
+    "check:deployment": "tsx scripts/check-deployment.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
