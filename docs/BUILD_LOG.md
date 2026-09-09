@@ -1,5 +1,30 @@
 # Build log — ETHOnline 2026 / From Scratch
 
+## Task-level closed replay loop — 2026-09-09
+
+The participant requested finishing the loop and updating outputs/intro copy.
+Added confirmed task constraints, timed synthetic observations, approval/swap
+preparation, receipt settlement, failed-cost retention, bounded retries,
+non-completion, local browser restoration and JSON export. Conditions remain
+locked across retries; no new wallet or mainnet execution endpoint was added.
+
+The interface exposes timely vs cost-first preferences and ten constructed
+paths. Unattainable soft targets and missed trades remain visible. Hero, README,
+submission draft, demo narration, feedback, AI disclosure and methodology now
+focus on task-level cost accounting rather than claiming novel slippage or
+guaranteed gas savings. The first 48-task-per-policy benchmark stays frozen.
+
+Validated 218 unit/API/evidence tests, 25 public protection fixtures, build,
+formatting and 19 local browser tests (two opt-in live tests skipped). Also ran
+one real-contract local-fork approval/revert/retry sequence with fake funds;
+its receipts reconcile through the same task ledger. See VALIDATION.md for
+costs, source restrictions and proof limitations. Other projects were unchanged.
+
+Published to existing SwapGuard Worker version 7d3f6c07-4ce0-4cb7-84e4-8354cacc5c91.
+No external competition or sponsor-feedback form was submitted by this work.
+
+## Earlier milestones
+
 2026-09-08: Started an independent SwapGuard repository. No source, designs, assets, credentials or deployment configuration were copied from Radar Agent, Radar Keeper, Perp Scout or the Binance project.
 
 Approved scope: first working version of a swap preflight tool. Read-only Ethereum mainnet data; no signing, approval, transfers or swaps. Plan: Uniswap v3 single-pool WETH/USDC quotes, Chainlink reference prices, deterministic risk policy and explicitly labelled demonstration scenarios. Use public libraries with provenance recorded in package-lock.json.

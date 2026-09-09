@@ -29,6 +29,7 @@ import type {
 } from "./lib/types";
 import { validateRequest } from "./lib/validation";
 import ProtectionLab from "./ProtectionLab";
+import TaskWorkbench from "./TaskWorkbench";
 
 const number = (s: string | number, digits = 5) =>
   Number(s).toLocaleString("en-US", { maximumFractionDigits: digits });
@@ -189,9 +190,10 @@ export default function App() {
           </span>
         </div>
         <nav aria-label="Main navigation">
-          <a className="active" href="#protection">
-            Protection lab
+          <a className="active" href="#tasks">
+            Task workbench
           </a>
+          <a href="#protection">Draft checks</a>
           <a href="#workspace">Quote & tolerance</a>
           <a href="#scope">Scope & limits</a>
         </nav>
@@ -203,16 +205,18 @@ export default function App() {
         <section className="hero">
           <div>
             <p className="eyebrow">
-              <span /> THE MOMENT BEFORE THE TRANSACTION
+              <span /> TASK-LEVEL GUARDS FOR UNISWAP AUTOMATION
             </p>
             <h1>
-              Know the trade.
+              Your task. Your limits.
               <br />
-              <span>Before you sign.</span>
+              <span>Every attempt counts.</span>
             </h1>
             <p className="hero-description">
-              A good quote is not enough. Check whether your transaction
-              preserves the minimum you agreed to receive — before you sign.
+              Keep the original price floor and account for approval and retry
+              costs across an automated swap task. Explore when to act, wait or
+              stop — with an inspectable replay, not a promise of cheaper
+              trades.
             </p>
           </div>
           <div className="hero-note">
@@ -222,14 +226,15 @@ export default function App() {
               <span className="orbit-dot two" />
             </div>
             <p>
-              No approvals.
+              Lock the conditions.
               <br />
-              No signatures.
+              Account for each attempt.
               <br />
-              <strong>Just a clearer picture.</strong>
+              <strong>Keep the evidence.</strong>
             </p>
           </div>
         </section>
+        <TaskWorkbench />
         <ProtectionLab report={report} now={now} />
         <section
           id="workspace"
@@ -694,32 +699,32 @@ export default function App() {
         </section>
         <section id="method" className="method">
           <div>
-            <p className="eyebrow">A SMALL PAUSE. A BETTER DECISION.</p>
-            <h2>Three layers of perspective.</h2>
+            <p className="eyebrow">FROM CONDITIONS TO AN ACCOUNTED OUTCOME.</p>
+            <h2>One task, three checks.</h2>
           </div>
           <div className="method-grid">
             <article>
               <span>01</span>
-              <h3>The market</h3>
+              <h3>The conditions</h3>
               <p>
-                Compare two Uniswap v3 pool quotes with an independent Chainlink
-                price reference.
+                Lock the original minimum output, cumulative gas budget,
+                deadline and retry limit. Do not reset the floor after failure.
               </p>
             </article>
             <article>
               <span>02</span>
-              <h3>Your exposure</h3>
+              <h3>The protocol context</h3>
               <p>
-                See your minimum output, balance and narrowly scoped ERC-20
-                allowance checks.
+                Read Uniswap v3 quotes and Chainlink references. Check a
+                supported legacy router draft separately, with explicit limits.
               </p>
             </article>
             <article>
               <span>03</span>
               <h3>The evidence</h3>
               <p>
-                Inspect the block and source contracts. Export the underlying
-                values, not just a score.
+                Reconcile approval and failed-operation gas in replay. Export
+                decisions, receipt provenance and non-completed outcomes too.
               </p>
             </article>
           </div>
@@ -735,8 +740,12 @@ export default function App() {
               verdict. It does not execute swaps, audit tokens, predict MEV, or
               guarantee safety. WETH/USDC on Ethereum only. Allowance checks
               cover ERC-20 approvals to SwapRouter02 and Permit2, not Permit2
-              per-spender permissions or signatures. Network gas is not checked
-              or included in quoted amounts. Prices can change after a check.
+              per-spender permissions or signatures. Live quoted token amounts
+              exclude gas. The task workbench separately models gas using
+              local-fork measurements and constructed price paths; its receipts
+              are synthetic. Budget checks are estimates, not onchain
+              enforcement. Waiting may reduce completion. Prices and actual gas
+              can change after a check.
             </p>
             <p>
               Policy: review price deviation ≥0.50% or slippage ≥1%; flag
@@ -751,7 +760,7 @@ export default function App() {
           <ShieldCheck size={21} />
           <span>SwapGuard.</span>
         </div>
-        <span>Built from scratch for ETHOnline 2026 · v0.1</span>
+        <span>Built from scratch for ETHOnline 2026 · Task workbench</span>
         <a
           href="https://developers.uniswap.org/docs/protocols/v3/deployments/v3-ethereum-deployments"
           target="_blank"

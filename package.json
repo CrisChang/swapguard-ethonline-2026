@@ -17,6 +17,7 @@
     "check:deployment": "tsx scripts/check-deployment.ts",
     "experiment:measure": "tsx scripts/measure-fork.ts",
     "experiment:replay": "tsx scripts/replay-tasks.ts",
+    "check:task-fork": "tsx scripts/check-task-fork.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

@@ -1,7 +1,8 @@
 # Task-budget experiment: first results and reproduction
 
-This extension is **local research code**, not a deployed trading service. The
-public website remains read-only and unchanged. No user funds were used.
+This folder contains **local research evidence**, not a deployed trading service.
+The website now adds a synthetic task workbench built on these measurements;
+the frozen pilot results below remain unchanged. No user funds were used.
 
 ## Outcome — 2026-09-09
 
@@ -38,20 +39,37 @@ product question is whether a user prefers immediate execution or a cost-limited
 task allowed to wait/miss execution. A fixed 0.1% cost target is too restrictive
 for some small tasks. We have NOT tuned the threshold after looking at outcomes.
 
-## Next bounded iteration, not implemented yet
+## Iteration status after the task-workbench extension
 
-1. Expose task intent: **time-sensitive** (send a feasible net-best route promptly)
+1. Implemented in replay: expose task intent: **time-sensitive** (prepare a feasible net-best route promptly)
    versus **cost-sensitive** (explicit user budget and latest acceptable time,
    including consent to non-completion). Do not hide this tradeoff behind “AI.”
-2. Derive a feasible cost range from current full-transaction estimates plus
+2. Implemented in replay: derive a current cost estimate from measured full-transaction gas plus
    required approval. Do not silently turn a small task into a three-minute wait
    for a cost target that is already unrealistic.
-3. Freeze a new evaluation protocol and evaluate separate historical block windows,
+3. Still pending: freeze a new evaluation protocol and evaluate separate historical block windows,
    both price and gas trajectories, before tuning. Add an official gas-aware
    router baseline; two single-hop pools cannot establish superiority over SOR.
-4. Revalidate before approval and again before swap, account for changing gas
-   between the two, and test stale estimates, dropped transactions and RPC failure.
-   Only then consider a public read-only comparison panel and a narrated demo.
+4. Implemented in replay: revalidate before approval and again before swap,
+   including a post-approval gas-spike test, missing-quote scenario, pending-operation
+   blocking and receipt-overrun checks. Real dropped/replaced transactions, live
+   reorg/receipt monitoring and authenticated wallet execution are not implemented.
+
+## Closed-loop receipt proof — 2026-09-09
+
+[task-loop-25938600.json](results/task-loop-25938600.json) records an actual local-fork
+approval, deliberately reverted swap and successful retry through the new task
+ledger. One approval, two swap attempts, original minimum **100.195216 USDC**,
+actual local output **100.698710 USDC**. At the fixed local gas price of 1 gwei,
+total receipt gas valued using pinned feeds is **0.807383 USDC-equivalent**.
+This is not the browser default's synthetic 3→1 gwei path, nor a comparison
+showing savings. The first revert is induced by a stronger quote+1 floor, not a
+real market or MEV event. Wrapping fake inventory is excluded setup cost.
+
+The original PublicNode fork source returned an archive-token-required error
+on this later run; the same pinned fork succeeded via https://eth.drpc.org.
+The owned temporary node was stopped after verification. Reproduction and
+remaining execution boundaries: [task workbench guide](../docs/TASK_WORKBENCH.md).
 
 ## Reproduce offline (no RPC or wallet needed)
 

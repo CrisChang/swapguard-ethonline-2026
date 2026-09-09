@@ -1,6 +1,6 @@
-# ETHGlobal submission draft — not submitted
+# ETHGlobal submission draft — task workbench, not submitted
 
-Use only after reviewing against the final implementation. **Public repository and demo verified on 2026-09-09; the ETHGlobal form is not submitted by this document.** Do not use a placeholder URL, an old project's URL or localhost in the competition form.
+Updated 2026-09-09. Review against the final implementation. This file does not submit or update the ETHGlobal form. Do not use localhost or another project's URL.
 
 ## Project details
 
@@ -9,42 +9,45 @@ Use only after reviewing against the final implementation. **Public repository a
 - Track: Building from Scratch
 - Demo URL: https://swapguard-ethonline-2026.swapguard.workers.dev
 - GitHub: https://github.com/CrisChang/swapguard-ethonline-2026
-- Sponsor feedback document: https://github.com/CrisChang/swapguard-ethonline-2026/blob/main/FEEDBACK.md
+- Sponsor feedback: https://github.com/CrisChang/swapguard-ethonline-2026/blob/main/FEEDBACK.md
 
 ## Short description (under 100 characters)
 
-Verify that a swap transaction preserves the minimum output you confirmed before signing.
+Task-level gas budgets and original price floors for automated Uniswap swaps.
 
 ## Description
 
-SwapGuard addresses a narrow pre-signing problem: a quote can look normal while a transaction encodes a weaker minimum output than the user agreed to. Users choose a slippage tolerance, see the automatic minimum and independently confirm conditions before pasting a transaction draft. SwapGuard decodes a supported legacy Uniswap SwapRouter02 call and compares minimum output, recipient, input amount, token pair, fee, sender, chain, router, native value and deadline. It exposes exact mismatches rather than a generic safety score. A public lab contains 25 explicitly synthetic cases with valid controls, parameter mutations, unsupported formats and stale confirmations. Each case and the full suite can be replayed in the browser, with downloadable inputs and observations. Live WETH/USDC quotes and Chainlink references provide separate read-only context; failed live calls never become samples. A parameter match is not a safety guarantee, execution simulation or proof of authenticated consent. No wallet connection, approval, signature or transaction is requested.
+SwapGuard focuses on a specific cost problem in small automated swaps: approvals and failed retries can consume the budget even when the intended trade never completes. A user defines an original minimum output, total gas budget, deadline and retry limit. The workbench then checks current conditions, prepares a replay operation, reconciles its receipt and either retries, waits or stops. Approval costs and reverted transactions remain in a single ledger; neither the price floor nor the spent budget resets on retry. Users explicitly choose timely or cost-first execution, and the UI shows when waiting can miss the trade. Partial and final reports include decisions, costs, output and non-completion, with explicit evidence provenance. The online workbench uses constructed scenarios, not live trading. Separate read-only panels query actual Uniswap v3 quotes and Chainlink references and verify supported unsigned legacy router parameters. Real contract receipt reconciliation is demonstrated only on a local Ethereum fork with fake funds. No wallet connection, signature, approval or transaction broadcast is requested by the website. Our first constructed pilot completed fewer tasks under the cost-first policy, so we do not claim higher fills or guaranteed savings.
 
 ## How it is made
 
-SwapGuard is a new TypeScript project with React/Vite and a Hono API on Cloudflare Workers. viem pins mainnet reads to one block: Uniswap v3 Factory and QuoterV2 supply two single-pool quotes, while Chainlink ETH/USD and USDC/USD supply validated references. Minimum output uses bigint base units, explicit output-relative tolerance and downward rounding. A reusable pure verifier runs in the browser, accepting only a deadline-bound legacy SwapRouter02 multicall containing one exactInputSingle. It canonically re-encodes both layers, rejects extra operations and compares decoded fields with independently locked conditions. Content hashes identify intent and draft but are not signatures. Edits and expiry invalidate old results. Fixtures publish declared outcomes; tests include a hand-encoded ABI reference, arithmetic boundaries and UI transitions. This is not Universal Router integration or full execution simulation. The build is AI-assisted; see docs/AI_USAGE.md for scope and human-review status.
+SwapGuard is a new TypeScript application using React/Vite, viem and a Hono API on Cloudflare Workers. Mainnet reads are pinned to one block: Uniswap v3 Factory and QuoterV2 provide two single-pool WETH/USDC quotes, while Chainlink ETH/USD and USDC/USD provide validated references. A pure task state machine uses integer token units, an immutable original output floor and a cumulative gas budget. The policy receives only the current observation; future constructed path values belong to the test harness. It reserves estimated approval plus swap-or-revert gas before preparing an operation, then reconciles matching receipts exactly once, retaining failures and detecting budget overruns. Pending operations block resends. A browser-local command log restores the same replay state after reload without trusting stored totals. A separate canonical legacy SwapRouter02 decoder verifies original conditions for one deadline-bound multicall/exactInputSingle shape. Gas profiles were measured using actual contracts on a pinned Anvil fork; synthetic task paths and a separate approval-revert-retry fork receipt proof are published with their limitations. The public app does not execute swaps or cover Universal Router/full smart routing. This build is AI-assisted; see docs/AI_USAGE.md for scope and human-review status.
+
+## Evidence and honest claims
+
+- `src/lib/task-session.ts`: task lifecycle, receipt reconciliation and replay persistence.
+- `src/lib/task-budget.ts`: current-observation-only policy and bigint gas accounting.
+- `src/lib/protection.ts`: narrowly scoped legacy draft consistency checker.
+- `server/live.ts` / `src/lib/contracts.ts`: actual read-only protocol integration.
+- `experiments/PROTOCOL.md` and `experiments/results/`: frozen calibration, constructed benchmark and negative outcomes.
+- `experiments/results/task-loop-25938600.json`: actual local-fork approval/revert/retry receipts, not mainnet transactions. The revert is deliberately induced, not an observed market attack.
+- First pilot: cost-first completed **28/48**, immediate baselines **34/48**. On 28 jointly completed tasks only, gas was **8.74 vs 15.46 USDC-equivalent**. Six missed trades are not discarded. These figures are not forecasts or website-custom-setting results.
+- The product extends task accounting and constraint checking, not Uniswap's existing slippage protection or gas-aware routing. No improvement over Uniswap's official Smart Order Router has been demonstrated.
 
 ## Sponsor selection
 
-- Consider **Uniswap Foundation — Best Uniswap Stack Contribution (From Scratch)**, after verifying the current official criteria and completing the linked developer feedback form.
-- Do not claim 1inch integration: Aqua/SwapVM is not used.
-- Do not assume that reading Chainlink prices qualifies for a CRE/state-changing workflow prize.
-- Do not claim a deployed custom contract or a successful swap transaction. This is a read-only tooling integration.
+- Consider **Uniswap Foundation — Best Uniswap Stack Contribution (From Scratch)** after verifying current criteria and submitting the external developer feedback form.
+- Do not claim 1inch Aqua/SwapVM, Chainlink CRE execution, custom deployed contracts, production trading, paying users or an audited security guarantee.
+- Protocol integration is implemented; eligibility or an award is not guaranteed.
 
-## Release / submission checklist
+## Remaining participant actions
 
-- [x] Independent repository with genuine incremental local history.
-- [x] Working read-only mainnet quote and reference-price integration.
-- [x] Explicit risk explanations, failure states and synthetic scenarios.
-- [x] Local tests, build and responsive UI verification.
-- [x] FEEDBACK.md and AI-use disclosure prepared.
-- [ ] Participant reviews the code and claims, and can explain the implementation.
-- [x] Public repository published; anonymous access verified.
-- [x] Separate deployment published; live API verified from that deployment.
-- [ ] Uniswap Developer Feedback Form actually submitted, with FEEDBACK.md link.
-- [ ] Human-narrated demo recorded, 2–4 minutes, at least 720p; no sped-up or AI/TTS narration.
-- [ ] Screenshots selected and uploaded; sample vs live labels retained.
-- [ ] Applicable partner prize explicitly selected in the submission form.
-- [ ] Final form submitted and confirmation verified. Editing later requires re-submitting.
-- [ ] ETHOnline check-in requirement independently confirmed in the event dashboard.
+- [ ] Review the AI-assisted code and be able to explain its scope and results.
+- [ ] Submit the external Uniswap Developer Feedback Form with the FEEDBACK.md link.
+- [ ] Record and upload a compliant human-narrated 2–4 minute demo; verify current rules.
+- [ ] Select screenshots retaining synthetic/local/live labels.
+- [ ] Copy the updated description and links into ETHGlobal; choose the applicable partner prize.
+- [ ] Final Submit and verify confirmation; re-submit after subsequent form edits if required.
+- [ ] Independently verify the event check-in requirement in the dashboard.
 
-Public submission deadline previously verified from the official event information: 2026-09-13 12:00 EDT / 2026-09-14 00:00 Asia/Shanghai. Recheck the dashboard for changes before relying on this date.
+Previously verified submission deadline: 2026-09-14 00:00 Asia/Shanghai (2026-09-13 12:00 EDT). Recheck the dashboard for changes; this is not a new deadline verification.

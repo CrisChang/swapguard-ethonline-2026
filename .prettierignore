@@ -6,3 +6,5 @@ test-results
 playwright-report
 coverage
 package-lock.json
+# Immutable measured/replayed evidence; calibration bytes are hash-bound.
+experiments/results/*.json

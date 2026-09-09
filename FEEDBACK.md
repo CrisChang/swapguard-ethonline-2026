@@ -1,10 +1,10 @@
 # Uniswap Developer Feedback — SwapGuard
 
-Date: 2026-09-08. Status: integration notes prepared; **external Uniswap Developer Feedback Form has not been submitted**.
+Updated: 2026-09-09. Status: integration notes prepared; **external Uniswap Developer Feedback Form has not been submitted**.
 
 ## Integration used
 
-Ethereum mainnet Uniswap v3 Factory and QuoterV2, via viem `readContract` and `simulateContract`. Exact-input WETH/USDC quotes at 500 and 3000 fee tiers are compared at the same block. See `server/live.ts` and `src/lib/contracts.ts`. We make no transactions and deploy no custom smart contracts.
+Ethereum mainnet Uniswap v3 Factory and QuoterV2, via viem `readContract` and `simulateContract`. Exact-input WETH/USDC quotes at 500 and 3000 fee tiers are compared at the same block. See `server/live.ts` and `src/lib/contracts.ts`. The website makes no transactions and deploys no custom smart contracts. Separate local-only scripts execute forked contracts with fake funds.
 
 SwapGuard is a preflight UI, not a swap router. We also read the input token's ERC-20 allowance to legacy SwapRouter02 and Permit2 for exposure context. Those reads do not constitute Universal Router integration or inspection of Permit2's internal per-spender permissions.
 
@@ -39,3 +39,11 @@ Suggested reference: independently captured user intent mapped to decoded router
 ## Coverage boundary
 
 This first version compares only two single pools. It does not offer Uniswap smart routing, Universal Router execution, Permit2 signing, hooks or MEV protection. Future work should improve actual coverage before adding broader marketing claims.
+
+## Task-level cost workbench — 2026-09-09
+
+The updated workbench addresses approval and retry costs across one automated WETH/USDC task. It locks an original floor, total gas budget and retry/deadline limits, then reconciles receipts without erasing failed gas. Timely/cost-first preferences expose the waiting-versus-completion tradeoff. Online receipts remain explicitly synthetic; actual local-fork approval/revert/retry receipts exercise the same ledger in `scripts/check-task-fork.ts`. No mainnet transaction occurred.
+
+Measured full transaction gas (including reverted execution) was materially different from QuoterV2's internal gas estimate. A reference task-cost example should separately account for approval, successful execution, reverted execution and transaction replacement; it should never treat an internal quote gas figure as the entire user's transaction cost.
+
+Our first fixed constructed-path pilot completed fewer tasks under a wait-for-cheaper-gas policy. Both immediate routing baselines behaved identically. We suggest publishing non-completion and original-floor retention alongside gas numbers, not advertising cheaper completed subsets as universal savings. This is tooling feedback, not a claim to improve Uniswap's existing gas-aware router.

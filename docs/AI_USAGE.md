@@ -40,6 +40,19 @@ Anvil fork with fake funds; no user wallet or mainnet transaction was involved.
 The first wait-for-cheaper-gas policy completed fewer tasks than the baselines;
 this negative result is retained in `experiments/`. Human review remains pending.
 
-### Human review
+### Task workbench and receipt loop — 2026-09-09
+
+The participant explicitly requested finishing the task-level loop and updating
+the outputs and project description. The assistant wrote the new session state
+machine, synthetic browser workbench, local replay persistence, export schema,
+unit/browser tests, local-fork receipt proof and revised submission/demo copy.
+This includes `src/lib/task-session.ts`, `src/TaskWorkbench.tsx`, its stylesheet,
+`scripts/check-task-fork.ts` and corresponding tests. The assistant ran an
+isolated fake-money fork approval, induced revert and retry; it did not use
+the participant's wallet. Scenarios and prose remain AI-assisted. The older
+negative pilot outcomes were retained without retuning. Human code review,
+narration, external feedback and final competition submission remain separate.
+
+### Participant review still required
 
 The participant should review the implementation and its limits, validate the user experience, decide which sponsor criteria are actually met, retain this assistance disclosure and the genuine commit history, and record their own compliant narration. This document does not assert that AI-generated work alone satisfies the event's meaningful-human-input requirement or that any organizer has approved this entry.

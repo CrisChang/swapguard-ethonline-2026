@@ -1,4 +1,50 @@
-# Validation record — v0.1
+# Validation record — versioned observations
+
+## Task workbench — 2026-09-09
+
+- Added 42 task-state tests and two recorded local-fork receipt integrity tests;
+  **218 unit/API/evidence tests passed**. Covers original floor/deadline retention,
+  preparation vs settlement, pending-operation blocking, approval persistence,
+  reverts, receipt overruns, duplicate/conflicting receipt IDs, missing quotes,
+  max attempts, non-completion and deterministic reload restoration.
+- All 25 older protection cases still match their declared expectations. The
+  initial tsx CLI wrapper hit a sandbox IPC restriction; direct Node tsx-loader
+  invocation passed. That failed wrapper launch is not an application failure
+  or an extra passing test.
+- TypeScript/Vite and Prettier checks passed. Default isolated browser regression:
+  **19 passed, two opt-in live cases skipped**. Desktop and 390px mobile screenshots
+  inspected; no horizontal overflow, readable report controls and provenance.
+- New actual local-fork proof at block 25938600 passed: approval 46,040 gas,
+  deliberate revert 140,335 gas, successful retry 135,241 gas. Shared task ledger
+  retained all three receipts, one approval and two swap attempts; output
+  100.698710 USDC; original minimum 100.195216 USDC; total 0.807383 USDC-equivalent
+  at fixed local 1 gwei. The browser default has a different synthetic 3→1 gwei
+  path and totals 1.743131, not a conflicting real receipt measurement.
+- PublicNode later required an archive token for this pinned state. An isolated
+  fork of the same block/hash succeeded using eth.drpc.org. Fake WETH inventory
+  wrapping was setup and excluded from task costs; the first swap failure was
+  deliberately induced by quote+1 minimum, not an observed market race. The
+  owned local Anvil node was stopped; no real wallet or mainnet writes occurred.
+- Original calibration bytes and all 144 frozen pilot traces are unchanged.
+  The pilot's lower cost-first completion remains visible. No routing, fill-rate,
+  production availability or economic superiority claim is established.
+- Published this build to the existing SwapGuard Worker only, version
+  `7d3f6c07-4ce0-4cb7-84e4-8354cacc5c91`. Public post-deploy checks are recorded
+  separately after completion; deployment alone is not verification.
+
+## Historical records
+
+### Public task-workbench checks
+
+- Public page/security headers, health, sample analysis, live analysis and absent
+  transaction endpoint passed the post-deploy CLI smoke check.
+- The first public browser run passed **19 deterministic cases** but failed
+  **both opt-in live quote cases with HTTP 502**. This is an upstream availability
+  problem, not a successful live check. No sample was relabelled as live; test
+  policies were not weakened. Trace files were retained locally in test-results.
+- New task creation, locked inputs, approval/revert/retry accounting, partial
+  receipt reload, JSON export, non-completion and mobile rendering all passed on
+  the deployed HTTPS origin. This does not validate real wallet execution.
 
 2026-09-08. These are development observations, not an audit or a promise of current prices.
 

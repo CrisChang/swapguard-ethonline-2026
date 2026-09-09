@@ -1,25 +1,29 @@
 # SwapGuard
 
-**Know the trade. Before you sign.** A read-only swap preflight tool built from scratch for ETHOnline 2026.
+**Your task. Your limits. Every attempt counts.** A task-level budget workbench for Uniswap automation, built from scratch for ETHOnline 2026.
 
-SwapGuard checks a specific problem: **does a swap transaction preserve the minimum output the user independently confirmed?** A quote can look unchanged while encoded transaction parameters differ. Users choose a slippage tolerance; SwapGuard calculates the floor, locks conditions locally and compares them with an unsigned draft. It also provides Uniswap v3 quotes, Chainlink references and narrowly scoped balance/allowance context. It does not connect a wallet, request a signature or approval, or submit transactions.
+SwapGuard focuses on small automated WETH → USDC tasks: **an approval and failed retries can consume the budget even when no swap completes.** Lock the original minimum output, a cumulative gas budget, a deadline and an attempt limit; then replay check → prepare → reconcile → retry or stop. All settled gas stays in one ledger. A separate verifier checks whether a supported unsigned draft retains the original conditions. Live Uniswap v3 quotes and Chainlink references provide read-only protocol context. The public website does not connect a wallet, request signatures or approvals, or broadcast transactions.
 
 **[Try the public demo](https://swapguard-ethonline-2026.swapguard.workers.dev)** · **[Source repository](https://github.com/CrisChang/swapguard-ethonline-2026)**
 
-The initial screen uses clearly labelled synthetic samples. Choose **Live onchain** for actual read-only mainnet data. Public release verified on 2026-09-09; this is not proof of final ETHGlobal submission.
+The workbench uses explicitly **constructed paths and synthetic receipts**, anchored to measured local-fork gas and starting quotes. It is an interactive prototype, not a live trading bot. Choose **Live onchain** in the separate quote panel for actual read-only mainnet data. Publication is not proof of final ETHGlobal submission.
 
-Latest minimum-output extension: **146 unit/API tests, 25 published synthetic expectations and 15 public browser tests passed** on 2026-09-09. Live RPC returned intermittent 502 errors before the final passing run; free-provider availability is not guaranteed. Lab replay runs without RPC. See the dated [validation record](docs/VALIDATION.md), not just a passing count, for scope and earlier failures.
+Validation is recorded by version in [docs/VALIDATION.md](docs/VALIDATION.md), including failures and skipped live checks. Workbench replay runs without RPC; the free upstream for live quotes remains intermittent.
 
 ## Run locally
 
-### Experimental task-budget pilot (not deployed)
+### Task workbench and frozen pilot
 
 The [first gas/whole-task experiment](experiments/README.md) measures local-fork
 transaction gas and uses it in clearly labelled synthetic task paths. Waiting
 reduced costs on some jointly completed tasks **but completed 28/48 versus the
 immediate baselines' 34/48**; it does not establish a higher fill rate or routing
-advantage. The public preflight/verifier remains unchanged. All raw data, negative
+advantage. This frozen result is not retuned for the workbench. All raw data, negative
 cases and reproduction commands are included; no user wallet or funds were used.
+
+Open **Task workbench**. Default: 0.04 WETH, 0.5% price tolerance, 3 USDC-equivalent total gas budget, timely execution, three swap attempts, and “Revert, then recover.” Confirm conditions, advance to a prepared approval, reconcile its synthetic receipt, then inspect the first revert and successful retry. Or use **Run remaining replay**. Export the final or partial JSON report. Task state survives reload in this browser, including pending receipts. Cost-first mode exposes the tradeoff between waiting and missing the original floor; it does not promise an optimum.
+
+The deadline is relative replay time, not a background timer. Gas is paid in ETH but valued in USDC-equivalent using pinned ETH/USD and USDC/USD feeds. The hard gas budget is separate from the output floor; it is an advisory pre-send estimate, not onchain enforcement. Allowances are assumed or simulated in the workbench, not read from your wallet. See [workflow, test cases and limits](docs/TASK_WORKBENCH.md).
 
 ### Application
 
@@ -81,6 +85,8 @@ React preflight UI
        expiring report + source contracts + exact-value JSON
 ```
 
+The task UI (`src/TaskWorkbench.tsx`) calls pure `src/lib/task-session.ts` and `src/lib/task-budget.ts` in the browser. Decisions see only the current observation, not future path values. Reconciliation accepts one matching pending-operation receipt, charges actual receipt gas and rejects conflicting duplicate receipts. Browser storage contains a replay command log and config; restoring recomputes the ledger rather than trusting stored totals. This is not an authenticated audit log. Exports explicitly carry receipt provenance.
+
 Key files:
 
 | Responsibility                       | File                    |
@@ -111,7 +117,7 @@ Oracle max ages are **product policies**, not representations of published heart
 
 `clear` is shown as **No policy flags**, not “safe to trade.” `blocked` is an advisory policy result, not a smart-contract enforcement mechanism. Zero allowance passing an exposure check does not mean the wallet is execution-ready.
 
-Not implemented: swap execution, full transaction simulation, token audit, MEV/sandwich detection, multichain routing, native gas balance checks, all-spender approval discovery, Permit2 per-spender allowances/signatures, a cryptographically signed attestation, a strict global usage budget or an independent security audit. Quoter gas estimates are not full transaction fee estimates. Pool fees are included in the quote; gas is not.
+Not implemented on the website: wallet execution, live receipt monitoring, full transaction simulation, token audit, MEV/sandwich detection, multichain routing, native gas balance checks, all-spender approval discovery, Permit2 per-spender allowances/signatures, a cryptographically signed attestation, a strict global usage budget or an independent security audit. Local development scripts can execute contracts only on an isolated fake-money Anvil fork. Quoter internal gas estimates are not full transaction fee estimates. Pool fees are already included in quoted output and are not charged again; the workbench adds task gas separately. Waiting and amount-out minima are not novel router features; the contribution is the task-level workflow, original-constraint checks and inspectable cost evidence.
 
 ## Verification
 

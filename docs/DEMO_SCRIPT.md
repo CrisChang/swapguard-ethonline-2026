@@ -1,41 +1,49 @@
-# Human-narrated demo outline — about 3 minutes
+# SwapGuard — human-narrated demo, about 3 minutes
 
-Draft only. Record your own clear voice at normal speed, with at least 720p video. Keep the final video between 2 and 4 minutes. Do not substitute text-to-speech, AI voiceover, music-only audio or accelerated footage. Check the final event rules before upload.
+Draft for the updated task-workbench build. Record in your own clear voice, at normal speed, with at least 720p video. Target 2–4 minutes and verify the current event rules before upload. This script is not a completed video.
 
-## 0:00–0:25 — one problem
+## 0:00–0:25 — the specific problem
 
-“A good quote is not the same as a protected transaction. What if I confirmed one minimum received, but the transaction encodes a lower amount? SwapGuard checks that specific mismatch.”
+“A failed swap is not a free retry. For a small automated trade, the approval and failed attempts can consume the budget even when nothing completes. SwapGuard keeps one original price floor and one gas ledger for the whole task.”
 
-Show the protection lab with its synthetic-data label visible.
+Show the workbench and its **Replay only · no wallet** label. Keep the constructed-data disclosure visible.
 
-## 0:25–1:15 — controlled example
+## 0:25–0:55 — conditions, not another slippage slider
 
-“This is constructed test data. The quote is 0.400 WETH for 1,000 USDC. I choose 0.5% tolerance, so the minimum is automatically calculated as 0.398 WETH. I do not have to work it out by hand.”
+“This is a constructed replay anchored to measured gas and quotes from a local Ethereum fork. I want to exchange 0.04 WETH. My initial tolerance sets a minimum of 100.195216 USDC. Separately, I allow up to three USDC-equivalent of gas across approvals and retries. I choose timely execution and at most three swap attempts.”
 
-Run Unchanged transaction, then Minimum quietly reduced.
+Default scenario: **Revert, then recover**. Confirm and click **Create replay task**. Gas is paid in ETH; USDC-equivalent is a common accounting unit. No real wallet authorization is requested.
 
-“Only the encoded floor changed, to 0.360. The displayed quote did not change. This no longer preserves my independently confirmed conditions. The 0.038 gap means weaker protection, not actual money lost or saved.”
+## 0:55–1:40 — approval, failure, retry
 
-Show the expected/encoded minimum comparison, then the zero-floor case if time permits.
+Click **Check & advance replay**, then **Reconcile synthetic receipt**.
 
-## 1:15–1:50 — inspectable evidence
+“The approval costs about 0.347 USDC-equivalent. We recheck before preparing the swap. Approval alone is not permission to ignore the remaining budget.”
 
-Run all 25 cases and download the results.
+Check again and reconcile the first swap receipt.
 
-“We publish inputs and expectations, including valid controls, recipient and amount errors, extra calls and stale confirmations. These are reproducible regression cases, not a real-world security-accuracy benchmark.”
+“This synthetic first attempt reverts. Its gas remains charged: total spending is now about 1.404. The minimum output did not move and the approval is not repeated.”
 
-Point to the legacy SwapRouter02-only scope, not Universal Router.
+Click **Run remaining replay**.
 
-## 1:50–2:35 — practical workflow
+“The second swap completes. Total replay gas is about 1.743, including the failed attempt. We show output separately from output minus all task gas. These are constructed results, not real savings or a live trade.”
 
-Open Quote & tolerance. Select Live onchain, analyze a small WETH/USDC quote and show the block and sources. If RPC fails, keep the error visible or explicitly use the synthetic mode instead.
+## 1:40–2:10 — the negative case matters
 
-“This panel reads actual Uniswap quotes and Chainlink references. The user chooses a percentage, not a manual output floor. The protection panel asks them to confirm sender and recipient independently before checking a pasted draft. A constructed draft stays labelled as constructed, even when using a live quote.”
+Export the report. Create another task, choose **Cost-first** and **Waiting misses the floor**, confirm, and run the replay.
 
-Open Check a transaction draft. Use a clearly labelled example address/draft, never a secret or signature. Show that editing an input clears confirmation.
+“Waiting can reduce fees, but it can also miss the trade. This task does not complete. We report no output, not a successful zero-cost trade. Our frozen pilot likewise completed fewer tasks with the first cost-first policy: 28 out of 48, versus 34 for immediate execution.”
 
-## 2:35–3:05 — distinction and limits
+## 2:10–2:45 — protocol integration and evidence
 
-“Slippage tolerance is the percentage setting; minimum received is the corresponding token amount. SwapGuard does not replace the router's minimum-output check: it checks whether the transaction carries the protection the user chose. A match does not prove execution readiness or safety. No transaction is signed or sent.”
+Open **Quote & tolerance**, choose **Live onchain** and query WETH/USDC. Show the block, Uniswap v3 quotes and Chainlink sources. If RPC fails, retain the error; never relabel a sample as live.
 
-Show the public repository and AI disclosure. Explain only what you have actually reviewed. Do not claim an audit, measured losses prevented or final submission.
+“The live panel reads actual Uniswap and Chainlink contracts. A separate legacy SwapRouter02 checker verifies original minimum-output and deadline consistency. We also ran a local-fork approval, deliberately reverted swap, and successful retry through the same ledger, using fake funds. The receipt proof is in the public repository.”
+
+Optional: show `experiments/results/task-loop-25938600.json`. Its first revert is deliberately forced by a stronger minimum, not an observed MEV event. Local hashes are not mainnet transactions.
+
+## 2:45–3:10 — precise contribution and limits
+
+“The contribution is task-level constraints, receipt accounting and reproducible evidence — not inventing slippage or claiming better routing. The website is a replay and read-only prototype. It does not sign or broadcast transactions; its budget checks are estimates, not an onchain guarantee. Waiting is a user tradeoff, not a promise of more fills.”
+
+Show the repository and AI disclosure. Explain only the code you have reviewed. Final competition submission and sponsor feedback are separate steps.

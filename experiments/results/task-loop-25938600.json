@@ -1,0 +1,425 @@
+{
+  "kind": "LOCAL_FORK_RECEIPT_RECONCILIATION_PROOF_NOT_MAINNET",
+  "measuredAt": "2026-09-09T09:41:38.459Z",
+  "fork": {
+    "number": "25938600",
+    "hash": "0xd7274bebf8aca6ada1e7c82fd176ccac973ae1fc35f080ffff060c692203157f",
+    "timestamp": "1788942251"
+  },
+  "localChainId": 31337,
+  "account": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+  "funding": {
+    "localTransactionHash": "0x887e63e2fe8ce8a85c8cdd41f2014e55b6649c5e26435083ac6a789c810ef847",
+    "gasUsed": "45038",
+    "excludedFromTask": true
+  },
+  "operations": [
+    {
+      "id": "fork-receipt-proof-op-1",
+      "kind": "approval",
+      "localTransactionHash": "0xe489ee900fe7fc00e8f15616e4dc60daa54fe790a05fc772661a083cdf118b83",
+      "localBlock": "25938602",
+      "status": "success",
+      "gasUsed": "46040",
+      "gasPriceWei": "1000000000",
+      "actualOutput": "0",
+      "encodedFloor": null,
+      "verification": null,
+      "calldata": "0x095ea7b300000000000000000000000068b3465833fb72a70ecdf485e0e4c7bd8665fc45000000000000000000000000000000000000000000000000008e1bc9bf040000"
+    },
+    {
+      "id": "fork-receipt-proof-op-2",
+      "kind": "swap",
+      "localTransactionHash": "0x1a7e05e74db259fba5fdfe083112bd0efb1560faac3defca1033ec42472071ac",
+      "localBlock": "25938603",
+      "status": "reverted",
+      "gasUsed": "140335",
+      "gasPriceWei": "1000000000",
+      "actualOutput": "0",
+      "encodedFloor": "100698711",
+      "verification": {
+        "checks": [
+          {
+            "id": "chain",
+            "label": "Chain",
+            "expected": "1",
+            "actual": "1",
+            "matches": true
+          },
+          {
+            "id": "router",
+            "label": "Router",
+            "expected": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+            "actual": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+            "matches": true
+          },
+          {
+            "id": "sender",
+            "label": "Sender",
+            "expected": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+            "actual": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+            "matches": true
+          },
+          {
+            "id": "value",
+            "label": "Native ETH attached",
+            "expected": "0",
+            "actual": "0",
+            "matches": true
+          },
+          {
+            "id": "tokenIn",
+            "label": "Input token",
+            "expected": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "actual": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "matches": true
+          },
+          {
+            "id": "tokenOut",
+            "label": "Output token",
+            "expected": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "actual": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "matches": true
+          },
+          {
+            "id": "fee",
+            "label": "Pool fee",
+            "expected": "500",
+            "actual": "500",
+            "matches": true
+          },
+          {
+            "id": "amount",
+            "label": "Input amount (base units)",
+            "expected": "40000000000000000",
+            "actual": "40000000000000000",
+            "matches": true
+          },
+          {
+            "id": "recipient",
+            "label": "Receive address",
+            "expected": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+            "actual": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+            "matches": true
+          },
+          {
+            "id": "minimum",
+            "label": "Minimum output (base units)",
+            "expected": "≥ 100195216",
+            "actual": "100698711",
+            "matches": true
+          },
+          {
+            "id": "deadline",
+            "label": "Deadline (Unix seconds)",
+            "expected": "1788942252 … 1788942431",
+            "actual": "1788942431",
+            "matches": true
+          }
+        ],
+        "intentFingerprint": "0x693bafad1c1cefe5b8e1d3c9db7dcb0557a9b8ec327ce7ff53564cce71ebfe99",
+        "checkedAt": 1788942252,
+        "transactionFingerprint": "0x240339aa4328b1b8d99c6fcc2af29eef903cfd19e9e5b35816fb571276ee19c3",
+        "decision": "MATCH",
+        "minimumGapRaw": "0",
+        "reason": "The supported parameters match. This does not prove execution readiness, price fairness, authorization, or safety. A stronger floor may still make a swap revert."
+      },
+      "calldata": "0x5ae401dc000000000000000000000000000000000000000000000000000000006aa1185f00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000e404e45aaf000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb4800000000000000000000000000000000000000000000000000000000000001f4000000000000000000000000f39fd6e51aad88f6f4ce6ab8827279cfffb92266000000000000000000000000000000000000000000000000008e1bc9bf0400000000000000000000000000000000000000000000000000000000000006008a57000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "id": "fork-receipt-proof-op-3",
+      "kind": "swap",
+      "localTransactionHash": "0xaf565cd0f0d02f309296dc7d84ccbf1a6cd906b79993ba64dd89a876a4cfed40",
+      "localBlock": "25938604",
+      "status": "success",
+      "gasUsed": "135241",
+      "gasPriceWei": "1000000000",
+      "actualOutput": "100698710",
+      "encodedFloor": "100195216",
+      "verification": {
+        "checks": [
+          {
+            "id": "chain",
+            "label": "Chain",
+            "expected": "1",
+            "actual": "1",
+            "matches": true
+          },
+          {
+            "id": "router",
+            "label": "Router",
+            "expected": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+            "actual": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+            "matches": true
+          },
+          {
+            "id": "sender",
+            "label": "Sender",
+            "expected": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+            "actual": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+            "matches": true
+          },
+          {
+            "id": "value",
+            "label": "Native ETH attached",
+            "expected": "0",
+            "actual": "0",
+            "matches": true
+          },
+          {
+            "id": "tokenIn",
+            "label": "Input token",
+            "expected": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "actual": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "matches": true
+          },
+          {
+            "id": "tokenOut",
+            "label": "Output token",
+            "expected": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "actual": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "matches": true
+          },
+          {
+            "id": "fee",
+            "label": "Pool fee",
+            "expected": "500",
+            "actual": "500",
+            "matches": true
+          },
+          {
+            "id": "amount",
+            "label": "Input amount (base units)",
+            "expected": "40000000000000000",
+            "actual": "40000000000000000",
+            "matches": true
+          },
+          {
+            "id": "recipient",
+            "label": "Receive address",
+            "expected": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+            "actual": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+            "matches": true
+          },
+          {
+            "id": "minimum",
+            "label": "Minimum output (base units)",
+            "expected": "≥ 100195216",
+            "actual": "100195216",
+            "matches": true
+          },
+          {
+            "id": "deadline",
+            "label": "Deadline (Unix seconds)",
+            "expected": "1788942311 … 1788942431",
+            "actual": "1788942431",
+            "matches": true
+          }
+        ],
+        "intentFingerprint": "0xae43f0df18d8231103e2930c2ed40a89e29bccaac8f354f09821de5459d2a2f0",
+        "checkedAt": 1788942311,
+        "transactionFingerprint": "0x21b9361d287b42c5a8d47f95ad59a8029a151f2f8d83982f5042aa783f0d7324",
+        "decision": "MATCH",
+        "minimumGapRaw": "0",
+        "reason": "The supported parameters match. This does not prove execution readiness, price fairness, authorization, or safety. A stronger floor may still make a swap revert."
+      },
+      "calldata": "0x5ae401dc000000000000000000000000000000000000000000000000000000006aa1185f00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000e404e45aaf000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb4800000000000000000000000000000000000000000000000000000000000001f4000000000000000000000000f39fd6e51aad88f6f4ce6ab8827279cfffb92266000000000000000000000000000000000000000000000000008e1bc9bf0400000000000000000000000000000000000000000000000000000000000005f8db90000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "session": {
+    "version": "task-workbench-v1",
+    "kind": "SYNTHETIC_TASK_WORKBENCH_NOT_EXECUTED_ON_MAINNET",
+    "taskId": "fork-receipt-proof",
+    "intentFingerprint": "0x2d0d37151493b59821f542fe8822c56a06efea82455fc9b1dfa66b38acaa0ef2",
+    "fingerprintMeaning": "Content fingerprint, not a signature or authenticated consent",
+    "config": {
+      "amount": "0.04",
+      "slippageBps": 50,
+      "budget": "3",
+      "costTarget": "0.30",
+      "priority": "timely",
+      "attempts": 3,
+      "scenario": "first-send-race",
+      "approved": false
+    },
+    "task": {
+      "minimumOutput": "100195216",
+      "gasBudget": "3000000",
+      "targetGasCost": "300000",
+      "deadline": 180,
+      "maxAttempts": 3
+    },
+    "initialQuoteRaw": "100698710",
+    "units": "USDC base units (6 decimals); gas costs in USDC-equivalent",
+    "provenance": {
+      "calibrationBlock": {
+        "number": "25938600",
+        "hash": "0xd7274bebf8aca6ada1e7c82fd176ccac973ae1fc35f080ffff060c692203157f",
+        "timestamp": "1788942251"
+      },
+      "gas": "Local-fork measured gas held fixed in constructed paths",
+      "quotePath": "Synthetic",
+      "gasPricePath": "Synthetic",
+      "receipts": "See individual receipt evidence; local fork and/or synthetic, never mainnet",
+      "clock": "Relative replay time, not wall-clock scheduling"
+    },
+    "result": {
+      "status": "completed",
+      "reason": "Task completed within its original replay constraints.",
+      "completed": true,
+      "spentGas": "807383",
+      "approvalCost": "115579",
+      "failedCost": "352296",
+      "remainingBudget": "2192617",
+      "attempts": 2,
+      "approvalAttempts": 1,
+      "outputRaw": "100698710",
+      "netOutputRaw": "99891327",
+      "completionSecond": 60,
+      "budgetBreach": false,
+      "floorBreach": false,
+      "hasPendingReceipt": false
+    },
+    "events": [
+      {
+        "sequence": 1,
+        "second": 0,
+        "type": "checked",
+        "detail": "Fresh replay observation; gas 3000000000 wei. Original output floor and total budget retained.",
+        "cost": "0",
+        "remaining": "3000000"
+      },
+      {
+        "sequence": 2,
+        "second": 1,
+        "type": "prepared",
+        "detail": "approval prepared for replay. No transaction was broadcast.",
+        "cost": "0",
+        "remaining": "3000000",
+        "operationId": "fork-receipt-proof-op-1"
+      },
+      {
+        "sequence": 3,
+        "second": 1,
+        "type": "receipt-success",
+        "detail": "local-fork approval receipt reconciled; all gas remains in the task ledger.",
+        "cost": "115579",
+        "remaining": "2884421",
+        "receipt": {
+          "id": "fork-receipt-proof-op-1",
+          "kind": "approval",
+          "status": "success",
+          "gasUsed": "46040",
+          "gasPriceWei": "1000000000",
+          "output": "0",
+          "evidence": "local-fork"
+        },
+        "operationId": "fork-receipt-proof-op-1"
+      },
+      {
+        "sequence": 4,
+        "second": 1,
+        "type": "recheck-required",
+        "detail": "Approval is recorded. Recheck price and remaining gas budget before preparing the swap.",
+        "cost": "0",
+        "remaining": "2884421"
+      },
+      {
+        "sequence": 5,
+        "second": 1,
+        "type": "checked",
+        "detail": "Fresh replay observation; gas 3000000000 wei. Original output floor and total budget retained.",
+        "cost": "0",
+        "remaining": "2884421"
+      },
+      {
+        "sequence": 6,
+        "second": 1,
+        "type": "prepared",
+        "detail": "swap prepared for replay. No transaction was broadcast.",
+        "cost": "0",
+        "remaining": "2884421",
+        "operationId": "fork-receipt-proof-op-2",
+        "protection": "MATCH"
+      },
+      {
+        "sequence": 7,
+        "second": 1,
+        "type": "receipt-reverted",
+        "detail": "local-fork swap receipt reconciled; all gas remains in the task ledger.",
+        "cost": "352296",
+        "remaining": "2532125",
+        "receipt": {
+          "id": "fork-receipt-proof-op-2",
+          "kind": "swap",
+          "status": "reverted",
+          "gasUsed": "140335",
+          "gasPriceWei": "1000000000",
+          "output": "0",
+          "evidence": "local-fork"
+        },
+        "operationId": "fork-receipt-proof-op-2"
+      },
+      {
+        "sequence": 8,
+        "second": 60,
+        "type": "checked",
+        "detail": "Fresh replay observation; gas 1000000000 wei. Original output floor and total budget retained.",
+        "cost": "0",
+        "remaining": "2532125"
+      },
+      {
+        "sequence": 9,
+        "second": 60,
+        "type": "prepared",
+        "detail": "swap prepared for replay. No transaction was broadcast.",
+        "cost": "0",
+        "remaining": "2532125",
+        "operationId": "fork-receipt-proof-op-3",
+        "protection": "MATCH"
+      },
+      {
+        "sequence": 10,
+        "second": 60,
+        "type": "receipt-success",
+        "detail": "local-fork swap receipt reconciled; all gas remains in the task ledger.",
+        "cost": "339508",
+        "remaining": "2192617",
+        "receipt": {
+          "id": "fork-receipt-proof-op-3",
+          "kind": "swap",
+          "status": "success",
+          "gasUsed": "135241",
+          "gasPriceWei": "1000000000",
+          "output": "100698710",
+          "evidence": "local-fork"
+        },
+        "operationId": "fork-receipt-proof-op-3"
+      },
+      {
+        "sequence": 11,
+        "second": 60,
+        "type": "completed",
+        "detail": "Output floor preserved; cumulative gas reconciled.",
+        "cost": "0",
+        "remaining": "2192617"
+      }
+    ],
+    "pending": null,
+    "limitations": [
+      "No user wallet or mainnet transaction",
+      "No guaranteed cost or fill improvement",
+      "Budget checks are advisory estimates, not onchain enforcement",
+      "Not full Uniswap routing or MEV protection"
+    ]
+  },
+  "limitations": [
+    "Only local fake ETH/WETH; no user key or upstream broadcast",
+    "First swap revert is deliberately induced by quote+1 minimum, not real market movement",
+    "Mainnet-format draft verified then sent ONLY on local chain 31337; not a mainnet receipt",
+    "Fixed 1 gwei local transaction price and pinned reference feeds; does not validate live gas forecasting",
+    "Wrapping fake inventory is setup and excluded; task starts holding WETH",
+    "Local timestamps are advanced manually within the unchanged task deadline",
+    "Calibration uses Anvil 1.7.1 default hardfork, not verified mainnet hardfork schedule"
+  ]
+}
