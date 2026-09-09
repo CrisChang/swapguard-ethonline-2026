@@ -60,3 +60,28 @@ The participant confirmed Cloudflare login and explicitly asked the assistant to
 - Public QA found an early confirmation timing race and intermittent upstream RPC 502 responses. Disabled confirmation until the quote validity interval starts, added a deterministic clock test, and retained the upstream errors in validation evidence instead of masking them with samples.
 - Final public browser run **15/15 passed**, including two unmocked mainnet reads at block 25938477; unit/API **146/146** and fixtures **25/25** passed. Free RPC reliability remains a limitation.
 - Latest deployed version: `dd909da7-7b30-440f-876d-7c1a9108fbff`. Public links unchanged. Full evidence and caveats in `docs/VALIDATION.md`. Human review/narration, sponsor feedback and ETHGlobal final submission remain pending.
+
+## Task-budget pilot — 2026-09-09 (not deployed)
+
+- The user approved the task-cost narrative and asked to run data first. Added
+  `experiments/PROTOCOL.md` before the first successful calibration/replay. No
+  existing trading or previous competition project was copied or modified.
+- Installed pinned project-local Anvil 1.7.1 from the official Foundry npm package.
+  npm's default cache was not writable; used a project-local cache instead of
+  changing ownership/permissions of the user's home directory.
+- Mainnet fork block 25938600, local chain 31337, loopback-only node and fake funds.
+  Measured six route/size profiles with real local contract execution, full swap
+  success/revert receipts and exact-amount approvals. No user wallet, private key,
+  real-chain transaction or production API execution endpoint was used.
+- Initial calibration aborted on an early receipt lookup; fixed explicit receipt
+  waiting and reran from a fresh/reset owned fork. A second fresh-fork replication
+  matched all six profiles' quotes and gas. Both temporary fork nodes were stopped.
+- Replayed 48 constructed tasks for each of three policies, with identical hard
+  budget/floor/deadline and no policy access to future path data. The task waiting
+  heuristic completed 28/48 vs 34/48 for both immediate baselines. Retained every
+  negative case and did not tune thresholds to improve this same dataset.
+- The paired 28 completed tasks used 8.7412 vs 15.4572 USDC-equivalent modeled gas.
+  This is conditional synthetic evidence, not a real-world savings rate. No
+  routing or completion-rate advantage has been demonstrated.
+- Added policy and artifact-integrity/recalculation tests. Website code and its
+  deployed behavior remain unchanged; experiments are local/offline research.

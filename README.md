@@ -12,6 +12,17 @@ Latest minimum-output extension: **146 unit/API tests, 25 published synthetic ex
 
 ## Run locally
 
+### Experimental task-budget pilot (not deployed)
+
+The [first gas/whole-task experiment](experiments/README.md) measures local-fork
+transaction gas and uses it in clearly labelled synthetic task paths. Waiting
+reduced costs on some jointly completed tasks **but completed 28/48 versus the
+immediate baselines' 34/48**; it does not establish a higher fill rate or routing
+advantage. The public preflight/verifier remains unchanged. All raw data, negative
+cases and reproduction commands are included; no user wallet or funds were used.
+
+### Application
+
 Requires Node.js 22 and npm. From this directory:
 
 ```sh

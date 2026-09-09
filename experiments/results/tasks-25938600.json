@@ -1,0 +1,5273 @@
+{
+  "kind": "SYNTHETIC_TASK_REPLAY_WITH_LOCAL_FORK_GAS_CALIBRATION",
+  "protocol": "experiments/PROTOCOL.md",
+  "calibrationPath": "experiments/results/fork-25938600.json",
+  "calibrationSha256": "9e2c492f2f0f6b6e6df7bb7d7494ffe3f1a2b3a43a83a0b70ba000e75f84070d",
+  "fork": {
+    "number": "25938600",
+    "hash": "0xd7274bebf8aca6ada1e7c82fd176ccac973ae1fc35f080ffff060c692203157f",
+    "timestamp": "1788942251"
+  },
+  "units": "raw USDC-equivalent (6 decimals) unless field names state otherwise",
+  "limitations": [
+    "Constructed price/gas paths; not historical returns or future savings",
+    "Fixed measured gas per size/route; future pool state can change gas used",
+    "Two legacy v3 single-hop pools only; neither baseline is Uniswap's official SOR",
+    "Successful exact-amount approvals assumed; two-tx gas price race not modeled",
+    "No mempool inclusion, MEV ordering, real latency or operator/RPC costs modeled",
+    "Budget bounds rely on estimates; not an onchain-enforced guarantee",
+    "0.1% soft target is a preselected heuristic, not learned or optimized"
+  ],
+  "summaries": [
+    {
+      "policy": "gross-now",
+      "tasks": 48,
+      "completed": 34,
+      "uncompleted": 14,
+      "attemptedSwaps": 46,
+      "reverts": 12,
+      "totalGas": "22390319",
+      "failedGas": "5637456",
+      "approvalGas": "2832195",
+      "gasOnUncompleted": "3754508",
+      "totalCompletedNetOutput": "8290507499",
+      "averageCompletionSecond": 40.588235294117645,
+      "floorBreaches": 0,
+      "budgetBreaches": 0
+    },
+    {
+      "policy": "net-now",
+      "tasks": 48,
+      "completed": 34,
+      "uncompleted": 14,
+      "attemptedSwaps": 46,
+      "reverts": 12,
+      "totalGas": "22390319",
+      "failedGas": "5637456",
+      "approvalGas": "2832195",
+      "gasOnUncompleted": "3754508",
+      "totalCompletedNetOutput": "8290507499",
+      "averageCompletionSecond": 40.588235294117645,
+      "floorBreaches": 0,
+      "budgetBreaches": 0
+    },
+    {
+      "policy": "task-budget",
+      "tasks": 48,
+      "completed": 28,
+      "uncompleted": 20,
+      "attemptedSwaps": 34,
+      "reverts": 6,
+      "totalGas": "11086383",
+      "failedGas": "2114016",
+      "approvalGas": "1502771",
+      "gasOnUncompleted": "2345204",
+      "totalCompletedNetOutput": "7047711701",
+      "averageCompletionSecond": 109.28571428571429,
+      "floorBreaches": 0,
+      "budgetBreaches": 0
+    }
+  ],
+  "comparisons": [
+    {
+      "baseline": "gross-now",
+      "jointlyCompleted": 28,
+      "baselineOnly": 6,
+      "taskOnly": 0,
+      "neither": 14,
+      "baselineGas": "15457161",
+      "taskGas": "8741179",
+      "pairedGasDifference": "6715982",
+      "pairedNetOutputDifference": "12757896"
+    },
+    {
+      "baseline": "net-now",
+      "jointlyCompleted": 28,
+      "baselineOnly": 6,
+      "taskOnly": 0,
+      "neither": 14,
+      "baselineGas": "15457161",
+      "taskGas": "8741179",
+      "pairedGasDifference": "6715982",
+      "pairedNetOutputDifference": "12757896"
+    }
+  ],
+  "paths": [
+    {
+      "name": "flat-cheap",
+      "gasGwei": [0.5, 0.5, 0.5],
+      "quoteBps": [10000, 10000, 10000],
+      "executionBps": [10000, 10000, 10000]
+    },
+    {
+      "name": "gas-falls",
+      "gasGwei": [3, 1, 0.5],
+      "quoteBps": [10000, 10000, 10000],
+      "executionBps": [10000, 10000, 10000]
+    },
+    {
+      "name": "gas-stays-high",
+      "gasGwei": [3, 3, 3],
+      "quoteBps": [10000, 10000, 10000],
+      "executionBps": [10000, 10000, 10000]
+    },
+    {
+      "name": "wait-misses-floor",
+      "gasGwei": [3, 1, 0.5],
+      "quoteBps": [10000, 9925, 9875],
+      "executionBps": [10000, 10000, 10000]
+    },
+    {
+      "name": "price-improves",
+      "gasGwei": [3, 1, 0.5],
+      "quoteBps": [10000, 10050, 10100],
+      "executionBps": [10000, 10000, 10000]
+    },
+    {
+      "name": "gas-rises",
+      "gasGwei": [0.5, 3, 20],
+      "quoteBps": [10000, 10000, 10000],
+      "executionBps": [10000, 10000, 10000]
+    },
+    {
+      "name": "first-send-race",
+      "gasGwei": [3, 1, 0.5],
+      "quoteBps": [10000, 10000, 10000],
+      "executionBps": [9900, 10000, 10000]
+    },
+    {
+      "name": "repeated-race",
+      "gasGwei": [1, 1, 1],
+      "quoteBps": [10000, 10000, 10000],
+      "executionBps": [9900, 9900, 9900]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "0.01-needs-approval-flat-cheap",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "flat-cheap",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "24947140",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "flat-cheap",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "24947140",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "flat-cheap",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "24947140",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25174684"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-needs-approval-gas-falls",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-falls",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "24947140",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-falls",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "24947140",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-falls",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "24947140",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25174684"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-needs-approval-gas-stays-high",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-stays-high",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-stays-high",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-stays-high",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-needs-approval-wait-misses-floor",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "wait-misses-floor",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "wait-misses-floor",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "wait-misses-floor",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-needs-approval-price-improves",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "price-improves",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25426430",
+          "netOutput": "25198886",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25426430"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "price-improves",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25426430",
+          "netOutput": "25198886",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25426430"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "price-improves",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25426430",
+          "netOutput": "25198886",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25426430"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-needs-approval-gas-rises",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-rises",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "24947140",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-rises",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "24947140",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-rises",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-needs-approval-first-send-race",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "first-send-race",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "24947140",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "first-send-race",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "24947140",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "first-send-race",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "24947140",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "25174684"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-needs-approval-repeated-race",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "repeated-race",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "repeated-race",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "repeated-race",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-approved-flat-cheap",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "flat-cheap",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "25004930",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "flat-cheap",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "25004930",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "flat-cheap",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "25004930",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25174684"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-approved-gas-falls",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-falls",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "25004930",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-falls",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "25004930",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-falls",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "25004930",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25174684"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-approved-gas-stays-high",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-stays-high",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-stays-high",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-stays-high",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-approved-wait-misses-floor",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "wait-misses-floor",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "wait-misses-floor",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "wait-misses-floor",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-approved-price-improves",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "price-improves",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25426430",
+          "netOutput": "25256676",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25426430"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "price-improves",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25426430",
+          "netOutput": "25256676",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25426430"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "price-improves",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25426430",
+          "netOutput": "25256676",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25426430"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-approved-gas-rises",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-rises",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "25004930",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-rises",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "25004930",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-rises",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-approved-first-send-race",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "first-send-race",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "25004930",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "first-send-race",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "25004930",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25174684"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "first-send-race",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "25174684",
+          "netOutput": "25004930",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "25174684"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.01-approved-repeated-race",
+      "amount": "0.01",
+      "initialValue": "25103903",
+      "task": {
+        "minimumOutput": "25048810",
+        "gasBudget": "251039",
+        "targetGasCost": "25103",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "repeated-race",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "repeated-race",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "repeated-race",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-needs-approval-flat-cheap",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "flat-cheap",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100471166",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "flat-cheap",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100471166",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "flat-cheap",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100471166",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "100698710"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-needs-approval-gas-falls",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-falls",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100243623",
+          "gas": "455087",
+          "failedGas": "0",
+          "approvalCost": "115579",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "455087",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-falls",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100243623",
+          "gas": "455087",
+          "failedGas": "0",
+          "approvalCost": "115579",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "455087",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-falls",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100471166",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "100698710"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-needs-approval-gas-stays-high",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-stays-high",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-stays-high",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-stays-high",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-needs-approval-wait-misses-floor",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "wait-misses-floor",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "wait-misses-floor",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "wait-misses-floor",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-needs-approval-price-improves",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "price-improves",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "101202203",
+          "netOutput": "100747116",
+          "gas": "455087",
+          "failedGas": "0",
+          "approvalCost": "115579",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "455087",
+              "output": "101202203"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "price-improves",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "101202203",
+          "netOutput": "100747116",
+          "gas": "455087",
+          "failedGas": "0",
+          "approvalCost": "115579",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "455087",
+              "output": "101202203"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "price-improves",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "101705697",
+          "netOutput": "101478153",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "101705697"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-needs-approval-gas-rises",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-rises",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100471166",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-rises",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100471166",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-rises",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-needs-approval-first-send-race",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "first-send-race",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100243623",
+          "gas": "455087",
+          "failedGas": "0",
+          "approvalCost": "115579",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "455087",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "first-send-race",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100243623",
+          "gas": "455087",
+          "failedGas": "0",
+          "approvalCost": "115579",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "455087",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "first-send-race",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100471166",
+          "gas": "227544",
+          "failedGas": "0",
+          "approvalCost": "57790",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227544",
+              "output": "100698710"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-needs-approval-repeated-race",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "repeated-race",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "820171",
+          "failedGas": "704592",
+          "approvalCost": "115579",
+          "attempts": 2,
+          "reverts": 2,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "467875",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352296",
+              "output": "0"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "repeated-race",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "820171",
+          "failedGas": "704592",
+          "approvalCost": "115579",
+          "attempts": 2,
+          "reverts": 2,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "467875",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352296",
+              "output": "0"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "repeated-race",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "467875",
+          "failedGas": "352296",
+          "approvalCost": "115579",
+          "attempts": 1,
+          "reverts": 1,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "467875",
+              "output": "0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-approved-flat-cheap",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "flat-cheap",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100528956",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "flat-cheap",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100528956",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "flat-cheap",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100528956",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "100698710"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-approved-gas-falls",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-falls",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100359202",
+          "gas": "339508",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "339508",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-falls",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100359202",
+          "gas": "339508",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "339508",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-falls",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100528956",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "100698710"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-approved-gas-stays-high",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-stays-high",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-stays-high",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-stays-high",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-approved-wait-misses-floor",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "wait-misses-floor",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "wait-misses-floor",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "wait-misses-floor",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-approved-price-improves",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "price-improves",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "101202203",
+          "netOutput": "100862695",
+          "gas": "339508",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "339508",
+              "output": "101202203"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "price-improves",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "101202203",
+          "netOutput": "100862695",
+          "gas": "339508",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "339508",
+              "output": "101202203"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "price-improves",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "101705697",
+          "netOutput": "101535943",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "101705697"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-approved-gas-rises",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-rises",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100528956",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-rises",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100528956",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-rises",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-approved-first-send-race",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "first-send-race",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100359202",
+          "gas": "339508",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "339508",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "first-send-race",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100359202",
+          "gas": "339508",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "339508",
+              "output": "100698710"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "first-send-race",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "100698710",
+          "netOutput": "100528956",
+          "gas": "169754",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169754",
+              "output": "100698710"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.04-approved-repeated-race",
+      "amount": "0.04",
+      "initialValue": "100415610",
+      "task": {
+        "minimumOutput": "100195216",
+        "gasBudget": "1004156",
+        "targetGasCost": "100415",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "repeated-race",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "704592",
+          "failedGas": "704592",
+          "approvalCost": "0",
+          "attempts": 2,
+          "reverts": 2,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352296",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352296",
+              "output": "0"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "repeated-race",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "704592",
+          "failedGas": "704592",
+          "approvalCost": "0",
+          "attempts": 2,
+          "reverts": 2,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352296",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352296",
+              "output": "0"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "repeated-race",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "352296",
+          "failedGas": "352296",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 1,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352296",
+              "output": "0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-needs-approval-flat-cheap",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "flat-cheap",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503265204",
+          "gas": "227574",
+          "failedGas": "0",
+          "approvalCost": "57805",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227574",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "flat-cheap",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503265204",
+          "gas": "227574",
+          "failedGas": "0",
+          "approvalCost": "57805",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227574",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "flat-cheap",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503265204",
+          "gas": "227574",
+          "failedGas": "0",
+          "approvalCost": "57805",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227574",
+              "output": "503492778"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-needs-approval-gas-falls",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-falls",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502127338",
+          "gas": "1365440",
+          "failedGas": "0",
+          "approvalCost": "346826",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1365440",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-falls",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502127338",
+          "gas": "1365440",
+          "failedGas": "0",
+          "approvalCost": "346826",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1365440",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-falls",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503037631",
+          "gas": "455147",
+          "failedGas": "0",
+          "approvalCost": "115609",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "455147",
+              "output": "503492778"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-needs-approval-gas-stays-high",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-stays-high",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502127338",
+          "gas": "1365440",
+          "failedGas": "0",
+          "approvalCost": "346826",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1365440",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-stays-high",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502127338",
+          "gas": "1365440",
+          "failedGas": "0",
+          "approvalCost": "346826",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1365440",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-stays-high",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502127338",
+          "gas": "1365440",
+          "failedGas": "0",
+          "approvalCost": "346826",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1365440",
+              "output": "503492778"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-needs-approval-wait-misses-floor",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "wait-misses-floor",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502127338",
+          "gas": "1365440",
+          "failedGas": "0",
+          "approvalCost": "346826",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1365440",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "wait-misses-floor",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502127338",
+          "gas": "1365440",
+          "failedGas": "0",
+          "approvalCost": "346826",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1365440",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "wait-misses-floor",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-needs-approval-price-improves",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "price-improves",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502127338",
+          "gas": "1365440",
+          "failedGas": "0",
+          "approvalCost": "346826",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1365440",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "price-improves",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502127338",
+          "gas": "1365440",
+          "failedGas": "0",
+          "approvalCost": "346826",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1365440",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "price-improves",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "506010241",
+          "netOutput": "505555094",
+          "gas": "455147",
+          "failedGas": "0",
+          "approvalCost": "115609",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "455147",
+              "output": "506010241"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-needs-approval-gas-rises",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-rises",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503265204",
+          "gas": "227574",
+          "failedGas": "0",
+          "approvalCost": "57805",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227574",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-rises",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503265204",
+          "gas": "227574",
+          "failedGas": "0",
+          "approvalCost": "57805",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227574",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-rises",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503265204",
+          "gas": "227574",
+          "failedGas": "0",
+          "approvalCost": "57805",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "227574",
+              "output": "503492778"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-needs-approval-first-send-race",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "first-send-race",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "501749346",
+          "gas": "1743432",
+          "failedGas": "1057068",
+          "approvalCost": "346826",
+          "attempts": 2,
+          "reverts": 1,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "1403894",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "339538",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "first-send-race",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "501749346",
+          "gas": "1743432",
+          "failedGas": "1057068",
+          "approvalCost": "346826",
+          "attempts": 2,
+          "reverts": 1,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "1403894",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "339538",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "first-send-race",
+          "approvedInitially": false,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503037631",
+          "gas": "455147",
+          "failedGas": "0",
+          "approvalCost": "115609",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "455147",
+              "output": "503492778"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-needs-approval-repeated-race",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "repeated-race",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "1172677",
+          "failedGas": "1057068",
+          "approvalCost": "115609",
+          "attempts": 3,
+          "reverts": 3,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "467965",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352356",
+              "output": "0"
+            },
+            {
+              "second": 150,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352356",
+              "output": "0"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "repeated-race",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "1172677",
+          "failedGas": "1057068",
+          "approvalCost": "115609",
+          "attempts": 3,
+          "reverts": 3,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "467965",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352356",
+              "output": "0"
+            },
+            {
+              "second": 150,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352356",
+              "output": "0"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "repeated-race",
+          "approvedInitially": false,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "820321",
+          "failedGas": "704712",
+          "approvalCost": "115609",
+          "attempts": 2,
+          "reverts": 2,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "467965",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352356",
+              "output": "0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-approved-flat-cheap",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "flat-cheap",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503323009",
+          "gas": "169769",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169769",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "flat-cheap",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503323009",
+          "gas": "169769",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169769",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "flat-cheap",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503323009",
+          "gas": "169769",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169769",
+              "output": "503492778"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-approved-gas-falls",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-falls",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502474164",
+          "gas": "1018614",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1018614",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-falls",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502474164",
+          "gas": "1018614",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1018614",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-falls",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503153240",
+          "gas": "339538",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "339538",
+              "output": "503492778"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-approved-gas-stays-high",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-stays-high",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502474164",
+          "gas": "1018614",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1018614",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-stays-high",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502474164",
+          "gas": "1018614",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1018614",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-stays-high",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502474164",
+          "gas": "1018614",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 150,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1018614",
+              "output": "503492778"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-approved-wait-misses-floor",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "wait-misses-floor",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502474164",
+          "gas": "1018614",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1018614",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "wait-misses-floor",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502474164",
+          "gas": "1018614",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1018614",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "wait-misses-floor",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "0",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 0,
+          "reverts": 0,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            },
+            {
+              "second": 150,
+              "action": "wait",
+              "reason": "original floor or remaining hard gas budget"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-approved-price-improves",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "price-improves",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502474164",
+          "gas": "1018614",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1018614",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "price-improves",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502474164",
+          "gas": "1018614",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "1018614",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "price-improves",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "506010241",
+          "netOutput": "505670703",
+          "gas": "339538",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "339538",
+              "output": "506010241"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-approved-gas-rises",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "gas-rises",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503323009",
+          "gas": "169769",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169769",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "gas-rises",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503323009",
+          "gas": "169769",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169769",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "gas-rises",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503323009",
+          "gas": "169769",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 0,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "filled",
+              "fee": 500,
+              "gas": "169769",
+              "output": "503492778"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-approved-first-send-race",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "first-send-race",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502096172",
+          "gas": "1396606",
+          "failedGas": "1057068",
+          "approvalCost": "0",
+          "attempts": 2,
+          "reverts": 1,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "1057068",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "339538",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "first-send-race",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "502096172",
+          "gas": "1396606",
+          "failedGas": "1057068",
+          "approvalCost": "0",
+          "attempts": 2,
+          "reverts": 1,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "1057068",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "339538",
+              "output": "503492778"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "first-send-race",
+          "approvedInitially": true,
+          "completed": true,
+          "output": "503492778",
+          "netOutput": "503153240",
+          "gas": "339538",
+          "failedGas": "0",
+          "approvalCost": "0",
+          "attempts": 1,
+          "reverts": 0,
+          "completionSecond": 60,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 60,
+              "action": "filled",
+              "fee": 500,
+              "gas": "339538",
+              "output": "503492778"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0.2-approved-repeated-race",
+      "amount": "0.2",
+      "initialValue": "502078049",
+      "task": {
+        "minimumOutput": "500975314",
+        "gasBudget": "5000574",
+        "targetGasCost": "502078",
+        "deadline": 180,
+        "maxAttempts": 3
+      },
+      "results": [
+        {
+          "policy": "gross-now",
+          "path": "repeated-race",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "1057068",
+          "failedGas": "1057068",
+          "approvalCost": "0",
+          "attempts": 3,
+          "reverts": 3,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352356",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352356",
+              "output": "0"
+            },
+            {
+              "second": 150,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352356",
+              "output": "0"
+            }
+          ]
+        },
+        {
+          "policy": "net-now",
+          "path": "repeated-race",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "1057068",
+          "failedGas": "1057068",
+          "approvalCost": "0",
+          "attempts": 3,
+          "reverts": 3,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352356",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352356",
+              "output": "0"
+            },
+            {
+              "second": 150,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352356",
+              "output": "0"
+            }
+          ]
+        },
+        {
+          "policy": "task-budget",
+          "path": "repeated-race",
+          "approvedInitially": true,
+          "completed": false,
+          "output": null,
+          "netOutput": null,
+          "gas": "704712",
+          "failedGas": "704712",
+          "approvalCost": "0",
+          "attempts": 2,
+          "reverts": 2,
+          "completionSecond": null,
+          "floorBreaches": 0,
+          "budgetBreaches": 0,
+          "events": [
+            {
+              "second": 0,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352356",
+              "output": "0"
+            },
+            {
+              "second": 60,
+              "action": "wait",
+              "reason": "wait for soft task cost target"
+            },
+            {
+              "second": 150,
+              "action": "reverted",
+              "fee": 500,
+              "gas": "352356",
+              "output": "0"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

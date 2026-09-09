@@ -1,0 +1,273 @@
+{
+  "kind": "LOCAL_FORK_GAS_CALIBRATION_NOT_MAINNET_TRANSACTIONS",
+  "protocol": "experiments/PROTOCOL.md",
+  "measuredAt": "2026-09-09T08:32:28.462Z",
+  "sourceRpc": "https://ethereum-rpc.publicnode.com",
+  "sourceChainId": 1,
+  "localChainId": 31337,
+  "fork": {
+    "number": "25938600",
+    "hash": "0xd7274bebf8aca6ada1e7c82fd176ccac973ae1fc35f080ffff060c692203157f",
+    "timestamp": "1788942251"
+  },
+  "anvilVersion": "anvil Version: 1.7.1\nCommit SHA: 4072e48705af9d93e3c0f6e29e93b5e9a40caed8\nBuild Timestamp: 2026-05-08T07:54:31.470926000Z (1778226871)\nBuild Profile: dist",
+  "units": {
+    "tokenOut": "USDC",
+    "outputDecimals": 6,
+    "gas": "full transaction gas units",
+    "gasPrice": "wei"
+  },
+  "fixtures": {
+    "inventory": "2 fake WETH funded by deposit before independent snapshots",
+    "funding": {
+      "localTransactionHash": "0x887e63e2fe8ce8a85c8cdd41f2014e55b6649c5e26435083ac6a789c810ef847",
+      "localBlock": "25938601",
+      "status": "success",
+      "gasUsed": "45038",
+      "effectiveGasPriceWei": "1000000000"
+    },
+    "excludedCosts": [
+      "WETH wrapping/inventory preparation",
+      "RPC/automation operation",
+      "future approval revocation"
+    ]
+  },
+  "contracts": {
+    "quoter": "0x61fFE014bA17989E743c5F6cB21bF9697530B21e",
+    "factory": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+    "router": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+    "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+    "ethUsd": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+    "usdcUsd": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6"
+  },
+  "feeds": {
+    "ETH": {
+      "answer": "251010187611",
+      "decimals": 8,
+      "updatedAt": "1788940823"
+    },
+    "USDC": {
+      "answer": "99988513",
+      "decimals": 8,
+      "updatedAt": "1788940835"
+    }
+  },
+  "profiles": [
+    {
+      "amount": "0.01",
+      "amountInRaw": "10000000000000000",
+      "fee": 500,
+      "quotedOutputRaw": "25174684",
+      "quoterInternalGasEstimate": "90059",
+      "approval": {
+        "localTransactionHash": "0xb34a982116af53aa04a139947f7b7fcff2499476a5a962b31637e9f606ec0103",
+        "localBlock": "25938602",
+        "status": "success",
+        "gasUsed": "46040",
+        "effectiveGasPriceWei": "1000000000"
+      },
+      "swaps": [
+        {
+          "outcome": "success",
+          "minimumOutputRaw": "25048810",
+          "actualOutputRaw": "25174684",
+          "localTransactionHash": "0x6055044871ac0fbe534c95025a52f6a702a0482b4b901e6a6b6a9ab07d74dc77",
+          "localBlock": "25938603",
+          "status": "success",
+          "gasUsed": "135241",
+          "effectiveGasPriceWei": "1000000000"
+        },
+        {
+          "outcome": "revert",
+          "minimumOutputRaw": "25174685",
+          "actualOutputRaw": "0",
+          "localTransactionHash": "0x6cf7fd7e0f3f7c2926f837d254a3d244d3ed979bf1d88b19029809b78051829a",
+          "localBlock": "25938603",
+          "status": "reverted",
+          "gasUsed": "140347",
+          "effectiveGasPriceWei": "1000000000"
+        }
+      ]
+    },
+    {
+      "amount": "0.01",
+      "amountInRaw": "10000000000000000",
+      "fee": 3000,
+      "quotedOutputRaw": "25081018",
+      "quoterInternalGasEstimate": "89059",
+      "approval": {
+        "localTransactionHash": "0xb34a982116af53aa04a139947f7b7fcff2499476a5a962b31637e9f606ec0103",
+        "localBlock": "25938602",
+        "status": "success",
+        "gasUsed": "46040",
+        "effectiveGasPriceWei": "1000000000"
+      },
+      "swaps": [
+        {
+          "outcome": "success",
+          "minimumOutputRaw": "24955612",
+          "actualOutputRaw": "25081018",
+          "localTransactionHash": "0x255d9b733ecb9edb912215feeb26ff3b0e02cf3f09eb178c92fa83f554c964a2",
+          "localBlock": "25938603",
+          "status": "success",
+          "gasUsed": "134241",
+          "effectiveGasPriceWei": "1000000000"
+        },
+        {
+          "outcome": "revert",
+          "minimumOutputRaw": "25081019",
+          "actualOutputRaw": "0",
+          "localTransactionHash": "0xfcd63413f6b14fe92294b8f5c1571c6d000ed2f9480627314c6026157f59fa9c",
+          "localBlock": "25938603",
+          "status": "reverted",
+          "gasUsed": "139347",
+          "effectiveGasPriceWei": "1000000000"
+        }
+      ]
+    },
+    {
+      "amount": "0.04",
+      "amountInRaw": "40000000000000000",
+      "fee": 500,
+      "quotedOutputRaw": "100698710",
+      "quoterInternalGasEstimate": "90059",
+      "approval": {
+        "localTransactionHash": "0xe489ee900fe7fc00e8f15616e4dc60daa54fe790a05fc772661a083cdf118b83",
+        "localBlock": "25938602",
+        "status": "success",
+        "gasUsed": "46040",
+        "effectiveGasPriceWei": "1000000000"
+      },
+      "swaps": [
+        {
+          "outcome": "success",
+          "minimumOutputRaw": "100195216",
+          "actualOutputRaw": "100698710",
+          "localTransactionHash": "0xff0fd62770a981d836516feef9700470f7af900e836ea1b5a2b5114fa5e841d1",
+          "localBlock": "25938603",
+          "status": "success",
+          "gasUsed": "135241",
+          "effectiveGasPriceWei": "1000000000"
+        },
+        {
+          "outcome": "revert",
+          "minimumOutputRaw": "100698711",
+          "actualOutputRaw": "0",
+          "localTransactionHash": "0x9637592b4eba230986b80e562d041db6ada14926de29fe5ae721ecd3ea39c18b",
+          "localBlock": "25938603",
+          "status": "reverted",
+          "gasUsed": "140335",
+          "effectiveGasPriceWei": "1000000000"
+        }
+      ]
+    },
+    {
+      "amount": "0.04",
+      "amountInRaw": "40000000000000000",
+      "fee": 3000,
+      "quotedOutputRaw": "100324019",
+      "quoterInternalGasEstimate": "89059",
+      "approval": {
+        "localTransactionHash": "0xe489ee900fe7fc00e8f15616e4dc60daa54fe790a05fc772661a083cdf118b83",
+        "localBlock": "25938602",
+        "status": "success",
+        "gasUsed": "46040",
+        "effectiveGasPriceWei": "1000000000"
+      },
+      "swaps": [
+        {
+          "outcome": "success",
+          "minimumOutputRaw": "99822398",
+          "actualOutputRaw": "100324019",
+          "localTransactionHash": "0x1cc28cbed53cb411f100780bcce62b32dfd59fa208e532786bba78db012dbf0c",
+          "localBlock": "25938603",
+          "status": "success",
+          "gasUsed": "134241",
+          "effectiveGasPriceWei": "1000000000"
+        },
+        {
+          "outcome": "revert",
+          "minimumOutputRaw": "100324020",
+          "actualOutputRaw": "0",
+          "localTransactionHash": "0xa96df69d809ca2d1aac1016d65dbc612bf7db9a24ba164b4b18a0700c624e091",
+          "localBlock": "25938603",
+          "status": "reverted",
+          "gasUsed": "139347",
+          "effectiveGasPriceWei": "1000000000"
+        }
+      ]
+    },
+    {
+      "amount": "0.2",
+      "amountInRaw": "200000000000000000",
+      "fee": 500,
+      "quotedOutputRaw": "503492778",
+      "quoterInternalGasEstimate": "90059",
+      "approval": {
+        "localTransactionHash": "0x8bda9992ae0e2fef4a1cd060fb50bdb8f614935f022c13012187c3e9e851cf12",
+        "localBlock": "25938602",
+        "status": "success",
+        "gasUsed": "46052",
+        "effectiveGasPriceWei": "1000000000"
+      },
+      "swaps": [
+        {
+          "outcome": "success",
+          "minimumOutputRaw": "500975314",
+          "actualOutputRaw": "503492778",
+          "localTransactionHash": "0xf39977faf674d2e3dc973359ad9c7c63a56545a545a5d481fbb35277388fc0a7",
+          "localBlock": "25938603",
+          "status": "success",
+          "gasUsed": "135253",
+          "effectiveGasPriceWei": "1000000000"
+        },
+        {
+          "outcome": "revert",
+          "minimumOutputRaw": "503492779",
+          "actualOutputRaw": "0",
+          "localTransactionHash": "0x1357273bfff9b132e72907516b277b3bff236b66f3615ecc2ee65ce43b5fcffc",
+          "localBlock": "25938603",
+          "status": "reverted",
+          "gasUsed": "140359",
+          "effectiveGasPriceWei": "1000000000"
+        }
+      ]
+    },
+    {
+      "amount": "0.2",
+      "amountInRaw": "200000000000000000",
+      "fee": 3000,
+      "quotedOutputRaw": "501618694",
+      "quoterInternalGasEstimate": "89059",
+      "approval": {
+        "localTransactionHash": "0x8bda9992ae0e2fef4a1cd060fb50bdb8f614935f022c13012187c3e9e851cf12",
+        "localBlock": "25938602",
+        "status": "success",
+        "gasUsed": "46052",
+        "effectiveGasPriceWei": "1000000000"
+      },
+      "swaps": [
+        {
+          "outcome": "success",
+          "minimumOutputRaw": "499110600",
+          "actualOutputRaw": "501618694",
+          "localTransactionHash": "0x83f779d6d2761453f6e64232882c2ae5127ae8fdf97cd6d22e5e9cbe1c1d2522",
+          "localBlock": "25938603",
+          "status": "success",
+          "gasUsed": "134253",
+          "effectiveGasPriceWei": "1000000000"
+        },
+        {
+          "outcome": "revert",
+          "minimumOutputRaw": "501618695",
+          "actualOutputRaw": "0",
+          "localTransactionHash": "0x137d2fb9e8a1bc95993a2d3221c537f25c7158c4e8f701ab3d4c6de14c87536b",
+          "localBlock": "25938603",
+          "status": "reverted",
+          "gasUsed": "139359",
+          "effectiveGasPriceWei": "1000000000"
+        }
+      ]
+    }
+  ]
+}

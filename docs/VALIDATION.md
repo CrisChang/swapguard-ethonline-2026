@@ -93,3 +93,24 @@ No wallet action or transaction execution simulation was performed. Public exten
 - Public page/security headers, health, sample/live API and absent swap endpoint checks passed on the first extension smoke. A subsequent smoke and initial browser run returned HTTP 502 on live RPC paths. Local real-chain smoke later passed at block 25938466, and the final public browser run passed both live paths. The free upstream remains intermittent; this result does not establish reliable availability. No fallback data was relabelled as live and no quote policy was weakened.
 - The initial public browser run also found a timing race: the confirm button could be offered before the quote timestamp reached the UI clock. Confirmation itself rejected it. The UI now disables confirmation until the validity interval begins and gives clock guidance. A new deterministic future-clock test covers this. Local 13/13 UI regression and final public 15/15 passed after the correction.
 - Public checks used the existing proxy/network setup with normal TLS. New lab verification itself runs locally without RPC. No wallet was connected, no transaction simulated/executed and no final competition form submitted.
+
+## Task-budget experiment — 2026-09-09 (local research, not a deployment)
+
+- Added 24 pure policy/budget/local-endpoint guard tests and four artifact-integrity
+  tests, for **174 deterministic tests**. Artifact checks verify the calibration
+  SHA-256, receipt status/output relations, all 144 replay traces and retained
+  negative completion outcomes. They do not independently certify the RPC provider.
+- Two fresh local fork measurements at block **25938600** matched across all six
+  route/size profiles: full transaction gas, Quoter internal gas, quotes, feeds,
+  approval costs, output floors and resulting balance deltas.
+- Successful receipt lookup required waiting for automining; an initial aborted
+  run was excluded. Auxiliary evidence-test typing and block-metadata assertions
+  were corrected before final checks. Raw successful calibration bytes were not
+  rewritten to make assertions pass.
+- TypeScript/Vite build passed with the unchanged public frontend bundle. No new
+  browser run or deployment is claimed for this experiment-only extension.
+- The first heuristic completed **28/48** constructed tasks versus **34/48** for
+  both immediate baselines. See [all results and caveats](../experiments/README.md).
+  No real-world fill improvement or routing superiority has been established.
+- Only isolated chain-31337 fake-money transactions were executed. Both temporary
+  Anvil nodes were stopped. No real wallet, mainnet state or other project changed.

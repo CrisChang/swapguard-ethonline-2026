@@ -29,4 +29,17 @@ The participant approved focusing on a concrete minimum-output scenario, publish
 
 ## Before final submission
 
+### Task-budget experiment — 2026-09-09
+
+The participant approved testing the task-level cost narrative and asked to run
+data first. The assistant wrote the protocol before observing outcomes, generated
+the local-only fork calibration scripts, deterministic policy/replay and tests,
+and ran them. The stress paths are AI-constructed, not external market samples.
+Six independent route/size profiles used real contract execution inside a local
+Anvil fork with fake funds; no user wallet or mainnet transaction was involved.
+The first wait-for-cheaper-gas policy completed fewer tasks than the baselines;
+this negative result is retained in `experiments/`. Human review remains pending.
+
+### Human review
+
 The participant should review the implementation and its limits, validate the user experience, decide which sponsor criteria are actually met, retain this assistance disclosure and the genuine commit history, and record their own compliant narration. This document does not assert that AI-generated work alone satisfies the event's meaningful-human-input requirement or that any organizer has approved this entry.
