@@ -127,4 +127,6 @@ Before submission: publish the repository, deploy and verify the live URL, revie
 
 ## Sources
 
+The original project code is available under the [MIT License](LICENSE). Third-party packages and bundled fonts retain their respective licenses.
+
 See [SOURCES.md](docs/SOURCES.md) for official protocol references and attribution. React, Hono, viem, Vite, Lucide, Vitest, Playwright and Wrangler are third-party dependencies recorded in `package-lock.json`. The SwapGuard app, fixtures, tests and SVG shield were created for this repository; no previous project source was copied.
