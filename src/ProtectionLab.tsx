@@ -258,6 +258,10 @@ export default function ProtectionLab({
     }
   }
   const stale = !report || now >= Date.parse(report.expiresAt);
+  // The display clock updates on a timer and a server can also be ahead of the
+  // client. Never offer confirmation before the quote's validity interval.
+  const quoteInFuture =
+    !!report && epoch < Math.floor(Date.parse(report.createdAt) / 1000);
   const lockExpired = !!locked && epoch >= locked.quoteExpiresAt;
   return (
     <section
@@ -602,7 +606,9 @@ export default function ProtectionLab({
               )}
               <button
                 className="primary-button"
-                disabled={stale || report?.decision === "blocked"}
+                disabled={
+                  stale || quoteInFuture || report?.decision === "blocked"
+                }
                 onClick={confirm}
               >
                 <LockKeyhole size={16} /> Confirm & lock conditions
@@ -615,6 +621,12 @@ export default function ProtectionLab({
               {stale && (
                 <p className="inline-warning">
                   Get a fresh quote before confirming.
+                </p>
+              )}
+              {quoteInFuture && (
+                <p className="inline-warning">
+                  Waiting for this quote's validity window. If this persists,
+                  check your device clock and refresh the quote.
                 </p>
               )}
               {report?.decision === "blocked" && (

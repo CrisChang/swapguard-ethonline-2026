@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { PROTECTION_FIXTURES } from "../../src/lib/protection-fixtures";
+import { analyze } from "../../src/lib/engine";
+import { demoSnapshot } from "../../server/demo";
 
 test("replays a changed floor and exposes evidence without calling a wallet", async ({
   page,
@@ -134,6 +136,42 @@ test("changing slippage requires a new quote and fresh independent confirmation"
   await expect(
     page.getByRole("button", { name: "Verify locked conditions" }),
   ).toBeDisabled();
+});
+
+test("keeps confirmation disabled until a future-dated quote becomes current", async ({
+  page,
+}) => {
+  const start = Date.parse("2026-09-09T10:00:00Z");
+  await page.clock.install({ time: new Date(start) });
+  await page.route("**/api/analyze", async (route) => {
+    const request = route.request().postDataJSON();
+    const report = analyze(
+      request,
+      demoSnapshot(request, start / 1000),
+      start / 1000,
+    );
+    report.createdAt = new Date(start + 10000).toISOString();
+    report.expiresAt = new Date(start + 70000).toISOString();
+    await route.fulfill({ json: report });
+  });
+  await page.goto("/");
+  await expect(page.getByTestId("verdict")).toBeVisible();
+  await page.getByRole("button", { name: "Check a transaction draft" }).click();
+  const confirm = page.getByRole("button", {
+    name: "Confirm & lock conditions",
+  });
+  await expect(confirm).toBeDisabled();
+  await expect(
+    page.getByText("Waiting for this quote's validity window.", {
+      exact: false,
+    }),
+  ).toBeVisible();
+  await page.clock.fastForward(12000);
+  await expect(confirm).toBeEnabled();
+  await confirm.click();
+  await expect(
+    page.getByRole("button", { name: "Load constructed normal draft" }),
+  ).toBeVisible();
 });
 
 test("fits a phone screen and explains slippage without claiming attack simulation", async ({
