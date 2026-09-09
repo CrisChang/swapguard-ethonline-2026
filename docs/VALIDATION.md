@@ -45,6 +45,10 @@
 - New task creation, locked inputs, approval/revert/retry accounting, partial
   receipt reload, JSON export, non-completion and mobile rendering all passed on
   the deployed HTTPS origin. This does not validate real wallet execution.
+- A focused rerun of both live browser cases also returned HTTP 502 (0/2).
+  Evidence is in `.cache/public-live-recheck`. The earlier CLI live response
+  passed, but the latest browser live checks remain failed. Live-provider
+  reliability is unresolved; the completed replay does not depend on it.
 
 2026-09-08. These are development observations, not an audit or a promise of current prices.
 
