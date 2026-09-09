@@ -1,14 +1,15 @@
 # ETHGlobal submission draft — not submitted
 
-Use only after reviewing against the final implementation. **No live deployment or public repository URL is confirmed yet.** Do not use a placeholder URL, an old project's URL or localhost in the competition form.
+Use only after reviewing against the final implementation. **Public repository and demo verified on 2026-09-09; the ETHGlobal form is not submitted by this document.** Do not use a placeholder URL, an old project's URL or localhost in the competition form.
 
 ## Project details
 
 - Name: SwapGuard
 - Category: DeFi
 - Track: Building from Scratch
-- Demo URL: pending public deployment and verification
-- GitHub: pending creation/publication of this independent repository
+- Demo URL: https://swapguard-ethonline-2026.swapguard.workers.dev
+- GitHub: https://github.com/CrisChang/swapguard-ethonline-2026
+- Sponsor feedback document: https://github.com/CrisChang/swapguard-ethonline-2026/blob/main/FEEDBACK.md
 
 ## Short description (under 100 characters)
 
@@ -37,8 +38,8 @@ SwapGuard is a new TypeScript project with a React/Vite interface and a Hono API
 - [x] Local tests, build and responsive UI verification.
 - [x] FEEDBACK.md and AI-use disclosure prepared.
 - [ ] Participant reviews the code and claims, and can explain the implementation.
-- [ ] Public repository published; anonymous access verified.
-- [ ] Separate deployment published; live API verified from that deployment.
+- [x] Public repository published; anonymous access verified.
+- [x] Separate deployment published; live API verified from that deployment.
 - [ ] Uniswap Developer Feedback Form actually submitted, with FEEDBACK.md link.
 - [ ] Human-narrated demo recorded, 2–4 minutes, at least 720p; no sped-up or AI/TTS narration.
 - [ ] Screenshots selected and uploaded; sample vs live labels retained.

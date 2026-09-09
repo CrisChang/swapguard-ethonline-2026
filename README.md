@@ -4,6 +4,10 @@
 
 SwapGuard gives a user an inspectable second opinion before a WETH/USDC swap: Uniswap v3 quotes, a Chainlink reference, minimum output, and narrowly scoped balance/allowance checks. It does not connect a wallet, ask for a signature, request approval or submit transactions.
 
+**[Try the public demo](https://swapguard-ethonline-2026.swapguard.workers.dev)** · **[Source repository](https://github.com/CrisChang/swapguard-ethonline-2026)**
+
+The initial screen uses clearly labelled synthetic samples. Choose **Live onchain** for actual read-only mainnet data. Public release verified on 2026-09-09; this is not proof of final ETHGlobal submission.
+
 ## Run locally
 
 Requires Node.js 22 and npm. From this directory:
@@ -109,11 +113,11 @@ npx wrangler deploy --dry-run --outdir .cache/worker
 
 For a public deployment, authenticate the intended Cloudflare account, verify that the name is unused (or is this project's own Worker), then run `npm run deploy`. If configuring a private RPC endpoint, use a Worker secret named `ETHEREUM_RPC_URL`, not a public frontend variable. Cloudflare `.dev.vars` is local-only. Do not deploy over an unrelated existing service.
 
-**Current handoff: local first version. No public deployment or public GitHub URL has been confirmed.** The available Cloudflare CLI session required reauthentication during this build. Never paste localhost into the public competition demo field.
+**Public first version released on 2026-09-09.** Worker: https://swapguard-ethonline-2026.swapguard.workers.dev. Source: https://github.com/CrisChang/swapguard-ethonline-2026. Anonymous repository access and live API/browser checks passed. The original local commit history is preserved. Never paste localhost into the public competition demo field.
 
 The API has a 4KB body limit, server-side input checks, no-store responses, generic upstream errors and a four-request live concurrency cap per process/isolate. The public Worker additionally requires a Cloudflare rate-limit binding: **60 live analyses per 60 seconds for the shared demo route, per Cloudflare location**. Its counters are eventually consistent, not a strict global budget. All visitors share this anonymous route quota; we do not use caller-provided wallet addresses, API keys or IP addresses as rate-limit keys. A denied request returns 429 and Retry-After. Missing or failing protection returns 503 without calling RPC. Samples and health remain available. Loopback Node development does not use the edge binding. The namespace/key are scoped to SwapGuard; verify namespace `2609087101` is not already assigned to a different policy before deploying into an existing Cloudflare account.
 
-Static Worker assets include CSP, frame protection, no-referrer and restricted browser permissions. Build-time security headers and the read-only live path are checked by `check:deployment`; browser tests can target the built Worker with `TEST_BASE_URL=http://127.0.0.1:8798 LIVE_SMOKE=1 npm run test:e2e` after starting a local Worker on that port. These controls were verified locally, not on a public deployment yet. Before broader traffic, add a dependable RPC budget, monitoring and an operational privacy review. The app does not intentionally persist addresses or add analytics; an optional address is sent to the application server and upstream RPC, and infrastructure providers may log request metadata. Fonts are bundled locally through Fontsource with system fallbacks; no Google Fonts request is made by the page.
+Static Worker assets include CSP, frame protection, no-referrer and restricted browser permissions. Build-time security headers and the read-only live path are checked by `check:deployment`; browser tests can target the built Worker with `TEST_BASE_URL=http://127.0.0.1:8798 LIVE_SMOKE=1 npm run test:e2e` after starting a local Worker on that port, or set TEST_BASE_URL to the public origin. Public header/smoke verification and all nine public browser tests passed on 2026-09-09. The machine's direct DNS/network path failed for workers.dev; verification succeeded using its existing system proxy with normal TLS validation. This does not promise reachability from every network. Before broader traffic, add a dependable RPC budget, monitoring and an operational privacy review. The app does not intentionally persist addresses or add analytics; an optional address is sent to the application server and upstream RPC, and infrastructure providers may log request metadata. Fonts are bundled locally through Fontsource with system fallbacks; no Google Fonts request is made by the page.
 
 See [release handoff](docs/RELEASE_HANDOFF.md) for the remaining account-side steps. Do not upload the local development directory wholesale: it contains ignored dependencies, logs and runtime state.
 
@@ -123,7 +127,7 @@ The implemented integration is suitable to **consider** for the Uniswap Stack Co
 
 Do not claim 1inch Aqua/SwapVM integration, Chainlink CRE execution, a mainnet swap, paying customers, security-audited contracts or guaranteed trading protection: none is implemented or established here.
 
-Before submission: publish the repository, deploy and verify the live URL, review AI-assisted code, complete the sponsor feedback form, record a compliant human-narrated demo, and explicitly submit the ETHGlobal form. See [submission draft and checklist](docs/SUBMISSION_DRAFT.md).
+Before final competition submission: review AI-assisted code, complete the sponsor feedback form, record a compliant human-narrated demo, select the applicable prize and explicitly submit the ETHGlobal form. See [submission draft and checklist](docs/SUBMISSION_DRAFT.md). Repository publication and deployment are complete; the competition form is not claimed submitted.
 
 ## Sources
 

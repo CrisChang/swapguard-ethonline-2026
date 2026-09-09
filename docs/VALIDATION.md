@@ -59,3 +59,17 @@ No statement here implies those remaining checks are complete.
 - Edge deny/error/missing-binding behavior is covered by injected unit tests. The actual binding and asset headers were exercised in local Miniflare. Multi-location/global enforcement and public Cloudflare deployment have **not** been verified.
 
 Cloudflare authentication still requires user reauthentication. No public repository, deployment, feedback form, video or final competition submission is claimed complete by these tests.
+
+## Public deployment verification — 2026-09-09 (supersedes account blockers above)
+
+- Public source: https://github.com/CrisChang/swapguard-ethonline-2026 — anonymous GitHub API access returned 200, public visibility and MIT license confirmed.
+- Public demo: https://swapguard-ethonline-2026.swapguard.workers.dev — Worker version `b91fa25f-a2e7-4e0d-948e-8f969b6b44c1`.
+- Public `check:deployment` passed: page and CSP/frame/nosniff headers, health, explicit sample report, actual live report, no-store and absent transaction endpoint.
+- **9/9 browser tests passed against the public HTTPS origin in 17.4s**, including mobile layout, locally hosted fonts, failure/expiry/invalidation/export behavior and two real-chain paths.
+- Historical block 25938101: 0.1 WETH → 249.947321 USDC, minimum 248.697584; reverse 250 USDC → 0.099920889768081706 WETH with three public-probe balance/allowance reads. No transaction was sent; do not reuse these historical values as current quotes.
+- The direct local DNS/network path returned unrelated/unreachable addresses for workers.dev. Public checks used the existing OS proxy without changing system settings or disabling TLS. Network-specific restrictions remain possible for other visitors.
+- Hosted GitHub Actions run 34320212712 completed successfully for commit 62fd0b8 (unit/API checks, build and deterministic browser suite).
+
+Dependency audit on this date: `npm audit --omit=dev` reported **0 known production dependency vulnerabilities**. The full development tree reported five findings: two moderate entries in Vitest/@vitest/mocker and three high entries in the Wrangler/Miniflare/sharp chain. Development servers remain loopback-only; the image processing path is not used by this app. These entries were not silently ignored or force-upgraded across major versions. Review/update development tooling before broader/untrusted development use. Neither audit is an independent security review.
+
+Publication is complete. Sponsor feedback form, participant review, human narration, check-in confirmation and final ETHGlobal submission are still not established by this record.
