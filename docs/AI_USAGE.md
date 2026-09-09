@@ -55,4 +55,10 @@ narration, external feedback and final competition submission remain separate.
 
 ### Participant review still required
 
+The assistant also investigated the live RPC failure at the participant's request
+on 2026-09-09, edited `server/live.ts`, `server/api.ts`, added privacy-safe
+`server/rpc-diagnostics.ts` and transport tests, and checked official event/prize
+rules. Provider throttling remains unresolved pending independent RPC access;
+no production availability or competition eligibility is claimed from unit tests.
+
 The participant should review the implementation and its limits, validate the user experience, decide which sponsor criteria are actually met, retain this assistance disclosure and the genuine commit history, and record their own compliant narration. This document does not assert that AI-generated work alone satisfies the event's meaningful-human-input requirement or that any organizer has approved this entry.

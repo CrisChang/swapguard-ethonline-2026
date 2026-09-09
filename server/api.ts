@@ -5,6 +5,7 @@ import { analyze } from "../src/lib/engine";
 import { InputError, validateRequest } from "../src/lib/validation";
 import { demoSnapshot } from "./demo";
 import { liveSnapshot } from "./live";
+import { rpcDiagnostics } from "./rpc-diagnostics";
 import type { AnalyzeRequest, Snapshot } from "../src/lib/types";
 export type Env = {
   ETHEREUM_RPC_URL?: string;
@@ -100,8 +101,27 @@ export function createApi(provider: Provider = liveSnapshot) {
           ? demoSnapshot(req, Math.floor(Date.now() / 1000))
           : await provider(req, c.env?.ETHEREUM_RPC_URL);
       return c.json(analyze(req, snapshot));
-    } catch {
+    } catch (error) {
       // Never expose provider URLs, credentials, wallet details or raw RPC errors.
+      const diagnostics = rpcDiagnostics(error);
+      console.warn("swapguard-analysis-failed", diagnostics);
+      if (
+        diagnostics.some(
+          (d) =>
+            d.code === 429 || d.status === 429 || d.category === "rate-limit",
+        )
+      ) {
+        // This is an upstream/shared-provider failure, not the visitor's own quota.
+        c.header("Retry-After", "60");
+        return c.json(
+          {
+            code: "UPSTREAM_RATE_LIMITED",
+            error:
+              "Live Ethereum data providers are rate-limiting this server. No sample data was substituted. Try again in one minute; the operator can configure a dedicated Ethereum RPC if this persists.",
+          },
+          503,
+        );
+      }
       return c.json(
         {
           error:

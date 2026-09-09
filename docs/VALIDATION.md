@@ -1,5 +1,46 @@
 # Validation record — versioned observations
 
+## Live RPC investigation — 2026-09-09, follow-up
+
+- Reproduced a definite fallback bug: dRPC rejected a six-call JSON-RPC batch
+  with HTTP 500 / code 31, stating the free endpoint accepts at most three calls.
+  A three-call cap made direct local tests pass for both providers and both
+  token directions, including the optional public-address reads (4/4 snapshots,
+  two pool quotes each, block 25939234).
+- That first patch did **not** fix the public Worker: its 19 deterministic
+  browser cases passed, but both live cases still returned 502. The first round
+  of a planned ten-request public probe also failed; it is not a ten-test pass.
+  Traces are retained locally under `.cache/live-rpc-fix-browser`.
+- Added privacy-safe server error categories. The cloud batched run showed a
+  nested TypeError; its exact origin is not proven. Switched to independent
+  single-call envelopes, avoiding both provider batch-size limits and viem's
+  cross-request batch scheduler. RPC retries are disabled; bounded per-request
+  fallback remains. All contract reads still use the selected block.
+- The next cloud probe exposed JSON-RPC code 429 (upstream throttling), not an
+  invalid user trade or a requirement to fund a wallet. Worker secret-name
+  inspection confirmed no dedicated RPC is configured. Availability is still
+  unresolved; a configured dedicated endpoint needs production validation.
+- Safe alternatives were checked without adding them to production: LlamaRPC
+  returned HTTP 525, public 1RPC produced failed reads/no usable routes,
+  Flashbots did not serve the requested eth_call, and MEV Blocker timed out on
+  this local network path. These observations are not global provider verdicts.
+- Added 14 real-transport/diagnostic regressions: fallback, both directions,
+  concurrent isolation, block pinning, custom endpoint isolation, wrong-chain
+  rejection, unknown wallet reads, no-quote failure, upstream rate-limit handling
+  and log redaction. **232 unit/API/evidence tests pass**; TypeScript/Vite passes.
+- Upstream 429 now maps to **503 UPSTREAM_RATE_LIMITED**, with Retry-After 60,
+  no-store and no quote. This distinguishes the provider outage from this app's
+  own visitor/admission 429; it does not claim to remove upstream throttling.
+- No sample fallback, stale-price cache, private-key access, chain write or
+  change to experiment evidence. Network requirements are recorded separately
+  in [NETWORK_REQUIREMENTS.md](NETWORK_REQUIREMENTS.md).
+- Final deployed version: `e67f7895-ec8d-4feb-b986-b3660d85eb3c`. Page/security
+  headers, health, sample analysis and absent transaction endpoint passed.
+  **19 deterministic public browser cases passed; two opt-in live cases skipped**
+  in that final regression (not counted as live successes). Separate WETH and
+  USDC live probes both returned the new 503 UPSTREAM_RATE_LIMITED with a 60-second
+  retry header. Live recovery remains blocked on provider access/capacity.
+
 ## Task workbench — 2026-09-09
 
 - Added 42 task-state tests and two recorded local-fork receipt integrity tests;

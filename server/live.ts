@@ -29,17 +29,17 @@ export async function liveSnapshot(
     : ["https://ethereum-rpc.publicnode.com", "https://eth.drpc.org"];
   if (urls.some((url) => !url.startsWith("https://")))
     throw new Error("RPC must use HTTPS.");
-  // Batch reads made in the same tick instead of opening a connection per contract.
-  // This also reduces pressure on the public endpoints used by the default demo setup.
+  // Use single-call HTTP requests. Public providers impose batch limits, and
+  // viem's shared batch scheduler also couples otherwise independent Worker requests.
+  // Keep Promise concurrency and fixed-block reads, without cross-request batching.
   const client = createPublicClient({
     chain: mainnet,
     transport: fallback(
       urls.map((url) =>
         http(url, {
-          batch: { wait: 20, batchSize: 20 },
+          batch: false,
           timeout: 12000,
-          retryCount: 1,
-          retryDelay: 250,
+          retryCount: 0,
         }),
       ),
       { retryCount: 0 },

@@ -19,7 +19,7 @@ SwapGuard is a preflight UI, not a swap router. We also read the input token's E
 
 - QuoterV2 uses a tuple parameter and read-only simulation of a non-view contract function. A newcomer could mistake this for a wallet transaction requirement. A minimal `eth_call` example with explicit “no signing/broadcast” wording would help.
 - The deployment page identifies legacy vs current routers, while token allowances, Permit2 allowances and Permit2 signatures are distinct surfaces. A concise allowance-scope matrix would help tooling authors avoid overstating coverage.
-- Parallel calls to public RPCs were intermittently failing in our local setup. JSON-RPC batching reduced connections and the subsequent smoke test succeeded. This is an infrastructure observation, not proof of a Uniswap contract issue.
+- Parallel calls to public RPCs were intermittently failing. Later diagnosis found that oversized JSON-RPC batches violate the backup provider's free limit, and the cloud deployment separately receives upstream rate limits. The app now uses independent single-call requests and explicit upstream-throttling errors; a dedicated RPC still needs configuration/verification. This is an infrastructure issue, not evidence of a Uniswap contract failure.
 - Price deviation from an independent feed includes pool fees and oracle timing. It must not be labelled as pure price impact or MEV risk. A reference UX explaining these distinctions would be useful.
 
 ## Concrete suggestions

@@ -46,6 +46,13 @@ npm start
 
 The built site is served at http://127.0.0.1:8787 by `npm start`.
 
+**Live availability, 2026-09-09:** the public Worker is currently hitting upstream
+RPC throttling, despite successful direct local queries. Single-call requests
+avoid the observed batch-limit failure, but are not a substitute for provider
+capacity. A rate-limited live request returns `503 UPSTREAM_RATE_LIMITED` with
+retry guidance, never synthetic or cached prices. The replay still works.
+See [validation](docs/VALIDATION.md) and [network scope](docs/NETWORK_REQUIREMENTS.md).
+
 ## Minimum-output verification lab
 
 Open **Reproducible test lab** on the website. The baseline is constructed: 1,000 USDC → 0.400 WETH, 0.5% tolerance, 0.398 WETH floor. A mutation lowers only the encoded floor to 0.360 WETH while the displayed quote remains unchanged. The 0.038 WETH gap is weaker protection, **not an observed loss or money saved**.
@@ -75,7 +82,7 @@ See [methodology and reusable verifier](docs/PROTECTION.md). The suite is a regr
 React preflight UI
   └─ POST /api/analyze (validated input; no keys, signing or transaction payload)
        ├─ explicit Sample → synthetic fixtures
-       └─ explicit Live   → Ethereum RPC (HTTPS, read-only, batched)
+       └─ explicit Live   → Ethereum RPC (HTTPS, read-only, single-call fallback)
                              ├─ v3 factory → QuoterV2: two fee tiers
                              ├─ Chainlink ETH/USD + USDC/USD
                              └─ optional ERC-20 balance + two allowances
