@@ -83,3 +83,13 @@ Publication is complete. Sponsor feedback form, participant review, human narrat
 - Initial IPC/browser sandbox restrictions were resolved with network permission and approved isolated browser execution. No failed launch was counted as an application result.
 
 No wallet action or transaction execution simulation was performed. Public extension deployment is recorded separately after verification.
+
+## Protection extension public release — 2026-09-09
+
+- Published source implementation commits `29e7fb9`, `7d6f0ea`, `f949496`; genuine history retained. Latest Worker version: `dd909da7-7b30-440f-876d-7c1a9108fbff`.
+- Final unit/API suite **146/146**, published synthetic suite **25/25**, formatting and TypeScript/build checks passed.
+- Final browser run against the public HTTPS origin: **15/15 passed in 21.2s**, including all 13 deterministic UI paths and two real-chain smoke paths. Downloaded observed results contain all 25 inputs and expected/actual decisions. The future-quote test uses explicitly injected synthetic timestamps; live tests do not mock RPC.
+- Historical public live block **25938477**: 0.1 WETH quoted 250.811739 USDC, minimum 249.55768 USDC; reverse 250 USDC quoted 0.099578026581536814 WETH with three successful public-probe reads. These are observations, not current quotes or executed swaps.
+- Public page/security headers, health, sample/live API and absent swap endpoint checks passed on the first extension smoke. A subsequent smoke and initial browser run returned HTTP 502 on live RPC paths. Local real-chain smoke later passed at block 25938466, and the final public browser run passed both live paths. The free upstream remains intermittent; this result does not establish reliable availability. No fallback data was relabelled as live and no quote policy was weakened.
+- The initial public browser run also found a timing race: the confirm button could be offered before the quote timestamp reached the UI clock. Confirmation itself rejected it. The UI now disables confirmation until the validity interval begins and gives clock guidance. A new deterministic future-clock test covers this. Local 13/13 UI regression and final public 15/15 passed after the correction.
+- Public checks used the existing proxy/network setup with normal TLS. New lab verification itself runs locally without RPC. No wallet was connected, no transaction simulated/executed and no final competition form submitted.

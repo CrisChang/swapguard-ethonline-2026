@@ -8,6 +8,8 @@ SwapGuard checks a specific problem: **does a swap transaction preserve the mini
 
 The initial screen uses clearly labelled synthetic samples. Choose **Live onchain** for actual read-only mainnet data. Public release verified on 2026-09-09; this is not proof of final ETHGlobal submission.
 
+Latest minimum-output extension: **146 unit/API tests, 25 published synthetic expectations and 15 public browser tests passed** on 2026-09-09. Live RPC returned intermittent 502 errors before the final passing run; free-provider availability is not guaranteed. Lab replay runs without RPC. See the dated [validation record](docs/VALIDATION.md), not just a passing count, for scope and earlier failures.
+
 ## Run locally
 
 Requires Node.js 22 and npm. From this directory:

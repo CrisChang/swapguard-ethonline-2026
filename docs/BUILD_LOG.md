@@ -52,3 +52,11 @@ The participant confirmed Cloudflare login and explicitly asked the assistant to
 - Deterministic tests expanded from 74 to 146, including hand-encoded ABI reference, mutations, rounding and expiry. All passed; all 25 public cases matched their declared expectations.
 - Default browser suite passed 12/12 with two opt-in live cases skipped. Browser launch required an approved isolated process outside the sandbox; failed launches were not test passes.
 - Desktop/390px mobile lab screenshots inspected. Scope notes, methodology, submission/demo drafts, feedback and AI disclosure updated. Public deployment verification will be recorded after actual checks.
+
+## Protection extension published and verified — 2026-09-09
+
+- Published the extension to the same SwapGuard Worker and pushed the core verifier, public lab and timing fix in separate genuine commits (`29e7fb9`, `7d6f0ea`, `f949496`). No other service was changed.
+- Account verification initially could not refresh OAuth inside the sandbox; the approved normal refresh succeeded. No user re-login or new credentials were needed.
+- Public QA found an early confirmation timing race and intermittent upstream RPC 502 responses. Disabled confirmation until the quote validity interval starts, added a deterministic clock test, and retained the upstream errors in validation evidence instead of masking them with samples.
+- Final public browser run **15/15 passed**, including two unmocked mainnet reads at block 25938477; unit/API **146/146** and fixtures **25/25** passed. Free RPC reliability remains a limitation.
+- Latest deployed version: `dd909da7-7b30-440f-876d-7c1a9108fbff`. Public links unchanged. Full evidence and caveats in `docs/VALIDATION.md`. Human review/narration, sponsor feedback and ETHGlobal final submission remain pending.
