@@ -1,10 +1,12 @@
 # AI assistance disclosure
 
+2026-09-10 publication follow-up: the participant authorized GitHub synchronization and publication to the existing site, and requested test-data/report retention on the website. Codex implemented the fixed evidence report section, MCP transcript recorder and integrity checks. Eight synthetic scenarios were actually run through the local MCP transport; inputs remain constructed and the recorded outcomes are not chain-authenticated or independent validation. No human review, real trading or customer adoption is implied by this run.
+
 Date: 2026-09-08. Project: SwapGuard, ETHOnline 2026, Building from Scratch.
 
 ## Human direction recorded
 
-The participant created the competition project as **SwapGuard / DeFi / Building from Scratch**, provided the submission-form context and approved starting the first version: “好的，先做第一版吧”. Earlier direction emphasized learning from previous hackathons and preserving unrelated projects. The participant has not yet completed a manual code review or recorded the final demonstration in this build record.
+The participant created the competition project as **SwapGuard / DeFi / Building from Scratch**, provided the submission-form context and approved starting the first version: “好的，先做第一版吧”. Earlier direction emphasized learning from previous hackathons and preserving unrelated projects. Update 2026-09-10: the participant supplied six original Mandarin voice recordings and confirmed no narration errors; the assembled subtitled video was uploaded, and participant screenshots show project submission and Check-in 2 complete. Manual code review is still not claimed complete.
 
 ## AI contribution
 
@@ -62,3 +64,11 @@ rules. Provider throttling remains unresolved pending independent RPC access;
 no production availability or competition eligibility is claimed from unit tests.
 
 The participant should review the implementation and its limits, validate the user experience, decide which sponsor criteria are actually met, retain this assistance disclosure and the genuine commit history, and record their own compliant narration. This document does not assert that AI-generated work alone satisfies the event's meaningful-human-input requirement or that any organizer has approved this entry.
+
+## Agent-facing accounting extension — 2026-09-10
+
+The participant proposed serving existing AI agents through MCP/Skill rather than another swap channel, and explicitly approved modifying the website while retaining manual analysis. Their direction asked to clarify audience, problem, outputs, scope, background and costs across gas and failed trades. The assistant proposed replacing the unproven “minimum loss” claim with task-level accounting and original-condition checks. The prevalence of missing cost records remains a hypothesis, not customer research.
+
+AI assistance generated `src/lib/agent-ledger.ts`, `src/lib/agent-examples.ts`, `src/AgentWorkbench.tsx`, `src/agent-workbench.css`, `server/agent-journal.ts`, `server/mcp.ts`, `scripts/check-mcp.ts`, related tests and documentation. The assistant integrated the official MCP SDK, ran deterministic tests and an actual SDK client/server stdio check with constructed inputs and restart persistence. No live LLM evaluation, authenticated receipt verification, wallet signature or transaction broadcast occurred in this extension. The original frozen pilot and local-fork evidence were not modified. Scope, implementation specification and Agent operating instructions are retained in `AGENT_INTEGRATION.md`.
+
+The earlier RPC-throttling investigation above is historical: a separate 2026-09-10 readiness audit passed both live directions at block 25944202 after dedicated RPC configuration. This does not establish continuous uptime. The earlier participant video and submitted form do not automatically cover this new Agent extension. Human review, external sponsor feedback completion and any form/video revision remain separate participant actions.

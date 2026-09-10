@@ -37,3 +37,9 @@ Our output-relative minimum formula is a local convention, not a claim of exact 
 Oracle max ages of 1 hour / 24 hours are SwapGuard policy choices, not claims about official heartbeat or deviation settings. Onchain decimals and round values are read from contracts rather than hardcoded. The 2026-09-08 smoke test returned 8 decimals for both feeds.
 
 Third-party package versions and integrity hashes are in `package-lock.json`. UI icons are from `lucide-react`; DM Sans / Manrope Latin fonts are bundled from `@fontsource/dm-sans` and `@fontsource/manrope` with system fallbacks. Their original license notices are distributed in `public/FONT_LICENSES.txt`. The shield SVG is a new code-authored asset. No old project code, API secrets, screenshots or deployments were copied into this project.
+
+## Agent extension references — 2026-09-10
+
+- [Official MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk): v2 server/client APIs and stdio transport. The locally installed `@modelcontextprotocol/server` and `@modelcontextprotocol/client` are pinned to 2.0.0; Zod schemas are pinned to 4.6.1. Dependency licenses and integrity hashes remain in the lockfile.
+- [MCP architecture](https://modelcontextprotocol.io/docs/learn/architecture): separation of tool integration from model behavior. Protocol availability is not a safety guarantee or proof of Agent adoption.
+- [Uniswap Agent tools](https://github.com/Uniswap/uniswap-ai): existing swap, DCA and rebalancing integrations. Task cost accounting is positioned as complementary; no superiority or missing-competitor-capability claim was established.

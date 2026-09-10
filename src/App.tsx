@@ -30,6 +30,8 @@ import type {
 import { validateRequest } from "./lib/validation";
 import ProtectionLab from "./ProtectionLab";
 import TaskWorkbench from "./TaskWorkbench";
+import AgentWorkbench from "./AgentWorkbench";
+import AgentEvidence from "./AgentEvidence";
 
 const number = (s: string | number, digits = 5) =>
   Number(s).toLocaleString("en-US", { maximumFractionDigits: digits });
@@ -190,11 +192,12 @@ export default function App() {
           </span>
         </div>
         <nav aria-label="Main navigation">
-          <a className="active" href="#tasks">
-            Task workbench
+          <a className="active" href="#agents">
+            For agents
           </a>
-          <a href="#protection">Draft checks</a>
-          <a href="#workspace">Quote & tolerance</a>
+          <a href="#tasks">Task replay</a>
+          <a href="#evidence">Test reports</a>
+          <a href="#workspace">Manual analysis</a>
           <a href="#scope">Scope & limits</a>
         </nav>
         <span className="readonly-pill">
@@ -205,18 +208,19 @@ export default function App() {
         <section className="hero">
           <div>
             <p className="eyebrow">
-              <span /> TASK-LEVEL GUARDS FOR UNISWAP AUTOMATION
+              <span /> COST ACCOUNTING & INTENT CHECKS FOR SWAP AGENTS
             </p>
             <h1>
-              Your task. Your limits.
+              One swap task.
               <br />
               <span>Every attempt counts.</span>
             </h1>
             <p className="hero-description">
-              Keep the original price floor and account for approval and retry
-              costs across an automated swap task. Explore when to act, wait or
-              stop — with an inspectable replay, not a promise of cheaper
-              trades.
+              For developers of automated Uniswap swaps: keep the original
+              minimum output, count gas across approvals and failed retries, and
+              explain when to wait or stop. Keep your execution channel; add an
+              inspectable task ledger. Manual read-only analysis stays
+              available.
             </p>
           </div>
           <div className="hero-note">
@@ -234,6 +238,8 @@ export default function App() {
             </p>
           </div>
         </section>
+        <AgentWorkbench />
+        <AgentEvidence />
         <TaskWorkbench />
         <ProtectionLab report={report} now={now} />
         <section
@@ -760,7 +766,7 @@ export default function App() {
           <ShieldCheck size={21} />
           <span>SwapGuard.</span>
         </div>
-        <span>Built from scratch for ETHOnline 2026 · Task workbench</span>
+        <span>ETHOnline 2026 · Agent cost ledger & manual analysis</span>
         <a
           href="https://developers.uniswap.org/docs/protocols/v3/deployments/v3-ethereum-deployments"
           target="_blank"

@@ -1,6 +1,6 @@
 # Uniswap Developer Feedback — SwapGuard
 
-Updated: 2026-09-09. Status: integration notes prepared; **external Uniswap Developer Feedback Form has not been submitted**.
+Updated: 2026-09-10. Status: integration notes prepared; **completion of the external Uniswap Developer Feedback Form is unverified**. The historical notes below retain what was known on 2026-09-09.
 
 ## Integration used
 
@@ -47,3 +47,11 @@ The updated workbench addresses approval and retry costs across one automated WE
 Measured full transaction gas (including reverted execution) was materially different from QuoterV2's internal gas estimate. A reference task-cost example should separately account for approval, successful execution, reverted execution and transaction replacement; it should never treat an internal quote gas figure as the entire user's transaction cost.
 
 Our first fixed constructed-path pilot completed fewer tasks under a wait-for-cheaper-gas policy. Both immediate routing baselines behaved identically. We suggest publishing non-completion and original-floor retention alongside gas numbers, not advertising cheaper completed subsets as universal savings. This is tooling feedback, not a claim to improve Uniswap's existing gas-aware router.
+
+## Agent integration and updated availability — 2026-09-10
+
+The product now targets developers of existing swap agents. A local advisory MCP interface records original task terms, cumulative reported gas and pending operations across restarts. Browser examples show approval/failure/retry accounting, weakening a floor, duplicate preparation, budget exhaustion and receipt overruns. Inputs and receipts in this MCP version are caller-reported, not independently authenticated; this is not Universal Router execution or a production wallet guard. Manual read-only quoting and the earlier narrow draft verifier remain available.
+
+Suggested ecosystem example: show how an existing swap Agent preserves a user's original minimum and reconciles full approval/revert/retry receipts across a task without interpreting a refreshed quote as renewed consent. Explicitly separate gas estimates from actual receipts and avoid subtracting pool fees already reflected in output. A reference for exact transaction binding, receipt finality and task-id reuse would help integrations move from advisory tools to enforceable workflows.
+
+The separate readiness audit passed both live quote directions on the public website at block 25944202 after dedicated RPC configuration. Earlier errors described above remain valid historical observations, not the latest availability result. No new claim of mainnet execution, human code-review completion or external feedback-form submission is made.

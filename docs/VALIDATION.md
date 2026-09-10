@@ -205,3 +205,26 @@ No wallet action or transaction execution simulation was performed. Public exten
   No real-world fill improvement or routing superiority has been established.
 - Only isolated chain-31337 fake-money transactions were executed. Both temporary
   Anvil nodes were stopped. No real wallet, mainnet state or other project changed.
+
+## Agent advisory ledger extension — 2026-09-10 (local, not yet published)
+
+- `npm test -- --reporter=dot`: **267/267 passed across 11 files**. This includes deterministic accounting, unchanged task terms, pending-state checks, conflicting/duplicate receipts, retained overruns, a stricter attempt-level output floor, journal recovery and server-rendered page structure. The page checks are not browser interaction or visual tests.
+- `npm run check:mcp`: a real official SDK client exercised **4 tools in 14 calls over stdio**, including a server restart that retained reported spending. The documented absolute-path loader was launched from outside the project directory. Inputs and receipts were constructed, not chain-verified, and no live LLM or trading Agent was evaluated.
+- The constructed MCP sequence recorded approval gas of 0.4, reverted swap gas of 1.0 and successful retry gas of 0.5 USDC-equivalent: total 1.9, remaining budget 1.1, reported gross output 99.8 and output after task gas 97.9. These illustrate accounting only, not current market prices, observed savings or investment P&L.
+- `npm run check:protection`: **25/25 existing synthetic cases matched their declared expectations**. The frozen calibration, replay traces and negative completion results were not changed.
+- TypeScript and production Vite build passed using the Sites build helper. Wrangler **dry-run only** successfully bundled the existing Worker with its assets and rate-limit bindings. An initial attempt could not write Wrangler's default log outside the sandbox; rerunning with a project-local ignored log path completed cleanly. Nothing was uploaded or deployed.
+- The local preview responded with HTTP 200 and is available at `http://127.0.0.1:5177/#agents`. No new browser interaction, screenshots, live RPC or wallet tests were run for this extension. Earlier live/mainnet observations above do not validate the new MCP receipt inputs.
+
+The website examples run the accounting core in the browser, not a remote MCP connection. The actual MCP service is local stdio with a single-writer file journal, caller-reported unverified observations and no signer. New task IDs, fabricated inputs, direct wallet execution and edits to the local journal can bypass its advisory checks; it is not an account-wide or onchain enforcement boundary. Public GitHub synchronization and website publication await user confirmation. The existing ETHGlobal submission and uploaded video were not edited.
+
+## Frozen Agent evidence and approved release preparation — 2026-09-10
+
+The participant subsequently authorized public GitHub synchronization/publication to the existing website and requested retained test data/reports.
+
+- `agent-ledger-2026-09-10`: **8/8 declared behavioral expectations matched**, from **46 actual SDK/stdio MCP calls**, including **2 expected tool errors** and **2 process-restart scenarios**. This is constructed integration evidence, not a live LLM, real trading, accuracy or savings benchmark.
+- Full transcript and synthetic journal events: `public/evidence/agent-ledger-2026-09-10.json`; SHA-256 `952df7cb42c1d05f4a1e12f661dcb10de70c4fc735226fa7b9fc17ec8485dc4d`. A companion manifest records runtime/source fingerprints and a Markdown report explains the results. Existing artifacts cannot be overwritten by the recorder.
+- Unfinished tasks and negative cases remain: over-budget retry waits with 1.4 spent; weakened floor is rejected; pending state survives restart; repeated receipts charge once; conflicting receipts and task-budget reset fail; a reported gas overrun leaves −0.5 remaining; reported 98 USDC output below the 99.5 floor is flagged and retained. These are values reported to MCP, not independently verified blockchain observations.
+- Final local deterministic suite: **271/271 across 12 files**, including artifact byte/source integrity, journal replay and server-rendered public report links. TypeScript/Vite build passed. No new local browser interaction or visual QA was run.
+- Existing Cloudflare dashboard update `60ac7576` was inspected: its script digest matches the prior release; it added the existing `ETHEREUM_RPC_URL` runtime variable. Publication must preserve dashboard variables with `--keep-vars`; no RPC credential belongs in source or the evidence files.
+
+Public publication and remote download checks are recorded after the actual deployment, not inferred from the local build. ETHGlobal forms, uploaded video and real wallets remain unchanged.

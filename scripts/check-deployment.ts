@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import evidenceManifest from "../public/evidence/agent-ledger-2026-09-10.manifest.json";
 
 const target = process.argv[2];
 if (!target)
@@ -39,6 +41,36 @@ assert.match(
 );
 assert.match(await page.text(), /SwapGuard/);
 console.log("PASS: built page and static security headers");
+const manifestResponse = await get(
+  "/evidence/agent-ledger-2026-09-10.manifest.json",
+);
+assert.equal(manifestResponse.status, 200);
+assert.match(
+  manifestResponse.headers.get("content-type") || "",
+  /application\/json/,
+);
+assert.deepEqual(await manifestResponse.json(), evidenceManifest);
+const transcriptResponse = await get(evidenceManifest.artifact.path);
+assert.equal(transcriptResponse.status, 200);
+assert.match(
+  transcriptResponse.headers.get("content-type") || "",
+  /application\/json/,
+);
+const transcript = Buffer.from(await transcriptResponse.arrayBuffer());
+assert.equal(transcript.length, evidenceManifest.artifact.bytes);
+assert.equal(
+  createHash("sha256").update(transcript).digest("hex"),
+  evidenceManifest.artifact.sha256,
+);
+const readableReport = await get(evidenceManifest.reportPath);
+assert.equal(readableReport.status, 200);
+assert.match(
+  await readableReport.text(),
+  /Eight predefined constructed scenarios/,
+);
+console.log(
+  "PASS: public evidence manifest, exact transcript SHA-256 and readable report",
+);
 const health = await get("/api/health");
 assert.equal(health.status, 200);
 const status = await health.json();

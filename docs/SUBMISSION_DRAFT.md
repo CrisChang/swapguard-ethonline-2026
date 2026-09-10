@@ -1,6 +1,6 @@
-# ETHGlobal submission draft — task workbench, not submitted
+# ETHGlobal submission revision — Agent accounting extension
 
-Updated 2026-09-09. Review against the final implementation. This file does not submit or update the ETHGlobal form. Do not use localhost or another project's URL.
+Updated 2026-09-10. The prior project submission and Check-in 2 are confirmed by participant screenshots; the public showcase is https://ethglobal.com/showcase/swapguard-km1v7. The following is a **new revision**, not proof that the Agent extension is published or submitted. This file does not change the ETHGlobal form or the uploaded video. Do not use localhost in the competition form.
 
 ## Project details
 
@@ -13,17 +13,22 @@ Updated 2026-09-09. Review against the final implementation. This file does not 
 
 ## Short description (under 100 characters)
 
-Task-level gas budgets and original price floors for automated Uniswap swaps.
+Task cost accounting and original-intent checks for Uniswap agents, with an advisory MCP interface.
 
 ## Description
 
-SwapGuard focuses on a specific cost problem in small automated swaps: approvals and failed retries can consume the budget even when the intended trade never completes. A user defines an original minimum output, total gas budget, deadline and retry limit. The workbench then checks current conditions, prepares a replay operation, reconciles its receipt and either retries, waits or stops. Approval costs and reverted transactions remain in a single ledger; neither the price floor nor the spent budget resets on retry. Users explicitly choose timely or cost-first execution, and the UI shows when waiting can miss the trade. Partial and final reports include decisions, costs, output and non-completion, with explicit evidence provenance. The online workbench uses constructed scenarios, not live trading. Separate read-only panels query actual Uniswap v3 quotes and Chainlink references and verify supported unsigned legacy router parameters. Real contract receipt reconciliation is demonstrated only on a local Ethereum fork with fake funds. No wallet connection, signature, approval or transaction broadcast is requested by the website. Our first constructed pilot completed fewer tasks under the cost-first policy, so we do not claim higher fills or guaranteed savings.
+SwapGuard serves developers of existing Uniswap agents, focusing on one WETH-to-USDC task across approval, failed swaps and retries. A new quote should not erase already-paid gas or silently lower the user's original minimum output. Our local advisory MCP interface records task terms, checks each proposed attempt, records reported receipts once and returns an inspectable cost ledger. The same task retains its floor and cumulative budget across server restarts. Reports separate approval gas, failed-swap gas, successful-swap gas, gross output and output after task gas; unfinished tasks keep their spent costs. The website preserves manual read-only swap analysis and adds five clearly synthetic Agent integration examples. MCP observations, receipts and currency conversions are caller-reported and are not independently verified onchain. No wallet is connected and no transaction is signed or broadcast. Separate mainnet Uniswap v3 quotes, a narrow legacy draft checker and fake-money local-fork execution evidence remain explicitly distinct. This is task accounting and constraint checking, not minimum-loss trading, a new router, a wallet-wide enforced cap or a guarantee of savings. The prevalence of the cost-recording pain and customer adoption still require validation.
 
 ## How it is made
 
-SwapGuard is a new TypeScript application using React/Vite, viem and a Hono API on Cloudflare Workers. Mainnet reads are pinned to one block: Uniswap v3 Factory and QuoterV2 provide two single-pool WETH/USDC quotes, while Chainlink ETH/USD and USDC/USD provide validated references. A pure task state machine uses integer token units, an immutable original output floor and a cumulative gas budget. The policy receives only the current observation; future constructed path values belong to the test harness. It reserves estimated approval plus swap-or-revert gas before preparing an operation, then reconciles matching receipts exactly once, retaining failures and detecting budget overruns. Pending operations block resends. A browser-local command log restores the same replay state after reload without trusting stored totals. A separate canonical legacy SwapRouter02 decoder verifies original conditions for one deadline-bound multicall/exactInputSingle shape. Gas profiles were measured using actual contracts on a pinned Anvil fork; synthetic task paths and a separate approval-revert-retry fork receipt proof are published with their limitations. The public app does not execute swaps or cover Universal Router/full smart routing. This build is AI-assisted; see docs/AI_USAGE.md for scope and human-review status.
+SwapGuard is a TypeScript application using React/Vite, viem and a Hono API on Cloudflare Workers. The new local stdio server uses the official MCP TypeScript SDK and exposes four tools: open task, assess attempt, record receipt and get task. Shared strict schemas and bigint accounting validate caller-reported inputs; immutable in-task terms, pending-operation checks and receipt idempotency prevent budget resets and duplicate charges through the supported workflow. Mutations are flushed to a private single-writer local journal before success is returned, and restart replays the journal instead of trusting stored totals. Corrupt storage fails closed. This is not a signed or tamper-proof audit log. An SDK-client integration check exercises the real MCP transport with constructed inputs and a server restart. The browser examples call the same accounting core locally but are not MCP connections. Separately, live Uniswap v3 Factory/QuoterV2 and Chainlink reads are pinned to one block, while the original task replay and narrow legacy SwapRouter02 decoder are retained. Actual contract receipts exist only in a separate fake-money Anvil-fork proof. No remote MCP service, wallet execution, automatic receipt verification or Universal Router adapter is claimed. AI-generated code, human direction and remaining review boundaries are disclosed in docs/AI_USAGE.md.
 
 ## Evidence and honest claims
+
+- `src/lib/agent-ledger.ts`: strict caller-report schemas, exact task accounting, immutable terms and pending/duplicate checks. Not independent onchain verification.
+- `server/mcp.ts`, `server/agent-journal.ts`: actual local MCP adapter and restart-persistent advisory journal.
+- `scripts/check-mcp.ts`: SDK-client transport verification using constructed inputs, not an LLM adoption or profitability evaluation.
+- `docs/AGENT_INTEGRATION.md`: integration instructions, accounting definitions, threat/trust boundary and next validation.
 
 - `src/lib/task-session.ts`: task lifecycle, receipt reconciliation and replay persistence.
 - `src/lib/task-budget.ts`: current-observation-only policy and bigint gas accounting.
@@ -44,10 +49,12 @@ SwapGuard is a new TypeScript application using React/Vite, viem and a Hono API 
 
 - [ ] Review the AI-assisted code and be able to explain its scope and results.
 - [ ] Submit the external Uniswap Developer Feedback Form with the FEEDBACK.md link.
-- [ ] Record and upload a compliant human-narrated 2–4 minute demo; verify current rules.
+- [x] Participant recorded and uploaded the earlier human-narrated Mandarin demo with English subtitles; screenshots show Video complete.
+- [ ] Update the demo only if presenting the new Agent extension; retain provenance labels and verify applicable language rules.
 - [ ] Select screenshots retaining synthetic/local/live labels.
 - [ ] Copy the updated description and links into ETHGlobal; choose the applicable partner prize.
-- [ ] Final Submit and verify confirmation; re-submit after subsequent form edits if required.
-- [ ] Independently verify the event check-in requirement in the dashboard.
+- [x] Prior project Final Submit confirmed; public showcase is accessible.
+- [x] Check-in 2 confirmed by the participant's green dashboard status.
+- [ ] Publish and verify the Agent extension before claiming it on the form; re-submit any revised form afterward.
 
 Previously verified submission deadline: 2026-09-14 00:00 Asia/Shanghai (2026-09-13 12:00 EDT). Recheck the dashboard for changes; this is not a new deadline verification.

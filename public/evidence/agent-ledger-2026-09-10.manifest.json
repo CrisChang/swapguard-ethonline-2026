@@ -1,0 +1,247 @@
+{
+  "schemaVersion": "swapguard-frozen-agent-evidence-v1",
+  "runId": "agent-ledger-2026-09-10",
+  "startedAt": "2026-09-10T06:06:57.595Z",
+  "completedAt": "2026-09-10T06:07:00.580Z",
+  "evidenceType": "synthetic-caller-inputs-real-local-mcp-transport",
+  "transport": "stdio",
+  "sourceBaseCommit": "f810b3cf5a0e69418691c67296fdd935f393a816",
+  "sourceRevisionNote": "Base commit is provenance only; exact exercised source bytes are identified by sourceSha256 (may include uncommitted changes).",
+  "sourceSha256": {
+    "src/lib/agent-ledger.ts": "4fffba94456a8b845bf3931345e0da00fc0b091eefa77727811f937ae34acb90",
+    "src/lib/agent-examples.ts": "cd58aeeaeb8c040aa421cd41ea80331440cf4553b26d18b9c844e0a85788d6fd",
+    "server/agent-journal.ts": "185cfc895f6279157878b57b17311017f13e1caabfcf7d41336a768d6dd780a0",
+    "server/mcp.ts": "0b9011d76732b23929a5cd2a5b3ee978c9aa13863b9e1af75f694e4aff5e2375",
+    "scripts/record-agent-evidence.ts": "903612deeddf07ca2ad3bff739105a46b695ba70fbdfb7ba1f2ab873a1f03231",
+    "package.json": "3bc38876d5079086c530ea7511a44bafdf4342951dd54f64aaf87275b5232623",
+    "package-lock.json": "667c0e6c1f498ec2b3d8fa21e34dd1ded382eba4c60c1bcecc110e3ef7a965c2"
+  },
+  "runtime": {
+    "node": "v22.22.2",
+    "mcpSdk": "2.0.0"
+  },
+  "methodology": "Eight predefined constructed scenarios, captured via the official MCP SDK against isolated local journals. All cases and tool errors retained. Not independent validation, live LLM behavior, real transaction receipts, or a savings/accuracy benchmark.",
+  "exclusions": [
+    "No real funds or wallet",
+    "No chain receipt verification",
+    "No live prices",
+    "No production agent adoption",
+    "No cost-optimality comparison",
+    "No aggregate gas sum across alternative scenarios"
+  ],
+  "summary": {
+    "scenarios": 8,
+    "passed": 8,
+    "toolCalls": 46,
+    "expectedToolErrors": 2,
+    "restartCases": 2
+  },
+  "cases": [
+    {
+      "id": "recover",
+      "label": "Revert, then complete",
+      "expected": {
+        "status": "completed_reported",
+        "spentGasUsdc": "1.9",
+        "remainingGasBudgetUsdc": "1.1",
+        "grossOutputUsdc": "99.8",
+        "netOutputAfterGasUsdc": "97.9"
+      },
+      "actual": {
+        "status": "completed_reported",
+        "spentGasUsdc": "1.9",
+        "remainingGasBudgetUsdc": "1.1",
+        "grossOutputUsdc": "99.8",
+        "netOutputAfterGasUsdc": "97.9"
+      },
+      "checksPassed": true,
+      "restarted": false,
+      "callCount": 7,
+      "status": "completed_reported",
+      "decision": null,
+      "spentGasUsdc": "1.9",
+      "remainingGasBudgetUsdc": "1.1",
+      "grossOutputUsdc": "99.8",
+      "netOutputAfterGasUsdc": "97.9"
+    },
+    {
+      "id": "budget",
+      "label": "Retry exceeds remaining budget",
+      "expected": {
+        "decision": "WAIT",
+        "spentGasUsdc": "1.4",
+        "remainingGasBudgetUsdc": "1.6",
+        "grossOutputUsdc": null
+      },
+      "actual": {
+        "decision": "WAIT",
+        "spentGasUsdc": "1.4",
+        "remainingGasBudgetUsdc": "1.6",
+        "grossOutputUsdc": null
+      },
+      "checksPassed": true,
+      "restarted": false,
+      "callCount": 6,
+      "status": "open",
+      "decision": "WAIT",
+      "spentGasUsdc": "1.4",
+      "remainingGasBudgetUsdc": "1.6",
+      "grossOutputUsdc": null,
+      "netOutputAfterGasUsdc": null
+    },
+    {
+      "id": "floor",
+      "label": "Agent proposes a weaker minimum",
+      "expected": {
+        "decision": "REJECT",
+        "spentGasUsdc": "1.4",
+        "grossOutputUsdc": null
+      },
+      "actual": {
+        "decision": "REJECT",
+        "spentGasUsdc": "1.4",
+        "grossOutputUsdc": null
+      },
+      "checksPassed": true,
+      "restarted": false,
+      "callCount": 6,
+      "status": "open",
+      "decision": "REJECT",
+      "spentGasUsdc": "1.4",
+      "remainingGasBudgetUsdc": "1.6",
+      "grossOutputUsdc": null,
+      "netOutputAfterGasUsdc": null
+    },
+    {
+      "id": "pending",
+      "label": "Agent tries a duplicate send",
+      "expected": {
+        "decision": "WAIT",
+        "spentGasUsdc": "0.4",
+        "pendingAttemptId": "swap-1",
+        "grossOutputUsdc": null
+      },
+      "actual": {
+        "decision": "WAIT",
+        "spentGasUsdc": "0.4",
+        "pendingAttemptId": "swap-1",
+        "grossOutputUsdc": null
+      },
+      "checksPassed": true,
+      "restarted": true,
+      "callCount": 5,
+      "status": "awaiting_reported_receipt",
+      "decision": "WAIT",
+      "spentGasUsdc": "0.4",
+      "remainingGasBudgetUsdc": "2.6",
+      "grossOutputUsdc": null,
+      "netOutputAfterGasUsdc": null
+    },
+    {
+      "id": "overrun",
+      "label": "Receipt costs exceed the estimate",
+      "expected": {
+        "status": "constraint_breach",
+        "budgetBreach": true,
+        "spentGasUsdc": "3.5",
+        "remainingGasBudgetUsdc": "-0.5",
+        "grossOutputUsdc": "99.8",
+        "netOutputAfterGasUsdc": "96.3"
+      },
+      "actual": {
+        "status": "constraint_breach",
+        "budgetBreach": true,
+        "spentGasUsdc": "3.5",
+        "remainingGasBudgetUsdc": "-0.5",
+        "grossOutputUsdc": "99.8",
+        "netOutputAfterGasUsdc": "96.3"
+      },
+      "checksPassed": true,
+      "restarted": false,
+      "callCount": 7,
+      "status": "constraint_breach",
+      "decision": null,
+      "spentGasUsdc": "3.5",
+      "remainingGasBudgetUsdc": "-0.5",
+      "grossOutputUsdc": "99.8",
+      "netOutputAfterGasUsdc": "96.3"
+    },
+    {
+      "id": "duplicate-receipt",
+      "label": "Repeated receipt charges once",
+      "expected": {
+        "duplicate": true,
+        "spentGasUsdc": "0.4",
+        "remainingGasBudgetUsdc": "2.6"
+      },
+      "actual": {
+        "duplicate": true,
+        "spentGasUsdc": "0.4",
+        "remainingGasBudgetUsdc": "2.6"
+      },
+      "checksPassed": true,
+      "restarted": false,
+      "callCount": 5,
+      "status": "open",
+      "decision": null,
+      "spentGasUsdc": "0.4",
+      "remainingGasBudgetUsdc": "2.6",
+      "grossOutputUsdc": null,
+      "netOutputAfterGasUsdc": null
+    },
+    {
+      "id": "budget-reset",
+      "label": "Restart cannot reset existing task terms",
+      "expected": {
+        "spentGasUsdc": "0.4",
+        "remainingGasBudgetUsdc": "2.6"
+      },
+      "actual": {
+        "spentGasUsdc": "0.4",
+        "remainingGasBudgetUsdc": "2.6"
+      },
+      "checksPassed": true,
+      "restarted": true,
+      "callCount": 5,
+      "status": "open",
+      "decision": null,
+      "spentGasUsdc": "0.4",
+      "remainingGasBudgetUsdc": "2.6",
+      "grossOutputUsdc": null,
+      "netOutputAfterGasUsdc": null
+    },
+    {
+      "id": "below-floor",
+      "label": "Below-floor reported output stays visible",
+      "expected": {
+        "status": "constraint_breach",
+        "floorBreach": true,
+        "spentGasUsdc": "1.4",
+        "grossOutputUsdc": "98",
+        "netOutputAfterGasUsdc": "96.6"
+      },
+      "actual": {
+        "status": "constraint_breach",
+        "floorBreach": true,
+        "spentGasUsdc": "1.4",
+        "grossOutputUsdc": "98",
+        "netOutputAfterGasUsdc": "96.6"
+      },
+      "checksPassed": true,
+      "restarted": false,
+      "callCount": 5,
+      "status": "constraint_breach",
+      "decision": null,
+      "spentGasUsdc": "1.4",
+      "remainingGasBudgetUsdc": "1.6",
+      "grossOutputUsdc": "98",
+      "netOutputAfterGasUsdc": "96.6"
+    }
+  ],
+  "artifact": {
+    "path": "/evidence/agent-ledger-2026-09-10.json",
+    "sha256": "952df7cb42c1d05f4a1e12f661dcb10de70c4fc735226fa7b9fc17ec8485dc4d",
+    "bytes": 258312
+  },
+  "reportPath": "/evidence/agent-ledger-2026-09-10.md"
+}

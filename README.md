@@ -1,14 +1,39 @@
 # SwapGuard
 
-**Your task. Your limits. Every attempt counts.** A task-level budget workbench for Uniswap automation, built from scratch for ETHOnline 2026.
+**One swap task. Every attempt counts.** Task cost accounting and original-intent checks for existing Uniswap agents, built from scratch for ETHOnline 2026. Local advisory MCP plus a manual read-only analysis website.
 
-SwapGuard focuses on small automated WETH → USDC tasks: **an approval and failed retries can consume the budget even when no swap completes.** Lock the original minimum output, a cumulative gas budget, a deadline and an attempt limit; then replay check → prepare → reconcile → retry or stop. All settled gas stays in one ledger. A separate verifier checks whether a supported unsigned draft retains the original conditions. Live Uniswap v3 quotes and Chainlink references provide read-only protocol context. The public website does not connect a wallet, request signatures or approvals, or broadcast transactions.
+SwapGuard focuses on small automated WETH → USDC tasks: **an approval and failed retries can consume the budget even when no swap completes.** Developers keep their existing execution channel and use a task ledger to retain the original minimum, cumulative gas budget, deadline and attempt limit. The MCP prototype checks and records **caller-reported, unverified** observations and receipts, with local persistence across restarts. It does not inspect or execute the actual transaction. A separate legacy draft verifier and the manual Uniswap v3/Chainlink live quote panel remain available. The website never connects a wallet, requests approvals/signatures or broadcasts transactions.
 
 **[Try the public demo](https://swapguard-ethonline-2026.swapguard.workers.dev)** · **[Source repository](https://github.com/CrisChang/swapguard-ethonline-2026)**
 
-The workbench uses explicitly **constructed paths and synthetic receipts**, anchored to measured local-fork gas and starting quotes. It is an interactive prototype, not a live trading bot. Choose **Live onchain** in the separate quote panel for actual read-only mainnet data. Publication is not proof of final ETHGlobal submission.
+The **Agent examples** use made-up round numbers and run the same ledger core as MCP, without a browser-to-MCP connection. The older **Task replay** uses constructed paths and synthetic receipts anchored to measured local-fork gas. Neither is a live trading bot. Choose **Live onchain** in **Manual analysis** for actual read-only mainnet data. [Agent integration and trust boundaries](docs/AGENT_INTEGRATION.md).
 
-Validation is recorded by version in [docs/VALIDATION.md](docs/VALIDATION.md), including failures and skipped live checks. Workbench replay runs without RPC; the free upstream for live quotes remains intermittent.
+Validation is recorded by version in [docs/VALIDATION.md](docs/VALIDATION.md), including failures and skipped checks. The replay and local MCP ledger run without RPC; live analysis depends on provider availability.
+
+## Published Agent test records
+
+The [test reports section](https://swapguard-ethonline-2026.swapguard.workers.dev/#evidence) hosts a fixed batch of **8 constructed scenarios, 46 actual local MCP tool calls and 2 process-restart scenarios**. Download the full inputs/results JSON, readable report and source-fingerprint manifest. The two expected tool errors, unfinished tasks, gas overrun and below-floor output are retained. These are behavioral checks, not real trades, an LLM evaluation, a measured success rate or savings evidence.
+
+Reproduce with `npm run record:agent-evidence -- agent-ledger-YYYY-MM-DD-your-run`. The recorder will not overwrite an existing batch. Public test files are separate from private local MCP journals and are never uploaded from visitors' wallets.
+
+## Audience, problem, outputs and boundary
+
+- **Audience:** developers of existing DCA/rebalancing/conversion agents; first ledger scope is one Ethereum WETH → USDC task.
+- **Problem hypothesis:** individual transaction receipts do not by themselves preserve a task's original user constraints or explain cumulative retry costs. The prevalence of this pain is not established by user research.
+- **Outputs:** checks and reasons, original terms, pending state, reported approval/failed-swap/successful-swap gas, remaining budget, gross output and output after task gas, with exportable records.
+- **Not a minimum-loss product:** no profit guarantee, best routing, authenticated wallet consent, independent MCP receipt verification or enforced wallet-wide cap. A signer can bypass the interface. Account-wide history import is not implemented.
+- **Accounting:** fees already affect quoted/received output; do not subtract them twice. Output after gas is not investment P&L. An unfinished task retains its costs and has null output.
+
+## Connect an existing Agent (local MCP)
+
+```sh
+npm ci
+npm run mcp
+# In a separate terminal: real SDK client, constructed inputs, temporary ledger
+npm run check:mcp
+```
+
+Four tools: `swapguard_open_task`, `swapguard_assess_attempt`, `swapguard_record_receipt`, `swapguard_get_task`. Use a stdio-capable client and a private `SWAPGUARD_LEDGER_PATH`. No remote MCP endpoint is hosted on the website. Existing task terms cannot be edited through these tools; exact receipt duplicates charge once; pending operations prevent duplicate preparations. Readiness is advisory, not signing permission. The local file is not tamper-proof and all quotes/receipts/conversions remain caller-reported. Full configuration, limits and expected behavior: [AGENT_INTEGRATION.md](docs/AGENT_INTEGRATION.md).
 
 ## Run locally
 
@@ -46,11 +71,11 @@ npm start
 
 The built site is served at http://127.0.0.1:8787 by `npm start`.
 
-**Live availability, 2026-09-09:** the public Worker is currently hitting upstream
-RPC throttling, despite successful direct local queries. Single-call requests
-avoid the observed batch-limit failure, but are not a substitute for provider
-capacity. A rate-limited live request returns `503 UPSTREAM_RATE_LIMITED` with
-retry guidance, never synthetic or cached prices. The replay still works.
+**Latest independent live check, 2026-09-10:** both directions passed on the public
+Worker at block 25944202 after dedicated RPC configuration. This is a dated
+observation, not continuous uptime assurance. Earlier upstream throttling remains
+documented; a rate-limited request returns `503 UPSTREAM_RATE_LIMITED` with retry
+guidance, never synthetic fallback prices.
 See [validation](docs/VALIDATION.md) and [network scope](docs/NETWORK_REQUIREMENTS.md).
 
 ## Minimum-output verification lab
@@ -96,16 +121,19 @@ The task UI (`src/TaskWorkbench.tsx`) calls pure `src/lib/task-session.ts` and `
 
 Key files:
 
-| Responsibility                       | File                    |
-| ------------------------------------ | ----------------------- |
-| Actual Uniswap/Chainlink integration | `server/live.ts`        |
-| Mainnet addresses and ABIs           | `src/lib/contracts.ts`  |
-| Policy and integer math              | `src/lib/engine.ts`     |
-| Request validation                   | `src/lib/validation.ts` |
-| Read-only API and error isolation    | `server/api.ts`         |
-| Explicit synthetic data              | `server/demo.ts`        |
-| Frontend and report invalidation     | `src/App.tsx`           |
-| Cloudflare entry point               | `worker/index.ts`       |
+| Responsibility                        | File                                                            |
+| ------------------------------------- | --------------------------------------------------------------- |
+| Actual Uniswap/Chainlink integration  | [Factory / QuoterV2 calls](server/live.ts#L127)                 |
+| Mainnet addresses and ABIs            | [Contracts and interfaces](src/lib/contracts.ts#L19)            |
+| Agent accounting / schemas            | [Agent ledger](src/lib/agent-ledger.ts)                         |
+| Local MCP adapter and durable journal | [MCP server](server/mcp.ts), [journal](server/agent-journal.ts) |
+| Agent examples and output definitions | [Integration guide](docs/AGENT_INTEGRATION.md)                  |
+| Policy and integer math               | `src/lib/engine.ts`                                             |
+| Request validation                    | `src/lib/validation.ts`                                         |
+| Read-only API and error isolation     | `server/api.ts`                                                 |
+| Explicit synthetic data               | `server/demo.ts`                                                |
+| Frontend and report invalidation      | `src/App.tsx`                                                   |
+| Cloudflare entry point                | `worker/index.ts`                                               |
 
 The pure browser-local verifier is `src/lib/protection.ts`, exact floor math is in `src/lib/protection-math.ts`, published cases are in `src/lib/protection-fixtures.ts`, and the interactive lab is `src/ProtectionLab.tsx`. Pasted drafts are not sent to the API. Live quotes still use the read-only server path above.
 
@@ -169,7 +197,7 @@ The implemented integration is suitable to **consider** for the Uniswap Stack Co
 
 Do not claim 1inch Aqua/SwapVM integration, Chainlink CRE execution, a mainnet swap, paying customers, security-audited contracts or guaranteed trading protection: none is implemented or established here.
 
-Before final competition submission: review AI-assisted code, complete the sponsor feedback form, record a compliant human-narrated demo, select the applicable prize and explicitly submit the ETHGlobal form. See [submission draft and checklist](docs/SUBMISSION_DRAFT.md). Repository publication and deployment are complete; the competition form is not claimed submitted.
+The participant's dashboard screenshots confirm the earlier project submission and Check-in 2; the public showcase is [SwapGuard](https://ethglobal.com/showcase/swapguard-km1v7). A human-narrated Mandarin demo with English subtitles was uploaded for that version. The Agent extension does not automatically update that form or video. Review the revised [submission copy and checklist](docs/SUBMISSION_DRAFT.md), independently review the AI-assisted code, and complete the external Uniswap feedback form (completion unverified). Re-submit the form after any approved changes; no eligibility or judging outcome is implied.
 
 ## Sources
 

@@ -1,5 +1,7 @@
 # Task workbench — workflow and evidence boundary
 
+Update 2026-09-10: this document still describes the **original calibrated browser replay**. The new Agent-facing ledger and local MCP interface are separate, described in [AGENT_INTEGRATION.md](AGENT_INTEGRATION.md). Its browser examples use illustrative round numbers; MCP receipts are caller-reported and unverified. Do not merge these evidence categories or relabel the older fork proof as MCP-chain verification.
+
 ## Intended scenario
 
 A small automated **WETH → USDC** task has one price constraint and one gas budget spanning approval and all attempts. Repeated failed transactions are not free; refreshing the quote must not quietly weaken the original minimum. This is not a replacement for router slippage protection or Uniswap smart routing.
