@@ -1,6 +1,15 @@
 # SwapGuard 发布交接
 
-## Agent 方向更新 — 2026-09-10（待发布确认）
+## Agent 与测试报告已发布 — 2026-09-10
+
+- [原网站 · Agent 场景](https://swapguard-ethonline-2026.swapguard.workers.dev/#agents) 与 [固定测试记录](https://swapguard-ethonline-2026.swapguard.workers.dev/#evidence) 已上线，人工 Swap 分析、参数检查和原任务回放保留。
+- 功能及测试数据源码：`edc663cdcbe57fc67a176a617b1117e79295e410`，已推送原公开仓库。对应 [GitHub 自动检查](https://github.com/CrisChang/swapguard-ethonline-2026/actions/runs/34444817088) 已成功。
+- 新 Worker 版本：`c5461a7b-abcd-4881-90bc-7cf0c398d2cf`。发布保留了控制台现有 RPC 变量；线上样例、只读实时报价、健康检查和无交易发送接口检查均通过。
+- 固定批次包含 **8 个构造场景、46 次真实本地 MCP 调用、2 次预期错误、2 次进程重启**；完整输入/返回值/合成账本、Markdown 报告和来源指纹可下载。线上文件 SHA-256 与本地一致；首页 JS/CSS 也与验证过的构建完全一致。
+- 测试匹配预期不等于成功成交或真实省费。未成交、费用超预算、到账低于要求均保留，不上传访客或个人的私有账本。下一项验证重点仍是独立核验链上回执与精确交易参数绑定。
+- **参赛表单、已上传视频和外部反馈未代改；没有真实资金交易。** 下方“待发布”等内容为此前本地阶段的历史记录。
+
+## Agent 方向首次本地更新 — 2026-09-10（历史：当时待发布确认）
 
 本次修改保留手动只读 Swap 分析、参数检查和旧任务回放；新增 Agent 接入页面及五个可运行的说明场景。定位明确为“面向已有 Swap Agent 的任务成本账本和原始约束检查”，不再使用未经证明的“最小亏损”主张。服务对象、痛点假设、输出口径和不支持的能力已写入首页、README、[接入说明](AGENT_INTEGRATION.md)和[参赛文案修订](SUBMISSION_DRAFT.md)。
 

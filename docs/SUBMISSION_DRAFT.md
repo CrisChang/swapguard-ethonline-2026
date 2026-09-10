@@ -1,6 +1,6 @@
 # ETHGlobal submission revision — Agent accounting extension
 
-Updated 2026-09-10. The prior project submission and Check-in 2 are confirmed by participant screenshots; the public showcase is https://ethglobal.com/showcase/swapguard-km1v7. The following is a **new revision**, not proof that the Agent extension is published or submitted. This file does not change the ETHGlobal form or the uploaded video. Do not use localhost in the competition form.
+Updated 2026-09-10. The prior project submission and Check-in 2 are confirmed by participant screenshots; the public showcase is https://ethglobal.com/showcase/swapguard-km1v7. The Agent extension and fixed test reports are now published on the existing demo website and GitHub (see RELEASE_HANDOFF.md). The following is a **new submission revision**: this file does not update the ETHGlobal form or the uploaded video, which remain unchanged. Do not use localhost in the competition form.
 
 ## Project details
 
@@ -24,6 +24,8 @@ SwapGuard serves developers of existing Uniswap agents, focusing on one WETH-to-
 SwapGuard is a TypeScript application using React/Vite, viem and a Hono API on Cloudflare Workers. The new local stdio server uses the official MCP TypeScript SDK and exposes four tools: open task, assess attempt, record receipt and get task. Shared strict schemas and bigint accounting validate caller-reported inputs; immutable in-task terms, pending-operation checks and receipt idempotency prevent budget resets and duplicate charges through the supported workflow. Mutations are flushed to a private single-writer local journal before success is returned, and restart replays the journal instead of trusting stored totals. Corrupt storage fails closed. This is not a signed or tamper-proof audit log. An SDK-client integration check exercises the real MCP transport with constructed inputs and a server restart. The browser examples call the same accounting core locally but are not MCP connections. Separately, live Uniswap v3 Factory/QuoterV2 and Chainlink reads are pinned to one block, while the original task replay and narrow legacy SwapRouter02 decoder are retained. Actual contract receipts exist only in a separate fake-money Anvil-fork proof. No remote MCP service, wallet execution, automatic receipt verification or Universal Router adapter is claimed. AI-generated code, human direction and remaining review boundaries are disclosed in docs/AI_USAGE.md.
 
 ## Evidence and honest claims
+
+- Public **Test reports** section: 8 predefined synthetic scenarios recorded through 46 actual local MCP calls, with 2 expected tool errors and 2 server restarts. Full input/output transcripts, synthetic journal events, readable report and exact source fingerprints are retained. Unfinished and constraint-breaching results are included. All declared assertions matched; this is not real trading, measured savings, an independent audit or a live LLM benchmark.
 
 - `src/lib/agent-ledger.ts`: strict caller-report schemas, exact task accounting, immutable terms and pending/duplicate checks. Not independent onchain verification.
 - `server/mcp.ts`, `server/agent-journal.ts`: actual local MCP adapter and restart-persistent advisory journal.

@@ -228,3 +228,13 @@ The participant subsequently authorized public GitHub synchronization/publicatio
 - Existing Cloudflare dashboard update `60ac7576` was inspected: its script digest matches the prior release; it added the existing `ETHEREUM_RPC_URL` runtime variable. Publication must preserve dashboard variables with `--keep-vars`; no RPC credential belongs in source or the evidence files.
 
 Public publication and remote download checks are recorded after the actual deployment, not inferred from the local build. ETHGlobal forms, uploaded video and real wallets remain unchanged.
+
+## Agent extension public release verified — 2026-09-10
+
+- Published implementation/evidence commit: `edc663cdcbe57fc67a176a617b1117e79295e410`. The existing GitHub Actions workflow [34444817088](https://github.com/CrisChang/swapguard-ethonline-2026/actions/runs/34444817088) completed successfully for that exact revision. Local deterministic checks remain 271/271; the existing hosted workflow includes its configured browser suite. No additional local browser/visual run is claimed.
+- Existing public origin: `https://swapguard-ethonline-2026.swapguard.workers.dev/`. Terminal successful Worker version: `c5461a7b-abcd-4881-90bc-7cf0c398d2cf`. Deployment used `--keep-vars`; post-deploy metadata confirmed `ETHEREUM_RPC_URL`, `ASSETS` and `LIVE_RATE_LIMIT` remain present, without copying the RPC value into source or evidence.
+- Public `check:deployment -- <origin> --live` passed page/security headers, exact public evidence manifest, transcript byte length/SHA-256, readable report, read-only API health, explicit sample/live analysis and absence of a transaction endpoint. Separate non-browser HTTP checks confirmed public HTML references this build's JS/CSS and both downloaded asset byte hashes match the local build.
+- Public report downloads are versioned static assets, durable across visits; they are not private-user storage, independently authenticated receipts or a hosted remote MCP service. The source and locally recorded evidence were unchanged during publication.
+- Checks used the existing local proxy with normal TLS. GitHub's anonymous API quota was exhausted, so CI status was read with the existing Git credential in process memory; it was not saved in project files or displayed. The successful live API probe was read-only, not a transaction or a sustained-availability guarantee.
+
+This entry is a documentation-only release follow-up. It does not regenerate the frozen batch, alter results, update the competition form/video, or authorize wallet actions.
