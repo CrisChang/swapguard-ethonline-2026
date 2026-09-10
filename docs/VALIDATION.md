@@ -252,3 +252,12 @@ This entry is a documentation-only release follow-up. It does not regenerate the
 - Optional mainnet configuration is implemented/mocked with a 12-confirmation threshold; end-to-end execution evidence is **local fork only**. Verification trusts configured RPC, does not prove inclusion cryptographically, enforce a wallet budget, verify caller estimates, support arbitrary routers, or continuously monitor reorgs. Mismatches remain unresolved, not zero-cost successes. The reference Agent is deterministic and project-authored—not an official/third-party Uniswap Agent or LLM adherence evaluation.
 
 Website publication and remote byte verification are recorded separately after they actually complete. The Graph remains a candidate; ETHGlobal form, video, prizes and external feedback submissions were not changed.
+
+### Receipt/reference-agent public release verified
+
+- Functional commit `3ed7b5bd005fb305bed3ae14ea14e2235fefd148` was pushed to the existing public repository. [GitHub Actions 34449668444](https://github.com/CrisChang/swapguard-ethonline-2026/actions/runs/34449668444) completed successfully for this exact revision, including the existing configured CI browser suite. This does not imply a new local browser/visual run.
+- Existing Worker `62e6f5fc-4529-40f5-bbfa-6328c5ef4da4` deployed with `--keep-vars`. The public page/security headers, historical synthetic artifact, new receipt artifact/manifest/Markdown report, read-only health, demo/live analysis and absent transaction endpoint passed verification. Both public JS/CSS assets exactly matched this local build's SHA-256. Live analysis is a single successful read-only observation, not a sustained uptime or transaction guarantee.
+- The first direct-network Node fetch timed out. Verification then passed using the existing local proxy with normal TLS; no certificate checks were disabled and no public failure was replaced by demo data.
+- The temporary development server and Anvil fork used in this turn were stopped. Only test-owned temporary files and public synthetic/fork evidence were created; unrelated existing local assets were left untouched. No real funds, ETHGlobal form changes or new ecosystem selections were involved.
+
+This final follow-up changes release documentation only. The published evidence bytes and fingerprinted implementation remain unchanged.

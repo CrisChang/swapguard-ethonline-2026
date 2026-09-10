@@ -1,5 +1,17 @@
 # SwapGuard 发布交接
 
+## 最新：回执核验与参考 Agent 对照已发布 — 2026-09-10
+
+- [查看原网站的新对照报告](https://swapguard-ethonline-2026.swapguard.workers.dev/#evidence)。点击示例的结果现在明确区分“检查完成”“建议等待／拒绝重试”“尚未成交”，不会把预期策略结果写成系统错误。人工分析、旧回放和历史证据都保留。
+- 原公开仓库功能提交 `3ed7b5bd005fb305bed3ae14ea14e2235fefd148` 已同步；该提交的 [GitHub 自动检查](https://github.com/CrisChang/swapguard-ethonline-2026/actions/runs/34449668444) 已成功。本地 306 项测试、原有 25 项参数检查、4 工具兼容测试和 5 工具错误路径检查均通过。没有新增本地浏览器视觉检查。
+- 现有 Cloudflare Worker 版本 `62e6f5fc-4529-40f5-bbfa-6328c5ef4da4`，使用 `--keep-vars` 保留原配置。线上安全头、健康接口、样例／实时报价、无交易接口检查通过；新旧报告文件及本次 JS/CSS 哈希均与本地一致。直连检测曾超时，之后使用已有代理、正常 TLS 核验通过。
+- 新增可选 `swapguard_verify_receipt`：从配置的 RPC 读取实际状态、Gas、到账日志及区块价格，核对指定钱包和支持的 Uniswap 参数；不是只相信调用者上报数字。它是窄范围的发送后核验，不负责签名、不是链上预算强制机制，也不保证未来最终性。
+- 自建确定性参考 Agent 在本地以太坊主网分叉中实际调用 Uniswap，**4 场景 × 3 策略**，每次恢复同一快照。简单逐笔预算组完成 4/4、超预算 2/4、总 Gas 2.219848 USDC 等值；累计预算基线与 MCP 组均完成 3/4、超预算 1/4、总 Gas 1.880340。三组均只有 2/4 在原始最低到账与预算内完成。少一次成交换来少一次超预算；Gas 低估反例仍保留，不能宣传为更优路由或普遍省费。
+- [逐场景报告](../public/evidence/rpc-agent-2026-09-10.md)、[完整调用／回执／账本](../public/evidence/rpc-agent-2026-09-10.json)、[接入配置及边界](AGENT_INTEGRATION.md)、[参赛文案修订](SUBMISSION_DRAFT.md) 已同步。参考 Agent 不是第三方或官方 Uniswap Agent，也不是 LLM 实盘评测；使用开发假资产，未发送主网／公共测试网交易。本轮临时 Anvil 和开发服务已停止。
+- **生态：Uniswap 主攻，The Graph 仅为候选，不强凑三个。** 后续价值验证是第三方／LLM Agent 接入、预发送模拟、独立签名策略及未参与调参的市场场景。ETHGlobal 表单、奖项、已上传视频和外部反馈仍未代改。
+
+以下是历史记录；其中“缺少回执核验”“待发布”等描述仅对应当时版本。
+
 ## Agent 与测试报告已发布 — 2026-09-10
 
 - [原网站 · Agent 场景](https://swapguard-ethonline-2026.swapguard.workers.dev/#agents) 与 [固定测试记录](https://swapguard-ethonline-2026.swapguard.workers.dev/#evidence) 已上线，人工 Swap 分析、参数检查和原任务回放保留。
