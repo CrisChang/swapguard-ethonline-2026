@@ -1,6 +1,11 @@
 /** Advisory accounting for caller-reported WETH -> USDC tasks. No RPC or signer. */
 import { z } from "zod";
 import { formatUnits, parseUnits } from "viem";
+import {
+  executionSchema,
+  type TrustedReceiptContext,
+  type ReceiptProof,
+} from "./receipt-proof";
 
 const id = z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}$/);
 const money = z.string().regex(/^(?:0|[1-9]\d{0,8})(?:\.\d{1,6})?$/);
@@ -19,6 +24,7 @@ export const openTaskSchema = z
     gasBudgetUsdc: positiveMoney,
     maxAttempts: z.number().int().min(1).max(3),
     expiresAtMs: timestamp,
+    execution: executionSchema.optional(),
   })
   .strict();
 export const assessAttemptSchema = z
@@ -53,7 +59,9 @@ export const toolSchemas = {
 export type ToolName = keyof typeof toolSchemas;
 export type TaskTerms = z.infer<typeof openTaskSchema>;
 export type Attempt = z.infer<typeof assessAttemptSchema>;
-export type ReportedReceipt = z.infer<typeof recordReceiptSchema>;
+export type ReportedReceipt = z.infer<typeof recordReceiptSchema> & {
+  verification?: ReceiptProof;
+};
 export type Outcome = "ADVISORY_READY" | "WAIT" | "STOP" | "REJECT";
 export type LedgerEvent = {
   atMs: number;
@@ -68,6 +76,7 @@ export type AgentTask = {
   receipts: ReportedReceipt[];
   pending: Attempt | null;
   events: LedgerEvent[];
+  receiptAnchor?: TrustedReceiptContext["anchor"];
 };
 export type AgentState = { tasks: Record<string, AgentTask> };
 export const emptyAgentState = (): AgentState => ({ tasks: {} });
@@ -138,10 +147,16 @@ export function agentReport(task: AgentTask, now: number) {
   );
   return {
     schemaVersion: "swapguard-agent-ledger-v1",
-    evidence: "caller-reported-unverified",
+    evidence:
+      task.receipts.length && task.receipts.every((r) => r.verification)
+        ? "rpc-verified-receipts"
+        : task.receipts.some((r) => r.verification)
+          ? "mixed-verified-and-reported"
+          : "caller-reported-unverified",
     advisoryOnly: true,
-    scope:
-      "Ethereum WETH -> USDC; caller-supplied observations, not a router integration or calldata validation",
+    scope: task.terms.execution
+      ? "Bound Ethereum WETH -> USDC task; optional RPC receipt reconciliation for exact WETH approval and deadline-bound single-hop SwapRouter02 calls. Estimates remain caller-supplied."
+      : "Ethereum WETH -> USDC; caller-supplied observations, not a router integration or calldata validation",
     taskId: task.terms.taskId,
     terms: { ...task.terms },
     status: f.status,
@@ -169,17 +184,38 @@ export function agentReport(task: AgentTask, now: number) {
       : null,
     interpretation:
       "Output minus task gas is not investment P&L. Quote difference is not pure slippage. Pool fees are already in quotes/output. No completed swap means output and net output are null, not zero-cost success.",
-    notChecked: [
-      "receipt authenticity",
-      "gas conversion inputs",
-      "calldata",
-      "wallet consent",
-      "nonce",
-      "balance/allowance",
-      "execution/finality/reorgs",
-    ],
+    notChecked: task.terms.execution
+      ? [
+          "cryptographic receipt inclusion proof",
+          "caller-reported receipts and estimates",
+          "wallet consent or signing authority",
+          "pre-send simulation or balance/allowance",
+          "continuous finality/reorg monitoring",
+          "gas-budget enforcement by the wallet",
+        ]
+      : [
+          "receipt authenticity",
+          "gas conversion inputs",
+          "calldata",
+          "wallet consent",
+          "nonce",
+          "balance/allowance",
+          "execution/finality/reorgs",
+        ],
     attemptChecks: structuredClone(Object.values(task.checks)),
     events: structuredClone(task.events),
+    ...(task.terms.execution
+      ? {
+          receiptVerification: {
+            verifiedCount: task.receipts.filter((r) => r.verification).length,
+            unverifiedCount: task.receipts.filter((r) => !r.verification)
+              .length,
+            anchor: task.receiptAnchor ?? null,
+            boundary:
+              "RPC-provider trust, not cryptographic receipt inclusion proof. No signer authorization or continuous reorg monitoring. Legacy reported receipts remain unverified.",
+          },
+        }
+      : {}),
   };
 }
 export type AgentResult = ReturnType<typeof agentReport> & {
@@ -194,6 +230,7 @@ export function applyAgentTool(
   tool: ToolName,
   input: unknown,
   now: number,
+  trusted: TrustedReceiptContext = {},
 ): AgentResult {
   timestamp.parse(now);
   if (tool === "swapguard_open_task") {
@@ -229,6 +266,7 @@ export function applyAgentTool(
             "Original terms recorded; this is not authenticated wallet consent.",
         },
       ],
+      ...(trusted.anchor ? { receiptAnchor: trusted.anchor } : {}),
     };
     state.tasks[terms.taskId] = task;
     return agentReport(task, now);
@@ -328,14 +366,15 @@ export function applyAgentTool(
     return { ...agentReport(task, now), decision, reason };
   }
   if (tool === "swapguard_record_receipt") {
-    const receipt = recordReceiptSchema.parse(input);
+    const receipt: ReportedReceipt = recordReceiptSchema.parse(input);
     const task = taskFor(state, receipt.taskId);
     const duplicate = task.receipts.find(
       (r) =>
         r.attemptId === receipt.attemptId || r.receiptId === receipt.receiptId,
     );
     if (duplicate) {
-      if (!same(duplicate, receipt))
+      const { verification, ...previousInput } = duplicate;
+      if (!same(previousInput, receipt))
         throw new Error(
           "Conflicting duplicate receipt; original record retained.",
         );
@@ -354,13 +393,15 @@ export function applyAgentTool(
       raw(receipt.outputUsdc) !== 0n
     )
       throw new Error("Approval/reverted operation cannot report swap output.");
+    if (trusted.receiptProof) receipt.verification = trusted.receiptProof;
     task.receipts.push(receipt);
     task.pending = null;
     task.events.push({
       atMs: now,
-      type: "reported_receipt",
-      reason:
-        "Caller-reported costs charged once; not independently verified onchain.",
+      type: receipt.verification ? "rpc_verified_receipt" : "reported_receipt",
+      reason: receipt.verification
+        ? "Status, gas, transfer logs and supported calldata read and checked via configured RPC; provider trust applies. No signing authority."
+        : "Caller-reported costs charged once; not independently verified onchain.",
       attemptId: receipt.attemptId,
       receipt,
     });
@@ -378,5 +419,5 @@ export const toolDescriptions: Record<ToolName, string> = {
   swapguard_record_receipt:
     "Record a caller-reported, UNVERIFIED receipt for a pending attempt. Costs are decimal USDC-equivalent already converted by the caller, not raw ETH or wei. Include reverted gas. Never invent a receipt to clear pending state. Exact duplicates charge once; conflicts fail.",
   swapguard_get_task:
-    "Read task terms, pending state, reported gas breakdown, remaining budget, output and event history. No RPC call; no independent receipt verification; net output is not investment P&L.",
+    "Read task terms, pending state, gas breakdown, remaining budget, output and event history. Distinguishes RPC-verified receipts from unverified caller reports. This read itself does not refresh RPC/finality; net output is not investment P&L.",
 };

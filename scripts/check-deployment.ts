@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import evidenceManifest from "../public/evidence/agent-ledger-2026-09-10.manifest.json";
+import rpcEvidenceManifest from "../public/evidence/rpc-agent-2026-09-10.manifest.json";
 
 const target = process.argv[2];
 if (!target)
@@ -72,6 +73,25 @@ console.log(
   "PASS: public evidence manifest, exact transcript SHA-256 and readable report",
 );
 const health = await get("/api/health");
+const rpcManifestResponse = await get(
+  "/evidence/rpc-agent-2026-09-10.manifest.json",
+);
+assert.equal(rpcManifestResponse.status, 200);
+assert.deepEqual(await rpcManifestResponse.json(), rpcEvidenceManifest);
+const rpcArtifactResponse = await get(rpcEvidenceManifest.artifact.path);
+assert.equal(rpcArtifactResponse.status, 200);
+const rpcArtifact = Buffer.from(await rpcArtifactResponse.arrayBuffer());
+assert.equal(rpcArtifact.length, rpcEvidenceManifest.artifact.bytes);
+assert.equal(
+  createHash("sha256").update(rpcArtifact).digest("hex"),
+  rpcEvidenceManifest.artifact.sha256,
+);
+const rpcReport = await get("/evidence/rpc-agent-2026-09-10.md");
+assert.equal(rpcReport.status, 200);
+assert.match(await rpcReport.text(), /receipt-verified reference agent/);
+console.log(
+  "PASS: receipt-verified reference-agent report and exact artifact SHA-256",
+);
 assert.equal(health.status, 200);
 const status = await health.json();
 assert.equal(status.service, "swapguard");

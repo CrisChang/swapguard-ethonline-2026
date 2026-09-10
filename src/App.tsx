@@ -32,6 +32,7 @@ import ProtectionLab from "./ProtectionLab";
 import TaskWorkbench from "./TaskWorkbench";
 import AgentWorkbench from "./AgentWorkbench";
 import AgentEvidence from "./AgentEvidence";
+import ReceiptEvidence from "./ReceiptEvidence";
 
 const number = (s: string | number, digits = 5) =>
   Number(s).toLocaleString("en-US", { maximumFractionDigits: digits });
@@ -239,6 +240,7 @@ export default function App() {
           </div>
         </section>
         <AgentWorkbench />
+        <ReceiptEvidence />
         <AgentEvidence />
         <TaskWorkbench />
         <ProtectionLab report={report} now={now} />

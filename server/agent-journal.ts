@@ -17,6 +17,10 @@ import {
   emptyAgentState,
   type ToolName,
 } from "../src/lib/agent-ledger";
+import {
+  trustedReceiptContextSchema,
+  type TrustedReceiptContext,
+} from "../src/lib/receipt-proof";
 
 const entrySchema = z
   .object({
@@ -28,6 +32,7 @@ const entrySchema = z
       "swapguard_record_receipt",
     ]),
     input: z.unknown(),
+    trusted: trustedReceiptContextSchema.optional(),
   })
   .strict();
 const MAX_BYTES = 4 * 1024 * 1024;
@@ -67,7 +72,13 @@ export class AgentJournal {
         );
       for (const line of saved.split("\n").filter(Boolean)) {
         const entry = entrySchema.parse(JSON.parse(line));
-        applyAgentTool(this.state, entry.tool, entry.input, entry.atMs);
+        applyAgentTool(
+          this.state,
+          entry.tool,
+          entry.input,
+          entry.atMs,
+          entry.trusted,
+        );
         this.entries++;
       }
       if (this.entries > 5000) throw new Error("Journal entry limit exceeded.");
@@ -77,13 +88,29 @@ export class AgentJournal {
       throw error;
     }
   }
-  execute(tool: ToolName, input: unknown, now = Date.now()) {
+  inspect(taskId: string) {
+    if (!Object.hasOwn(this.state.tasks, taskId))
+      throw new Error("Task not found.");
+    return structuredClone(this.state.tasks[taskId]);
+  }
+  execute(
+    tool: ToolName,
+    input: unknown,
+    now = Date.now(),
+    trusted?: TrustedReceiptContext,
+  ) {
     if (this.failed || this.fd < 0)
       throw new Error("Journal unavailable; no further operations accepted.");
     const next = structuredClone(this.state);
-    const result = applyAgentTool(next, tool, input, now);
+    const result = applyAgentTool(next, tool, input, now, trusted);
     if (tool !== "swapguard_get_task") {
-      const entry = entrySchema.parse({ version: 1, atMs: now, tool, input });
+      const entry = entrySchema.parse({
+        version: 1,
+        atMs: now,
+        tool,
+        input,
+        ...(trusted ? { trusted } : {}),
+      });
       const buffer = Buffer.from(`${JSON.stringify(entry)}\n`);
       if (this.entries >= 5000 || this.bytes + buffer.length > MAX_BYTES)
         throw new Error(

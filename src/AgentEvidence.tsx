@@ -5,7 +5,7 @@ import batch from "../public/evidence/agent-ledger-2026-09-10.manifest.json";
 export default function AgentEvidence() {
   return (
     <section
-      id="evidence"
+      id="synthetic-evidence"
       className="agent-workbench agent-evidence"
       aria-label="Published Agent test evidence"
     >
@@ -93,14 +93,14 @@ export default function AgentEvidence() {
               <div>
                 <dt>Reported gross output</dt>
                 <dd>
-                  {item.grossOutputUsdc ?? "Not completed"}
+                  {item.grossOutputUsdc ?? "No completed swap"}
                   <small>{item.grossOutputUsdc !== null ? " USDC" : ""}</small>
                 </dd>
               </div>
               <div>
                 <dt>Output after task gas</dt>
                 <dd>
-                  {item.netOutputAfterGasUsdc ?? "Not available"}
+                  {item.netOutputAfterGasUsdc ?? "Not calculated"}
                   <small>
                     {item.netOutputAfterGasUsdc !== null ? " USDC-eq" : ""}
                   </small>

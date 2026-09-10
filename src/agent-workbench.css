@@ -199,6 +199,19 @@
 .agent-result-note {
   margin-top: 16px;
 }
+.agent-ledger .agent-check-status {
+  padding: 10px 12px;
+  border-left: 3px solid #41866c;
+  background: #edf3eb;
+  font-weight: 700;
+}
+.agent-metrics dd.agent-metric-help {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #52645a;
+  font-weight: 400;
+}
 .agent-details {
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -357,4 +370,34 @@
   .agent-details {
     padding: 16px;
   }
+}
+.receipt-table-wrap {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border: 1px solid #dce4dd;
+  border-radius: 16px;
+}
+.receipt-comparison {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+.receipt-comparison caption {
+  padding: 1rem;
+  text-align: left;
+  color: #52665b;
+}
+.receipt-comparison th,
+.receipt-comparison td {
+  padding: 1rem;
+  border-top: 1px solid #dce4dd;
+}
+.receipt-comparison thead,
+.receipt-comparison tbody tr:last-child {
+  background: #eef5ef;
+}
+.receipt-comparison td {
+  font-variant-numeric: tabular-nums;
 }

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "swapguard-rpc-agent-manifest-v1",
+  "runId": "rpc-agent-2026-09-10",
+  "generatedAt": "2026-09-10T07:06:38.963Z",
+  "sourceBaseCommit": "dd7df340101746a2403b385a71f553b498e38347",
+  "sourceSha256": {
+    "experiments/AGENT_RPC_PROTOCOL.md": "d42d503ca0e033700d656f5f5dad95c4dfd7b33b8d29ff82fb3b73aa558f3fdd",
+    "scripts/record-rpc-agent-evidence.ts": "9f8c3a455ccae47550e39bc0c8436dcf30461da258beda1f697a400c534d5d1d",
+    "server/reference-swap-agent.ts": "9b79118cc60925469fcbca1950cb5374e745a999c31e4d2f47f5226214ff71bc",
+    "server/receipt-verifier.ts": "0623e7136ccf28df319d0b481e4392c941f2a7e4233d24ce8ecee6caecfc4710",
+    "server/mcp.ts": "b8b5e58de0a87f6f6f49b87c1385603378cb1796766a9033eff40bade8df5caa",
+    "server/agent-journal.ts": "3c161ad64062ac786049485b0d4331c21011e106af12a2014285de36ee22591f",
+    "src/lib/agent-ledger.ts": "2ab88a6d79a26aba305c101eda6b1e31fde8c46eeb0c23294d57b39a09211f6b",
+    "src/lib/receipt-proof.ts": "81aeda92c57789b76e3f18aa10d44cb76e4ba24320587aaa5a06d3440f5b5675",
+    "src/lib/contracts.ts": "5513d92ff44152c6ce6e380a789ac899428b75759e992c9b4c765359b9c13251",
+    "src/lib/protection.ts": "ea623f471cc2253e4da25af3c54a828dfcbe9d63f4b20232e00e32323fa3a5e8",
+    "package.json": "3bc38876d5079086c530ea7511a44bafdf4342951dd54f64aaf87275b5232623",
+    "package-lock.json": "667c0e6c1f498ec2b3d8fa21e34dd1ded382eba4c60c1bcecc110e3ef7a965c2"
+  },
+  "artifact": {
+    "path": "/evidence/rpc-agent-2026-09-10.json",
+    "sha256": "92aaaaf771ef82ef32d63ff0866d9846578df772d57a520cf01c3ba52ae8847d",
+    "bytes": 309539
+  },
+  "summary": [
+    {
+      "policy": "per-attempt",
+      "tasks": 4,
+      "completed": 4,
+      "compliantCompleted": 2,
+      "uncompleted": 0,
+      "overBudget": 2,
+      "swapAttempts": 6,
+      "revertedSwaps": 2,
+      "gasCostUsdc": "2.219848",
+      "gasCostWei": "884262000000000"
+    },
+    {
+      "policy": "cumulative",
+      "tasks": 4,
+      "completed": 3,
+      "compliantCompleted": 2,
+      "uncompleted": 1,
+      "overBudget": 1,
+      "swapAttempts": 5,
+      "revertedSwaps": 2,
+      "gasCostUsdc": "1.88034",
+      "gasCostWei": "749021000000000"
+    },
+    {
+      "policy": "swapguard-mcp",
+      "tasks": 4,
+      "completed": 3,
+      "compliantCompleted": 2,
+      "uncompleted": 1,
+      "overBudget": 1,
+      "swapAttempts": 5,
+      "revertedSwaps": 2,
+      "gasCostUsdc": "1.88034",
+      "gasCostWei": "749021000000000"
+    }
+  ],
+  "limitations": [
+    "Project-authored deterministic reference agent, not an LLM or third-party agent integration.",
+    "Real local EVM execution on a pinned mainnet fork; fake inventory, fixed gas price, injected out-of-gas faults. No public-chain transactions or observed market trace.",
+    "Four hand-designed cases, not a statistical savings estimate. Cumulative baseline is an equally constrained control. Report completion differences alongside cost.",
+    "RPC provider trust, not cryptographic inclusion proof; no continuous reorg monitoring or wallet-level budget enforcement. Gas estimates may understate actual cost.",
+    "Setup inventory, RPC/agent operating costs and future revocations excluded; approval and failed/successful swap gas included. Net output is not investment P&L.",
+    "The Graph remains a candidate, not an implemented integration."
+  ]
+}

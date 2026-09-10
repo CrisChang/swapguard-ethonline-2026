@@ -3,8 +3,24 @@ import { describe, expect, it } from "vitest";
 import App from "../src/App";
 import AgentWorkbench from "../src/AgentWorkbench";
 import AgentEvidence from "../src/AgentEvidence";
+import ReceiptEvidence from "../src/ReceiptEvidence";
 
 describe("Agent page content contract (no browser interaction)", () => {
+  it("shows the completion tradeoff, equal baseline and unresolved limitations alongside receipt evidence", () => {
+    const html = renderToStaticMarkup(<ReceiptEvidence />);
+    for (const text of [
+      "3/4",
+      "4/4",
+      "1.88034",
+      "2.219848",
+      "not an LLM",
+      "equally constrained",
+      "0.35",
+      "not a claimed integration",
+      "/evidence/rpc-agent-2026-09-10.json",
+    ])
+      expect(html).toContain(text);
+  });
   it("retains manual analysis, replay and draft checks beside Agent integration", () => {
     const html = renderToStaticMarkup(<App />);
     for (const section of [

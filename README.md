@@ -2,7 +2,7 @@
 
 **One swap task. Every attempt counts.** Task cost accounting and original-intent checks for existing Uniswap agents, built from scratch for ETHOnline 2026. Local advisory MCP plus a manual read-only analysis website.
 
-SwapGuard focuses on small automated WETH → USDC tasks: **an approval and failed retries can consume the budget even when no swap completes.** Developers keep their existing execution channel and use a task ledger to retain the original minimum, cumulative gas budget, deadline and attempt limit. The MCP prototype checks and records **caller-reported, unverified** observations and receipts, with local persistence across restarts. It does not inspect or execute the actual transaction. A separate legacy draft verifier and the manual Uniswap v3/Chainlink live quote panel remain available. The website never connects a wallet, requests approvals/signatures or broadcasts transactions.
+SwapGuard focuses on small automated WETH → USDC tasks: **an approval and failed retries can consume the budget even when no swap completes.** Developers keep their execution channel and use a task ledger to retain the original minimum, cumulative gas budget, deadline and attempt limit. The local MCP server persists across restarts and distinguishes **unverified caller reports** from **optional RPC-verified receipts** for a narrow WETH/USDC SwapRouter02 adapter. Quotes and estimates remain caller-supplied. MCP does not sign or broadcast. The manual Uniswap v3/Chainlink live quote panel remains available; the website never connects a wallet or requests approvals/signatures.
 
 **[Try the public demo](https://swapguard-ethonline-2026.swapguard.workers.dev)** · **[Source repository](https://github.com/CrisChang/swapguard-ethonline-2026)**
 
@@ -12,7 +12,17 @@ Validation is recorded by version in [docs/VALIDATION.md](docs/VALIDATION.md), i
 
 ## Published Agent test records
 
-The [test reports section](https://swapguard-ethonline-2026.swapguard.workers.dev/#evidence) hosts a fixed batch of **8 constructed scenarios, 46 actual local MCP tool calls and 2 process-restart scenarios**. Download the full inputs/results JSON, readable report and source-fingerprint manifest. The two expected tool errors, unfinished tasks, gas overrun and below-floor output are retained. These are behavioral checks, not real trades, an LLM evaluation, a measured success rate or savings evidence.
+The [test reports section](https://swapguard-ethonline-2026.swapguard.workers.dev/#evidence) now includes actual local-fork Uniswap execution by a **project-authored deterministic reference swap agent**, connected to a separate stdio MCP process. Four predeclared cases are reset to identical snapshots for three policies:
+
+| Policy                               | Completed | Completed within constraints | Over budget | Total task gas, USDC-eq |
+| ------------------------------------ | --------: | ---------------------------: | ----------: | ----------------------: |
+| Per-attempt budget, limited baseline |       4/4 |                          2/4 |         2/4 |                2.219848 |
+| Independent cumulative budget        |       3/4 |                          2/4 |         1/4 |                 1.88034 |
+| Same reference agent + SwapGuard MCP |       3/4 |                          2/4 |         1/4 |                 1.88034 |
+
+The MCP policy matches the equally constrained baseline; it does **not** demonstrate better routing or cost optimization. One fewer completion accompanies one fewer overrun. All three retain an underestimated-gas overrun. These are fake-money local EVM transactions with deliberate fault injection, not public mainnet trades, a market backtest, live LLM evaluation or third-party Agent adoption. [Protocol](experiments/AGENT_RPC_PROTOCOL.md), [per-case report](public/evidence/rpc-agent-2026-09-10.md), [full calls/receipts/journals](public/evidence/rpc-agent-2026-09-10.json), [source fingerprints](public/evidence/rpc-agent-2026-09-10.manifest.json).
+
+The historical **8 constructed scenarios, 46 actual local MCP tool calls and 2 process-restart scenarios** remain separately labelled. Their two expected tool errors, unfinished tasks, gas overrun and below-floor output are retained. They are behavioral checks, not executed swaps. Historical source fingerprints refer to that historical batch; the new receipt batch fingerprints the current exercised implementation.
 
 Reproduce with `npm run record:agent-evidence -- agent-ledger-YYYY-MM-DD-your-run`. The recorder will not overwrite an existing batch. Public test files are separate from private local MCP journals and are never uploaded from visitors' wallets.
 
@@ -21,7 +31,7 @@ Reproduce with `npm run record:agent-evidence -- agent-ledger-YYYY-MM-DD-your-ru
 - **Audience:** developers of existing DCA/rebalancing/conversion agents; first ledger scope is one Ethereum WETH → USDC task.
 - **Problem hypothesis:** individual transaction receipts do not by themselves preserve a task's original user constraints or explain cumulative retry costs. The prevalence of this pain is not established by user research.
 - **Outputs:** checks and reasons, original terms, pending state, reported approval/failed-swap/successful-swap gas, remaining budget, gross output and output after task gas, with exportable records.
-- **Not a minimum-loss product:** no profit guarantee, best routing, authenticated wallet consent, independent MCP receipt verification or enforced wallet-wide cap. A signer can bypass the interface. Account-wide history import is not implemented.
+- **Not a minimum-loss product:** no profit guarantee, best routing, authenticated wallet consent or enforced wallet-wide cap. Optional verification trusts the configured RPC, not a cryptographic inclusion proof. A signer can bypass the interface. Account-wide history import is not implemented.
 - **Accounting:** fees already affect quoted/received output; do not subtract them twice. Output after gas is not investment P&L. An unfinished task retains its costs and has null output.
 
 ## Connect an existing Agent (local MCP)
@@ -33,7 +43,9 @@ npm run mcp
 npm run check:mcp
 ```
 
-Four tools: `swapguard_open_task`, `swapguard_assess_attempt`, `swapguard_record_receipt`, `swapguard_get_task`. Use a stdio-capable client and a private `SWAPGUARD_LEDGER_PATH`. No remote MCP endpoint is hosted on the website. Existing task terms cannot be edited through these tools; exact receipt duplicates charge once; pending operations prevent duplicate preparations. Readiness is advisory, not signing permission. The local file is not tamper-proof and all quotes/receipts/conversions remain caller-reported. Full configuration, limits and expected behavior: [AGENT_INTEGRATION.md](docs/AGENT_INTEGRATION.md).
+Four default tools: `swapguard_open_task`, `swapguard_assess_attempt`, `swapguard_record_receipt`, `swapguard_get_task`. Configuring `SWAPGUARD_VERIFY_RPC_URL` enables a fifth, `swapguard_verify_receipt`, which accepts task/attempt IDs and a hash instead of caller costs. Bound tasks include an immutable wallet, chain and server-read creation anchor. Use a stdio-capable client and a private `SWAPGUARD_LEDGER_PATH`. No remote MCP endpoint is hosted on the website. Existing terms cannot be edited; exact receipt duplicates charge once; pending operations prevent duplicate preparations. Readiness is advisory, not signing permission. The local file is not tamper-proof, and legacy receipt reports remain unverified. Full setup and limits: [AGENT_INTEGRATION.md](docs/AGENT_INTEGRATION.md).
+
+**Ecosystem focus:** Uniswap first. The Graph is a candidate for genuinely useful historical data, not an implemented integration or a prize claim. We do not add a third ecosystem merely to fill a slot.
 
 ## Run locally
 

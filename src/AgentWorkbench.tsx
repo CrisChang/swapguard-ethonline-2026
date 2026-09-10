@@ -8,6 +8,8 @@ import {
 } from "./lib/agent-examples";
 import integrationGuide from "../docs/AGENT_INTEGRATION.md?raw";
 import "./agent-workbench.css";
+import { openTaskSchema } from "./lib/agent-ledger";
+import { presentAgentResult } from "./lib/agent-presentation";
 
 export default function AgentWorkbench() {
   const [scenario, setScenario] = useState<AgentExampleId>("budget");
@@ -15,15 +17,23 @@ export default function AgentWorkbench() {
   const [run, setRun] = useState<AgentExampleRun | null>(null);
   const [error, setError] = useState("");
   const report = run?.report;
+  const presentation = presentAgentResult(report);
   const example = AGENT_EXAMPLES.find((e) => e.id === scenario)!;
   function execute() {
+    if (!openTaskSchema.shape.gasBudgetUsdc.safeParse(budget).success) {
+      setRun(null);
+      setError(
+        "Use a positive gas budget with up to six decimal places (USDC-equivalent).",
+      );
+      return;
+    }
     try {
       setRun(runAgentExample(scenario, budget));
       setError("");
     } catch {
       setRun(null);
       setError(
-        "Use a positive gas budget with up to six decimal places (USDC-equivalent).",
+        "The example could not run. Please try again. No real transaction was sent.",
       );
     }
   }
@@ -171,17 +181,13 @@ export default function AgentWorkbench() {
         </div>
         <div className="agent-ledger" aria-live="polite">
           <p className="eyebrow">OUTPUT / TASK COST LEDGER</p>
-          <h3>
-            {report
-              ? report.status === "constraint_breach"
-                ? "Reported constraint breach"
-                : report.status === "completed_reported"
-                  ? "Completed in this example"
-                  : report.decision === "REJECT"
-                    ? "Original terms would change"
-                    : "Wait before another attempt"
-              : "What did the whole task cost?"}
-          </h3>
+          {report && (
+            <p className="agent-check-status">
+              EXAMPLE RAN · NO REAL TRANSACTION SENT
+            </p>
+          )}
+          <h3>{presentation.title}</h3>
+          <p>{presentation.explanation}</p>
           <p>
             {report?.reason ||
               (report
@@ -206,18 +212,24 @@ export default function AgentWorkbench() {
             <div>
               <dt>Gross swap output</dt>
               <dd>
-                {report?.grossOutputUsdc ?? "Not completed"}
+                {presentation.output}
                 <small>{report?.grossOutputUsdc != null ? " USDC" : ""}</small>
               </dd>
             </div>
             <div>
               <dt>Output after task gas</dt>
               <dd>
-                {report?.netOutputAfterGasUsdc ?? "Not available"}
+                {presentation.net}
                 <small>
                   {report?.netOutputAfterGasUsdc != null ? " USDC-eq" : ""}
                 </small>
               </dd>
+              {report && report.netOutputAfterGasUsdc === null && (
+                <dd className="agent-metric-help">
+                  No successful swap output yet; this is not missing data or
+                  zero cost.
+                </dd>
+              )}
             </div>
           </dl>
           {report && (
@@ -295,6 +307,11 @@ export default function AgentWorkbench() {
                 <code>swapguard_get_task</code> returns the ledger and
                 unresolved state.
               </li>
+              <li>
+                Optional <code>swapguard_verify_receipt</code> reads a supported
+                bound transaction from configured RPC and records derived costs.
+                See the separate <a href="#evidence">reference-agent test</a>.
+              </li>
             </ol>
             <p>
               The local journal survives server restarts. The public website
@@ -349,8 +366,9 @@ export default function AgentWorkbench() {
             <h3>What the first version does not guarantee</h3>
             <ul>
               <li>
-                MCP quotes, receipts and gas conversions are supplied by the
-                caller and are not independently authenticated.
+                Quotes, gas estimates and legacy reported receipts are supplied
+                by the caller and are not independently authenticated. Optional
+                RPC receipt verification is a separate, narrowly supported mode.
               </li>
               <li>
                 The local journal is not tamper-proof. A different task ID is a
@@ -382,9 +400,10 @@ export default function AgentWorkbench() {
       </details>
       <p className="agent-disclosure">
         No wallet is connected and nothing is signed or broadcast. Browser
-        examples are synthetic; MCP records are caller-reported. Real mainnet
-        reads remain in <a href="#workspace">manual analysis</a>; supported
-        calldata checks remain in the <a href="#protection">draft checker</a>.
+        examples are synthetic; legacy MCP reports remain unverified. Real
+        mainnet reads remain in <a href="#workspace">manual analysis</a>;
+        supported calldata checks remain in the{" "}
+        <a href="#protection">draft checker</a>.
       </p>
     </section>
   );
